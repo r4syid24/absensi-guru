@@ -1,0 +1,1172 @@
+```html
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Rekap Absensi Guru</title>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <style>
+
+    /* =====================================
+       PRINT A4 LANDSCAPE
+    ====================================== */
+
+    @page {
+      size: A4 landscape;
+      margin: 10mm;
+    }
+
+    @media print {
+
+      html,
+      body {
+        width: 100%;
+        margin: 0;
+        padding: 0;
+        background: white !important;
+      }
+
+      .no-print {
+        display: none !important;
+      }
+
+      .print-area {
+        width: 100% !important;
+        max-width: none !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        border: none !important;
+        box-shadow: none !important;
+      }
+
+      /* JUDUL */
+      .judul-laporan {
+        display: block !important;
+        margin-bottom: 12px !important;
+      }
+
+      /* TABEL */
+      table {
+        width: 100% !important;
+        table-layout: fixed !important;
+        border-collapse: collapse !important;
+        font-size: 9px !important;
+      }
+
+      th,
+      td {
+        border: 1px solid #000 !important;
+        padding: 4px 3px !important;
+        word-break: break-word !important;
+        overflow-wrap: break-word !important;
+      }
+
+      th {
+        font-weight: bold !important;
+        text-align: center !important;
+      }
+
+      /* Lebar masing-masing kolom */
+
+      th:nth-child(1),
+      td:nth-child(1) {
+        width: 4% !important;
+      }
+
+      th:nth-child(2),
+      td:nth-child(2) {
+        width: 14% !important;
+      }
+
+      th:nth-child(3),
+      td:nth-child(3) {
+        width: 25% !important;
+        text-align: left !important;
+      }
+
+      th:nth-child(4),
+      td:nth-child(4) {
+        width: 7% !important;
+      }
+
+      th:nth-child(5),
+      td:nth-child(5) {
+        width: 8% !important;
+      }
+
+      th:nth-child(6),
+      td:nth-child(6) {
+        width: 7% !important;
+      }
+
+      th:nth-child(7),
+      td:nth-child(7) {
+        width: 7% !important;
+      }
+
+      th:nth-child(8),
+      td:nth-child(8) {
+        width: 7% !important;
+      }
+
+      th:nth-child(9),
+      td:nth-child(9) {
+        width: 10% !important;
+      }
+
+      th:nth-child(10),
+      td:nth-child(10) {
+        width: 11% !important;
+      }
+
+      /* Warna header tetap terlihat */
+      .thead-print {
+        background: #1d4ed8 !important;
+        color: white !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+
+      /* Jangan pecah baris */
+      tr {
+        page-break-inside: avoid !important;
+      }
+
+      thead {
+        display: table-header-group !important;
+      }
+
+      /* Footer */
+      .footer-cetak {
+        display: flex !important;
+      }
+
+      /* Ringkasan disembunyikan */
+      .ringkasan-print {
+        display: none !important;
+      }
+
+      /* Judul laporan */
+      .judul-laporan h2 {
+        font-size: 18px !important;
+        margin: 0 !important;
+      }
+
+      .judul-laporan p {
+        font-size: 12px !important;
+        margin: 2px 0 !important;
+      }
+
+    }
+
+    /* =====================================
+       FOOTER PRINT
+    ====================================== */
+
+    .footer-cetak {
+      display: none;
+    }
+
+  </style>
+</head>
+
+
+<body class="bg-gray-100 min-h-screen">
+
+
+  <!-- =====================================
+       HEADER APLIKASI
+  ====================================== -->
+
+  <header class="bg-blue-700 text-white shadow-lg no-print">
+
+    <div class="max-w-7xl mx-auto px-4 py-4
+                flex flex-col md:flex-row
+                md:items-center md:justify-between gap-3">
+
+      <div>
+
+        <h1 class="text-2xl font-bold">
+          📊 Rekap Absensi Guru
+        </h1>
+
+        <p class="text-blue-100 text-sm">
+          Rekapitulasi kehadiran guru
+        </p>
+
+      </div>
+
+
+      <div class="flex gap-2">
+
+        <button
+          onclick="window.location.href='dashboard.html'"
+          class="bg-white text-blue-700 px-4 py-2
+                 rounded-lg font-semibold
+                 hover:bg-blue-50">
+
+          ↩️ Dashboard
+
+        </button>
+
+
+        <button
+          onclick="window.print()"
+          class="bg-green-500 text-white px-4 py-2
+                 rounded-lg font-semibold
+                 hover:bg-green-600">
+
+          🖨️ Cetak
+
+        </button>
+
+      </div>
+
+    </div>
+
+  </header>
+
+
+
+  <!-- =====================================
+       CONTENT
+  ====================================== -->
+
+  <main class="max-w-7xl mx-auto p-4">
+
+
+    <!-- =====================================
+         FILTER
+    ====================================== -->
+
+    <section class="bg-white rounded-xl shadow p-5 mb-5 no-print">
+
+      <h2 class="text-lg font-bold text-gray-800 mb-4">
+        🔎 Filter Rekap
+      </h2>
+
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+
+
+        <!-- BULAN -->
+
+        <div>
+
+          <label class="block text-sm font-semibold text-gray-700 mb-1">
+            Bulan
+          </label>
+
+          <select
+            id="bulan"
+            onchange="tampilkanRekap()"
+            class="w-full border rounded-lg px-3 py-2
+                   focus:outline-none focus:ring-2
+                   focus:ring-blue-500">
+
+            <option value="0">Januari</option>
+            <option value="1">Februari</option>
+            <option value="2">Maret</option>
+            <option value="3">April</option>
+            <option value="4">Mei</option>
+            <option value="5">Juni</option>
+            <option value="6">Juli</option>
+            <option value="7">Agustus</option>
+            <option value="8">September</option>
+            <option value="9">Oktober</option>
+            <option value="10">November</option>
+            <option value="11">Desember</option>
+
+          </select>
+
+        </div>
+
+
+        <!-- TAHUN -->
+
+        <div>
+
+          <label class="block text-sm font-semibold text-gray-700 mb-1">
+            Tahun
+          </label>
+
+          <select
+            id="tahun"
+            onchange="tampilkanRekap()"
+            class="w-full border rounded-lg px-3 py-2
+                   focus:outline-none focus:ring-2
+                   focus:ring-blue-500">
+          </select>
+
+        </div>
+
+
+        <!-- SEARCH -->
+
+        <div>
+
+          <label class="block text-sm font-semibold text-gray-700 mb-1">
+            Cari Guru
+          </label>
+
+          <input
+            type="text"
+            id="pencarian"
+            placeholder="Cari nama atau NIP..."
+            oninput="tampilkanRekap()"
+            class="w-full border rounded-lg px-3 py-2
+                   focus:outline-none focus:ring-2
+                   focus:ring-blue-500">
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+
+    <!-- =====================================
+         AREA CETAK
+    ====================================== -->
+
+    <section
+      class="bg-white rounded-xl shadow p-5 print-area">
+
+
+      <!-- =====================================
+           JUDUL LAPORAN
+      ====================================== -->
+
+      <div class="judul-laporan text-center mb-5">
+
+        <h2 class="text-xl font-bold uppercase">
+          REKAPITULASI ABSENSI GURU
+        </h2>
+
+        <p class="text-gray-700 font-semibold">
+          Periode:
+          <span id="periode">
+            -
+          </span>
+        </p>
+
+      </div>
+
+
+
+      <!-- =====================================
+           RINGKASAN
+      ====================================== -->
+
+      <div
+        class="ringkasan-print
+               grid grid-cols-2 md:grid-cols-5
+               gap-3 mb-5">
+
+
+        <!-- HADIR -->
+
+        <div
+          class="bg-green-50 border border-green-200
+                 rounded-lg p-3">
+
+          <p class="text-xs text-green-700">
+            Total Hadir
+          </p>
+
+          <p
+            id="totalHadir"
+            class="text-2xl font-bold text-green-700">
+
+            0
+
+          </p>
+
+        </div>
+
+
+        <!-- TERLAMBAT -->
+
+        <div
+          class="bg-yellow-50 border border-yellow-200
+                 rounded-lg p-3">
+
+          <p class="text-xs text-yellow-700">
+            Terlambat
+          </p>
+
+          <p
+            id="totalTerlambat"
+            class="text-2xl font-bold text-yellow-700">
+
+            0
+
+          </p>
+
+        </div>
+
+
+        <!-- IZIN -->
+
+        <div
+          class="bg-blue-50 border border-blue-200
+                 rounded-lg p-3">
+
+          <p class="text-xs text-blue-700">
+            Izin
+          </p>
+
+          <p
+            id="totalIzin"
+            class="text-2xl font-bold text-blue-700">
+
+            0
+
+          </p>
+
+        </div>
+
+
+        <!-- SAKIT -->
+
+        <div
+          class="bg-purple-50 border border-purple-200
+                 rounded-lg p-3">
+
+          <p class="text-xs text-purple-700">
+            Sakit
+          </p>
+
+          <p
+            id="totalSakit"
+            class="text-2xl font-bold text-purple-700">
+
+            0
+
+          </p>
+
+        </div>
+
+
+        <!-- ALPA -->
+
+        <div
+          class="bg-red-50 border border-red-200
+                 rounded-lg p-3">
+
+          <p class="text-xs text-red-700">
+            Alpa
+          </p>
+
+          <p
+            id="totalAlpa"
+            class="text-2xl font-bold text-red-700">
+
+            0
+
+          </p>
+
+        </div>
+
+      </div>
+
+
+
+      <!-- =====================================
+           TABEL
+      ====================================== -->
+
+      <div class="overflow-x-auto">
+
+        <table
+          class="w-full border-collapse border
+                 border-gray-300">
+
+          <thead class="thead-print bg-blue-700 text-white">
+
+            <tr>
+
+              <th class="border border-gray-300 px-3 py-3">
+                No
+              </th>
+
+              <th class="border border-gray-300 px-3 py-3">
+                NIP
+              </th>
+
+              <th class="border border-gray-300 px-3 py-3">
+                Nama Guru
+              </th>
+
+              <th class="border border-gray-300 px-3 py-3">
+                Hadir
+              </th>
+
+              <th class="border border-gray-300 px-3 py-3">
+                Terlambat
+              </th>
+
+              <th class="border border-gray-300 px-3 py-3">
+                Izin
+              </th>
+
+              <th class="border border-gray-300 px-3 py-3">
+                Sakit
+              </th>
+
+              <th class="border border-gray-300 px-3 py-3">
+                Alpa
+              </th>
+
+              <th class="border border-gray-300 px-3 py-3">
+                Total
+              </th>
+
+              <th class="border border-gray-300 px-3 py-3">
+                Kehadiran
+              </th>
+
+            </tr>
+
+          </thead>
+
+
+          <tbody id="tabelRekap">
+
+          </tbody>
+
+        </table>
+
+      </div>
+
+
+
+      <!-- =====================================
+           DATA KOSONG
+      ====================================== -->
+
+      <div
+        id="dataKosong"
+        class="hidden text-center py-10 text-gray-500">
+
+        <div class="text-5xl mb-3">
+          📭
+        </div>
+
+        <p class="font-semibold">
+          Belum ada data absensi pada periode ini.
+        </p>
+
+      </div>
+
+
+
+      <!-- =====================================
+           FOOTER CETAK
+      ====================================== -->
+
+      <div
+        class="footer-cetak
+               justify-between
+               mt-10 text-sm">
+
+
+        <div>
+
+          <p>
+            Mengetahui,
+          </p>
+
+          <p>
+            Kepala Sekolah
+          </p>
+
+          <br>
+          <br>
+          <br>
+
+          <p>
+            ______________________________
+          </p>
+
+          <p>
+            NIP. _________________________
+          </p>
+
+        </div>
+
+
+        <div class="text-center">
+
+          <p>
+            Dicetak pada:
+          </p>
+
+          <p id="tanggalCetak">
+            -
+          </p>
+
+        </div>
+
+
+      </div>
+
+    </section>
+
+  </main>
+
+
+
+<script>
+
+
+  // =====================================
+  // CEK LOGIN
+  // =====================================
+
+  const sudahLogin =
+    sessionStorage.getItem("loginAdmin");
+
+  if (sudahLogin !== "true") {
+
+    window.location.href = "index.html";
+
+  }
+
+
+
+  // =====================================
+  // AMBIL DATA
+  // =====================================
+
+  let dataGuru =
+    JSON.parse(
+      localStorage.getItem("dataGuru")
+    ) || [];
+
+
+  let dataAbsensi =
+    JSON.parse(
+      localStorage.getItem("dataAbsensi")
+    ) || {};
+
+
+
+  // =====================================
+  // ELEMEN
+  // =====================================
+
+  const bulanInput =
+    document.getElementById("bulan");
+
+  const tahunInput =
+    document.getElementById("tahun");
+
+  const pencarianInput =
+    document.getElementById("pencarian");
+
+  const tabelRekap =
+    document.getElementById("tabelRekap");
+
+  const dataKosong =
+    document.getElementById("dataKosong");
+
+
+
+  // =====================================
+  // NAMA BULAN
+  // =====================================
+
+  const namaBulan = [
+
+    "Januari",
+    "Februari",
+    "Maret",
+    "April",
+    "Mei",
+    "Juni",
+    "Juli",
+    "Agustus",
+    "September",
+    "Oktober",
+    "November",
+    "Desember"
+
+  ];
+
+
+
+  // =====================================
+  // ISI TAHUN
+  // =====================================
+
+  function isiTahun() {
+
+    const tahunSekarang =
+      new Date().getFullYear();
+
+    tahunInput.innerHTML = "";
+
+    for (
+      let tahun = tahunSekarang - 5;
+      tahun <= tahunSekarang + 1;
+      tahun++
+    ) {
+
+      const option =
+        document.createElement("option");
+
+      option.value = tahun;
+
+      option.textContent = tahun;
+
+      if (tahun === tahunSekarang) {
+
+        option.selected = true;
+
+      }
+
+      tahunInput.appendChild(option);
+
+    }
+
+  }
+
+
+
+  // =====================================
+  // TANGGAL CETAK
+  // =====================================
+
+  function tampilkanTanggalCetak() {
+
+    const sekarang =
+      new Date();
+
+    const tanggal =
+      sekarang.toLocaleDateString(
+        "id-ID",
+        {
+          day: "numeric",
+          month: "long",
+          year: "numeric"
+        }
+      );
+
+    document.getElementById(
+      "tanggalCetak"
+    ).textContent = tanggal;
+
+  }
+
+
+
+  // =====================================
+  // REKAP
+  // =====================================
+
+  function tampilkanRekap() {
+
+    const bulan =
+      parseInt(bulanInput.value);
+
+    const tahun =
+      parseInt(tahunInput.value);
+
+    const pencarian =
+      pencarianInput.value
+        .toLowerCase()
+        .trim();
+
+
+    document.getElementById(
+      "periode"
+    ).textContent =
+      `${namaBulan[bulan]} ${tahun}`;
+
+
+    tabelRekap.innerHTML = "";
+
+
+    let totalHadir = 0;
+    let totalTerlambat = 0;
+    let totalIzin = 0;
+    let totalSakit = 0;
+    let totalAlpa = 0;
+
+    let nomor = 1;
+    let jumlahData = 0;
+
+
+
+    // =====================================
+    // LOOP GURU
+    // =====================================
+
+    dataGuru.forEach(
+      (guru, indexGuru) => {
+
+
+        const namaGuru =
+          String(guru.nama || "")
+            .toLowerCase();
+
+        const nipGuru =
+          String(guru.nip || "")
+            .toLowerCase();
+
+        const jabatanGuru =
+          String(guru.jabatan || "")
+            .toLowerCase();
+
+
+        // SEARCH
+
+        if (
+          pencarian &&
+          !namaGuru.includes(pencarian) &&
+          !nipGuru.includes(pencarian) &&
+          !jabatanGuru.includes(pencarian)
+        ) {
+
+          return;
+
+        }
+
+
+
+        // =====================================
+        // HITUNG STATUS
+        // =====================================
+
+        let hadir = 0;
+        let terlambat = 0;
+        let izin = 0;
+        let sakit = 0;
+        let alpa = 0;
+
+
+
+        Object.keys(dataAbsensi).forEach(
+          tanggal => {
+
+
+            const bagian =
+              tanggal.split("-");
+
+
+            const tahunData =
+              parseInt(bagian[0]);
+
+            const bulanData =
+              parseInt(bagian[1]) - 1;
+
+
+            if (
+              tahunData !== tahun ||
+              bulanData !== bulan
+            ) {
+
+              return;
+
+            }
+
+
+            const dataTanggal =
+              dataAbsensi[tanggal];
+
+
+            if (!dataTanggal) {
+
+              return;
+
+            }
+
+
+            const absensiGuru =
+              dataTanggal[indexGuru];
+
+
+            if (!absensiGuru) {
+
+              return;
+
+            }
+
+
+            const status =
+              absensiGuru.status;
+
+
+            if (status === "Hadir") {
+
+              hadir++;
+
+            }
+
+            else if (
+              status === "Terlambat"
+            ) {
+
+              terlambat++;
+
+            }
+
+            else if (
+              status === "Izin"
+            ) {
+
+              izin++;
+
+            }
+
+            else if (
+              status === "Sakit"
+            ) {
+
+              sakit++;
+
+            }
+
+            else if (
+              status === "Alpa"
+            ) {
+
+              alpa++;
+
+            }
+
+          }
+        );
+
+
+
+        // =====================================
+        // TOTAL
+        // =====================================
+
+        const total =
+          hadir +
+          terlambat +
+          izin +
+          sakit +
+          alpa;
+
+
+        const jumlahHadir =
+          hadir +
+          terlambat;
+
+
+        let persentase = 0;
+
+
+        if (total > 0) {
+
+          persentase =
+            Math.round(
+              (jumlahHadir / total) * 100
+            );
+
+        }
+
+
+
+        // =====================================
+        // TOTAL SEMUA
+        // =====================================
+
+        totalHadir += hadir;
+
+        totalTerlambat += terlambat;
+
+        totalIzin += izin;
+
+        totalSakit += sakit;
+
+        totalAlpa += alpa;
+
+
+        jumlahData++;
+
+
+
+        // =====================================
+        // BARIS
+        // =====================================
+
+        const tr =
+          document.createElement("tr");
+
+
+        tr.className =
+          "hover:bg-gray-50";
+
+
+        tr.innerHTML = `
+
+          <td class="border border-gray-300
+                     px-3 py-2 text-center">
+            ${nomor}
+          </td>
+
+          <td class="border border-gray-300
+                     px-3 py-2">
+            ${guru.nip || "-"}
+          </td>
+
+          <td class="border border-gray-300
+                     px-3 py-2 font-semibold">
+            ${guru.nama || "-"}
+          </td>
+
+          <td class="border border-gray-300
+                     px-3 py-2 text-center
+                     font-bold">
+            ${hadir}
+          </td>
+
+          <td class="border border-gray-300
+                     px-3 py-2 text-center
+                     font-bold">
+            ${terlambat}
+          </td>
+
+          <td class="border border-gray-300
+                     px-3 py-2 text-center
+                     font-bold">
+            ${izin}
+          </td>
+
+          <td class="border border-gray-300
+                     px-3 py-2 text-center
+                     font-bold">
+            ${sakit}
+          </td>
+
+          <td class="border border-gray-300
+                     px-3 py-2 text-center
+                     font-bold">
+            ${alpa}
+          </td>
+
+          <td class="border border-gray-300
+                     px-3 py-2 text-center
+                     font-bold">
+            ${total}
+          </td>
+
+          <td class="border border-gray-300
+                     px-3 py-2 text-center
+                     font-bold">
+            ${persentase}%
+          </td>
+
+        `;
+
+
+        tabelRekap.appendChild(tr);
+
+        nomor++;
+
+      }
+    );
+
+
+
+    // =====================================
+    // DATA KOSONG
+    // =====================================
+
+    if (jumlahData === 0) {
+
+      dataKosong.classList.remove(
+        "hidden"
+      );
+
+    } else {
+
+      dataKosong.classList.add(
+        "hidden"
+      );
+
+    }
+
+
+
+    // =====================================
+    // TOTAL CARD
+    // =====================================
+
+    document.getElementById(
+      "totalHadir"
+    ).textContent = totalHadir;
+
+
+    document.getElementById(
+      "totalTerlambat"
+    ).textContent =
+      totalTerlambat;
+
+
+    document.getElementById(
+      "totalIzin"
+    ).textContent =
+      totalIzin;
+
+
+    document.getElementById(
+      "totalSakit"
+    ).textContent =
+      totalSakit;
+
+
+    document.getElementById(
+      "totalAlpa"
+    ).textContent =
+      totalAlpa;
+
+  }
+
+
+
+  // =====================================
+  // MULAI
+  // =====================================
+
+  isiTahun();
+
+
+  bulanInput.value =
+    new Date().getMonth();
+
+
+  tampilkanTanggalCetak();
+
+
+  tampilkanRekap();
+
+
+</script>
+
+</body>
+</html>
+```
+
+### Setelah diganti
+
+1. Simpan sebagai **`rekap.html`**
+2. Buka aplikasi.
+3. Masuk **Rekap Absensi**.
+4. Pilih bulan.
+5. Klik **🖨️ Cetak**.
+6. Di Print Preview, pilih **Layout → Landscape** jika browser belum otomatis memilihnya.
+
+Hasilnya tabel akan menggunakan **A4 Landscape** dan seluruh 10 kolom (`No, NIP, Nama, Hadir, Terlambat, Izin, Sakit, Alpa, Total, Kehadiran`) disesuaikan agar masuk ke lebar halaman. 📄↔️
+
+Kalau sudah dites dan tidak terpotong, kita bisa lanjut ke **laporan resmi sekolah** dengan kop sekolah dan identitas sekolah. 🏫🔥

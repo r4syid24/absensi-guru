@@ -1,0 +1,272 @@
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Login - Aplikasi Absensi Guru</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-gradient-to-br from-blue-600 to-indigo-700 min-h-screen flex items-center justify-center px-4">
+
+    <div class="w-full max-w-md">
+
+        <!-- LOGO / JUDUL -->
+        <div class="text-center text-white mb-6">
+
+            <div class="text-6xl mb-3">
+                📋
+            </div>
+
+            <h1 class="text-3xl font-bold">
+                Aplikasi Absensi Guru
+            </h1>
+
+            <p class="text-blue-100 mt-2">
+                Sistem Administrasi Kehadiran Guru
+            </p>
+
+        </div>
+
+
+        <!-- LOGIN CARD -->
+        <div class="bg-white rounded-2xl shadow-2xl p-6 md:p-8">
+
+            <div class="text-center mb-6">
+
+                <h2 class="text-2xl font-bold text-gray-800">
+                    🔐 Login Admin
+                </h2>
+
+                <p class="text-gray-500 text-sm mt-1">
+                    Silakan masuk untuk melanjutkan
+                </p>
+
+            </div>
+
+
+            <!-- FORM -->
+            <form id="formLogin">
+
+                <!-- USERNAME -->
+                <div class="mb-4">
+
+                    <label
+                        for="username"
+                        class="block text-sm font-semibold text-gray-700 mb-2">
+                        Username
+                    </label>
+
+                    <input
+                        type="text"
+                        id="username"
+                        autocomplete="username"
+                        placeholder="Masukkan username"
+                        class="w-full border border-gray-300 rounded-lg px-4 py-3
+                               focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        required>
+
+                </div>
+
+
+                <!-- PASSWORD -->
+                <div class="mb-5">
+
+                    <label
+                        for="password"
+                        class="block text-sm font-semibold text-gray-700 mb-2">
+                        Password
+                    </label>
+
+                    <div class="relative">
+
+                        <input
+                            type="password"
+                            id="password"
+                            autocomplete="current-password"
+                            placeholder="Masukkan password"
+                            class="w-full border border-gray-300 rounded-lg px-4 py-3 pr-12
+                                   focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            required>
+
+                        <button
+                            type="button"
+                            onclick="togglePassword()"
+                            class="absolute right-3 top-1/2 -translate-y-1/2
+                                   text-gray-500 hover:text-blue-600">
+
+                            👁️
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+                <!-- PESAN ERROR -->
+                <div
+                    id="pesanError"
+                    class="hidden bg-red-50 border border-red-200 text-red-700
+                           rounded-lg px-4 py-3 text-sm mb-4">
+                </div>
+
+
+                <!-- TOMBOL -->
+                <button
+                    type="submit"
+                    class="w-full bg-blue-600 hover:bg-blue-700
+                           text-white font-bold py-3 rounded-lg
+                           transition duration-200">
+
+                    🔐 Masuk
+
+                </button>
+
+            </form>
+
+
+            <!-- INFO LOGIN -->
+            <div class="mt-6 bg-blue-50 rounded-lg p-4">
+
+                <p class="text-sm font-semibold text-blue-800 mb-1">
+                    ℹ️ Login Demo
+                </p>
+
+                <p class="text-sm text-blue-700">
+                    Username: <b>admin</b>
+                </p>
+
+                <p class="text-sm text-blue-700">
+                    Password: <b>admin123</b>
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <!-- FOOTER -->
+        <div class="text-center text-blue-100 text-sm mt-6">
+
+            © 2026 Aplikasi Absensi Guru
+
+        </div>
+
+    </div>
+
+
+    <script>
+
+        // =====================================================
+        // CEK LOGIN
+        // =====================================================
+
+        document.addEventListener(
+            "DOMContentLoaded",
+            function() {
+
+                const sudahLogin =
+                    sessionStorage.getItem("loginAdmin");
+
+                if (sudahLogin === "true") {
+
+                    window.location.href =
+                        "dashboard.html";
+
+                }
+
+            }
+        );
+
+
+        // =====================================================
+        // FORM LOGIN
+        // =====================================================
+
+        document.getElementById("formLogin")
+            .addEventListener(
+                "submit",
+                function(event) {
+
+                    event.preventDefault();
+
+
+                    const username =
+                        document.getElementById("username")
+                            .value.trim();
+
+                    const password =
+                        document.getElementById("password")
+                            .value;
+
+
+                    const pesanError =
+                        document.getElementById("pesanError");
+
+
+                    // LOGIN DEMO
+                    if (
+                        username === "admin" &&
+                        password === "admin123"
+                    ) {
+
+                        sessionStorage.setItem(
+                            "loginAdmin",
+                            "true"
+                        );
+
+                        sessionStorage.setItem(
+                            "namaAdmin",
+                            "Administrator"
+                        );
+
+
+                        window.location.href =
+                            "dashboard.html";
+
+
+                    } else {
+
+                        pesanError.textContent =
+                            "❌ Username atau password salah.";
+
+                        pesanError.classList.remove(
+                            "hidden"
+                        );
+
+                    }
+
+                }
+            );
+
+
+        // =====================================================
+        // SHOW / HIDE PASSWORD
+        // =====================================================
+
+        function togglePassword() {
+
+            const password =
+                document.getElementById("password");
+
+            if (password.type === "password") {
+
+                password.type = "text";
+
+            } else {
+
+                password.type = "password";
+
+            }
+
+        }
+
+    </script>
+
+</body>
+</html>
+

@@ -1,0 +1,589 @@
+```html
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Backup & Restore - Aplikasi Absensi Guru</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-gray-100 min-h-screen">
+
+    <!-- HEADER -->
+    <header class="bg-blue-700 text-white shadow">
+        <div class="max-w-5xl mx-auto px-4 py-5">
+
+            <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-3">
+
+                <div>
+                    <h1 class="text-2xl font-bold">
+                        💾 Backup & Restore
+                    </h1>
+
+                    <p class="text-blue-100 text-sm">
+                        Cadangkan dan pulihkan data aplikasi
+                    </p>
+                </div>
+
+                <a href="dashboard.html"
+                   class="inline-block bg-white text-blue-700 px-4 py-2 rounded-lg font-semibold hover:bg-blue-50 transition">
+                    ⬅️ Kembali ke Dashboard
+                </a>
+
+            </div>
+
+        </div>
+    </header>
+
+
+    <!-- CONTENT -->
+    <main class="max-w-5xl mx-auto px-4 py-6">
+
+        <!-- INFORMASI -->
+        <div class="bg-white rounded-xl shadow p-5 mb-6">
+
+            <h2 class="text-lg font-bold text-gray-800 mb-2">
+                📦 Data yang Dicadangkan
+            </h2>
+
+            <p class="text-gray-600 text-sm mb-4">
+                Backup akan menyimpan seluruh data aplikasi ke dalam satu file JSON.
+            </p>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+
+                <div class="border rounded-lg p-4 bg-blue-50">
+                    <div class="text-2xl mb-2">👨‍🏫</div>
+                    <p class="font-semibold">Data Guru</p>
+                    <p id="jumlahGuru" class="text-sm text-gray-600">
+                        0 data
+                    </p>
+                </div>
+
+                <div class="border rounded-lg p-4 bg-green-50">
+                    <div class="text-2xl mb-2">📝</div>
+                    <p class="font-semibold">Data Absensi</p>
+                    <p id="jumlahAbsensi" class="text-sm text-gray-600">
+                        0 data
+                    </p>
+                </div>
+
+                <div class="border rounded-lg p-4 bg-yellow-50">
+                    <div class="text-2xl mb-2">📅</div>
+                    <p class="font-semibold">Hari Libur</p>
+                    <p id="jumlahLibur" class="text-sm text-gray-600">
+                        0 data
+                    </p>
+                </div>
+
+                <div class="border rounded-lg p-4 bg-purple-50">
+                    <div class="text-2xl mb-2">⚙️</div>
+                    <p class="font-semibold">Pengaturan</p>
+                    <p id="statusPengaturan" class="text-sm text-gray-600">
+                        Belum diatur
+                    </p>
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- BACKUP -->
+        <div class="bg-white rounded-xl shadow p-6 mb-6">
+
+            <h2 class="text-xl font-bold text-gray-800 mb-2">
+                💾 Backup Data
+            </h2>
+
+            <p class="text-gray-600 text-sm mb-5">
+                Klik tombol di bawah untuk mengunduh seluruh data aplikasi.
+            </p>
+
+            <button
+                onclick="backupData()"
+                class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-semibold transition">
+
+                ⬇️ Download Backup
+
+            </button>
+
+        </div>
+
+
+        <!-- RESTORE -->
+        <div class="bg-white rounded-xl shadow p-6 mb-6">
+
+            <h2 class="text-xl font-bold text-gray-800 mb-2">
+                ♻️ Restore Data
+            </h2>
+
+            <p class="text-gray-600 text-sm mb-5">
+                Pilih file backup JSON yang sebelumnya telah dibuat.
+            </p>
+
+            <div class="border-2 border-dashed border-gray-300 rounded-xl p-6 text-center">
+
+                <div class="text-4xl mb-3">
+                    📂
+                </div>
+
+                <p class="text-gray-600 mb-4">
+                    Pilih file backup dengan format <b>.json</b>
+                </p>
+
+                <input
+                    type="file"
+                    id="fileRestore"
+                    accept=".json,application/json"
+                    class="block w-full max-w-md mx-auto text-sm text-gray-600
+                           file:mr-4 file:py-2 file:px-4
+                           file:rounded-lg file:border-0
+                           file:bg-blue-600 file:text-white
+                           hover:file:bg-blue-700">
+
+            </div>
+
+            <div class="mt-5">
+
+                <button
+                    onclick="restoreData()"
+                    class="bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-lg font-semibold transition">
+
+                    ♻️ Restore Data
+
+                </button>
+
+            </div>
+
+        </div>
+
+
+        <!-- PERINGATAN -->
+        <div class="bg-yellow-50 border border-yellow-300 rounded-xl p-5">
+
+            <h3 class="font-bold text-yellow-800 mb-2">
+                ⚠️ Perhatian
+            </h3>
+
+            <ul class="text-sm text-yellow-800 space-y-1">
+                <li>• Restore akan mengganti data yang sedang tersimpan di browser.</li>
+                <li>• Pastikan file backup berasal dari aplikasi ini.</li>
+                <li>• Setelah restore selesai, halaman akan dimuat ulang.</li>
+                <li>• Sebaiknya lakukan backup secara berkala.</li>
+            </ul>
+
+        </div>
+
+    </main>
+
+
+    <!-- FOOTER -->
+    <footer class="text-center text-gray-500 text-sm py-6">
+        © 2026 Aplikasi Absensi Guru
+    </footer>
+
+
+    <script>
+
+        // =====================================================
+        // STORAGE KEY
+        // =====================================================
+
+        const STORAGE_GURU = "dataGuru";
+        const STORAGE_ABSENSI = "dataAbsensi";
+        const STORAGE_LIBUR = "dataHariLibur";
+        const STORAGE_PENGATURAN = "dataPengaturan";
+
+
+        // =====================================================
+        // AMBIL DATA
+        // =====================================================
+
+        function getData(key) {
+
+            try {
+
+                const data = localStorage.getItem(key);
+
+                if (!data) {
+                    return [];
+                }
+
+                return JSON.parse(data);
+
+            } catch (error) {
+
+                console.error("Gagal membaca data:", key, error);
+
+                return [];
+
+            }
+
+        }
+
+
+        // =====================================================
+        // TAMPILKAN JUMLAH DATA
+        // =====================================================
+
+        function tampilkanInfo() {
+
+            const guru = getData(STORAGE_GURU);
+            const absensi = getData(STORAGE_ABSENSI);
+            const libur = getData(STORAGE_LIBUR);
+
+            document.getElementById("jumlahGuru").textContent =
+                guru.length + " data";
+
+            document.getElementById("jumlahAbsensi").textContent =
+                absensi.length + " data";
+
+            document.getElementById("jumlahLibur").textContent =
+                libur.length + " data";
+
+
+            const pengaturan = localStorage.getItem(STORAGE_PENGATURAN);
+
+            if (pengaturan) {
+
+                document.getElementById("statusPengaturan").textContent =
+                    "Tersimpan";
+
+            } else {
+
+                document.getElementById("statusPengaturan").textContent =
+                    "Belum diatur";
+
+            }
+
+        }
+
+
+        // =====================================================
+        // BACKUP DATA
+        // =====================================================
+
+        function backupData() {
+
+            const dataBackup = {
+
+                aplikasi: "Aplikasi Absensi Guru",
+
+                versi: "1.0",
+
+                tanggalBackup: new Date().toISOString(),
+
+                data: {
+
+                    dataGuru: getData(STORAGE_GURU),
+
+                    dataAbsensi: getData(STORAGE_ABSENSI),
+
+                    dataHariLibur: getData(STORAGE_LIBUR),
+
+                    dataPengaturan: localStorage.getItem(STORAGE_PENGATURAN)
+
+                }
+
+            };
+
+
+            const json = JSON.stringify(dataBackup, null, 2);
+
+            const blob = new Blob(
+                [json],
+                {
+                    type: "application/json"
+                }
+            );
+
+
+            const url = URL.createObjectURL(blob);
+
+
+            const tanggal = new Date();
+
+            const tahun = tanggal.getFullYear();
+
+            const bulan = String(
+                tanggal.getMonth() + 1
+            ).padStart(2, "0");
+
+            const hari = String(
+                tanggal.getDate()
+            ).padStart(2, "0");
+
+
+            const namaFile =
+                "backup-absensi-guru-" +
+                tahun +
+                "-" +
+                bulan +
+                "-" +
+                hari +
+                ".json";
+
+
+            const link = document.createElement("a");
+
+            link.href = url;
+
+            link.download = namaFile;
+
+            document.body.appendChild(link);
+
+            link.click();
+
+            document.body.removeChild(link);
+
+            URL.revokeObjectURL(url);
+
+
+            alert(
+                "✅ Backup berhasil dibuat!\n\n" +
+                "File: " + namaFile
+            );
+
+        }
+
+
+        // =====================================================
+        // VALIDASI BACKUP
+        // =====================================================
+
+        function validasiBackup(data) {
+
+            if (!data || typeof data !== "object") {
+                return false;
+            }
+
+
+            if (!data.data || typeof data.data !== "object") {
+                return false;
+            }
+
+
+            const isi = data.data;
+
+
+            if (!Array.isArray(isi.dataGuru)) {
+                return false;
+            }
+
+
+            if (!Array.isArray(isi.dataAbsensi)) {
+                return false;
+            }
+
+
+            if (!Array.isArray(isi.dataHariLibur)) {
+                return false;
+            }
+
+
+            return true;
+
+        }
+
+
+        // =====================================================
+        // RESTORE DATA
+        // =====================================================
+
+        function restoreData() {
+
+            const input =
+                document.getElementById("fileRestore");
+
+
+            if (!input.files || input.files.length === 0) {
+
+                alert(
+                    "⚠️ Silakan pilih file backup terlebih dahulu."
+                );
+
+                return;
+
+            }
+
+
+            const file = input.files[0];
+
+
+            if (!file.name.toLowerCase().endsWith(".json")) {
+
+                alert(
+                    "❌ File harus berformat JSON."
+                );
+
+                return;
+
+            }
+
+
+            const konfirmasi = confirm(
+
+                "⚠️ PERINGATAN\n\n" +
+
+                "Restore akan mengganti data aplikasi yang sekarang.\n\n" +
+
+                "Pastikan Anda sudah memiliki backup terbaru.\n\n" +
+
+                "Lanjutkan restore?"
+
+            );
+
+
+            if (!konfirmasi) {
+                return;
+            }
+
+
+            const reader = new FileReader();
+
+
+            reader.onload = function(event) {
+
+                try {
+
+                    const data =
+                        JSON.parse(event.target.result);
+
+
+                    if (!validasiBackup(data)) {
+
+                        alert(
+                            "❌ File backup tidak valid atau rusak."
+                        );
+
+                        return;
+
+                    }
+
+
+                    const isi = data.data;
+
+
+                    localStorage.setItem(
+                        STORAGE_GURU,
+                        JSON.stringify(isi.dataGuru)
+                    );
+
+
+                    localStorage.setItem(
+                        STORAGE_ABSENSI,
+                        JSON.stringify(isi.dataAbsensi)
+                    );
+
+
+                    localStorage.setItem(
+                        STORAGE_LIBUR,
+                        JSON.stringify(isi.dataHariLibur)
+                    );
+
+
+                    if (
+                        isi.dataPengaturan !== null &&
+                        isi.dataPengaturan !== undefined
+                    ) {
+
+                        if (
+                            typeof isi.dataPengaturan === "string"
+                        ) {
+
+                            localStorage.setItem(
+                                STORAGE_PENGATURAN,
+                                isi.dataPengaturan
+                            );
+
+                        } else {
+
+                            localStorage.setItem(
+                                STORAGE_PENGATURAN,
+                                JSON.stringify(
+                                    isi.dataPengaturan
+                                )
+                            );
+
+                        }
+
+                    } else {
+
+                        localStorage.removeItem(
+                            STORAGE_PENGATURAN
+                        );
+
+                    }
+
+
+                    alert(
+
+                        "✅ Restore berhasil!\n\n" +
+
+                        "Data Guru: " +
+                        isi.dataGuru.length +
+                        "\n" +
+
+                        "Data Absensi: " +
+                        isi.dataAbsensi.length +
+                        "\n" +
+
+                        "Hari Libur: " +
+                        isi.dataHariLibur.length
+
+                    );
+
+
+                    location.reload();
+
+
+                } catch (error) {
+
+                    console.error(error);
+
+                    alert(
+                        "❌ Gagal membaca file backup.\n\n" +
+                        "Pastikan file JSON tidak rusak."
+                    );
+
+                }
+
+            };
+
+
+            reader.onerror = function() {
+
+                alert(
+                    "❌ File tidak dapat dibaca."
+                );
+
+            };
+
+
+            reader.readAsText(file);
+
+        }
+
+
+        // =====================================================
+        // LOAD
+        // =====================================================
+
+        document.addEventListener(
+            "DOMContentLoaded",
+            function() {
+
+                tampilkanInfo();
+
+            }
+        );
+
+    </script>
+
+</body>
+</html>
+```

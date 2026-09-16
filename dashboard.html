@@ -1,0 +1,312 @@
+```html
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Dashboard - Aplikasi Absensi Guru</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-gray-100 min-h-screen">
+
+    <!-- HEADER -->
+    <header class="bg-blue-700 text-white shadow">
+
+        <div class="max-w-5xl mx-auto px-4 py-5">
+
+            <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+
+                <div>
+
+                    <h1 class="text-2xl md:text-3xl font-bold">
+                        📋 Aplikasi Absensi Guru
+                    </h1>
+
+                    <p class="text-blue-100 text-sm mt-1">
+                        Dashboard Administrasi Kehadiran Guru
+                    </p>
+
+                </div>
+
+                <button
+                    onclick="logout()"
+                    class="bg-red-500 hover:bg-red-600 text-white
+                           px-4 py-2 rounded-lg font-semibold transition">
+
+                    🚪 Keluar
+
+                </button>
+
+            </div>
+
+        </div>
+
+    </header>
+
+
+    <!-- CONTENT -->
+    <main class="max-w-5xl mx-auto px-4 py-6">
+
+        <!-- WELCOME -->
+        <div class="bg-white rounded-xl shadow p-6 mb-6">
+
+            <h2 class="text-2xl font-bold text-gray-800">
+                Selamat Datang, <span id="namaAdmin">Admin</span> 👋
+            </h2>
+
+            <p class="text-gray-600 mt-2">
+                Silakan pilih menu yang ingin Anda gunakan.
+            </p>
+
+        </div>
+
+
+        <!-- MENU -->
+        <div class="max-w-5xl mx-auto">
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+
+
+                <!-- DATA GURU -->
+                <a href="data-guru.html"
+                   class="bg-white rounded-xl shadow p-5
+                          hover:shadow-lg hover:-translate-y-1
+                          transition">
+
+                    <div class="text-4xl mb-3">
+                        👨‍🏫
+                    </div>
+
+                    <h3 class="font-bold text-lg text-gray-800">
+                        Data Guru
+                    </h3>
+
+                    <p class="text-sm text-gray-500 mt-1">
+                        Tambah dan kelola data guru
+                    </p>
+
+                </a>
+
+
+                <!-- ABSENSI -->
+                <a href="absensi.html"
+                   class="bg-white rounded-xl shadow p-5
+                          hover:shadow-lg hover:-translate-y-1
+                          transition">
+
+                    <div class="text-4xl mb-3">
+                        📝
+                    </div>
+
+                    <h3 class="font-bold text-lg text-gray-800">
+                        Absensi
+                    </h3>
+
+                    <p class="text-sm text-gray-500 mt-1">
+                        Catat kehadiran guru
+                    </p>
+
+                </a>
+
+
+                <!-- REKAP -->
+                <a href="laporan.html"
+                   class="bg-white rounded-xl shadow p-5
+                          hover:shadow-lg hover:-translate-y-1
+                          transition">
+
+                    <div class="text-4xl mb-3">
+                        📊
+                    </div>
+
+                    <h3 class="font-bold text-lg text-gray-800">
+                        Rekap Absensi
+                    </h3>
+
+                    <p class="text-sm text-gray-500 mt-1">
+                        Lihat rekap kehadiran guru
+                    </p>
+
+                </a>
+
+
+                <!-- HARI LIBUR -->
+                <a href="hari-libur.html"
+                   class="bg-white rounded-xl shadow p-5
+                          hover:shadow-lg hover:-translate-y-1
+                          transition">
+
+                    <div class="text-4xl mb-3">
+                        📅
+                    </div>
+
+                    <h3 class="font-bold text-lg text-gray-800">
+                        Hari Libur
+                    </h3>
+
+                    <p class="text-sm text-gray-500 mt-1">
+                        Kelola tanggal hari libur sekolah
+                    </p>
+
+                </a>
+
+
+                <!-- BACKUP -->
+                <a href="backup.html"
+                   class="bg-white rounded-xl shadow p-5
+                          hover:shadow-lg hover:-translate-y-1
+                          transition">
+
+                    <div class="text-4xl mb-3">
+                        💾
+                    </div>
+
+                    <h3 class="font-bold text-lg text-gray-800">
+                        Backup & Restore
+                    </h3>
+
+                    <p class="text-sm text-gray-500 mt-1">
+                        Cadangkan dan pulihkan data
+                    </p>
+
+                </a>
+
+
+                <!-- PENGATURAN -->
+                <a href="pengaturan.html"
+                   class="bg-white rounded-xl shadow p-5
+                          hover:shadow-lg hover:-translate-y-1
+                          transition">
+
+                    <div class="text-4xl mb-3">
+                        ⚙️
+                    </div>
+
+                    <h3 class="font-bold text-lg text-gray-800">
+                        Pengaturan
+                    </h3>
+
+                    <p class="text-sm text-gray-500 mt-1">
+                        Pengaturan identitas sekolah
+                    </p>
+
+                </a>
+
+
+                <!-- LAPORAN -->
+                <a href="laporan.html"
+                   class="bg-white rounded-xl shadow p-5
+                          hover:shadow-lg hover:-translate-y-1
+                          transition">
+
+                    <div class="text-4xl mb-3">
+                        📄
+                    </div>
+
+                    <h3 class="font-bold text-lg text-gray-800">
+                        Laporan
+                    </h3>
+
+                    <p class="text-sm text-gray-500 mt-1">
+                        Cetak laporan absensi
+                    </p>
+
+                </a>
+
+
+            </div>
+
+        </div>
+
+    </main>
+
+
+    <!-- FOOTER -->
+    <footer class="text-center text-gray-500 text-sm py-6">
+
+        © 2026 Aplikasi Absensi Guru
+        <br>
+        SD Negeri 1 Anggaraksa
+
+    </footer>
+
+
+    <script>
+
+        // =====================================================
+        // CEK LOGIN
+        // =====================================================
+
+        document.addEventListener(
+            "DOMContentLoaded",
+            function() {
+
+                const sudahLogin =
+                    sessionStorage.getItem("loginAdmin");
+
+
+                if (sudahLogin !== "true") {
+
+                    window.location.href =
+                        "index.html";
+
+                    return;
+
+                }
+
+
+                const namaAdmin =
+                    sessionStorage.getItem("namaAdmin");
+
+
+                if (namaAdmin) {
+
+                    document.getElementById(
+                        "namaAdmin"
+                    ).textContent = namaAdmin;
+
+                }
+
+            }
+        );
+
+
+        // =====================================================
+        // LOGOUT
+        // =====================================================
+
+        function logout() {
+
+            const konfirmasi = confirm(
+                "Apakah Anda yakin ingin keluar?"
+            );
+
+
+            if (!konfirmasi) {
+                return;
+            }
+
+
+            sessionStorage.removeItem(
+                "loginAdmin"
+            );
+
+
+            sessionStorage.removeItem(
+                "namaAdmin"
+            );
+
+
+            window.location.href =
+                "index.html";
+
+        }
+
+    </script>
+
+</body>
+</html>
+```

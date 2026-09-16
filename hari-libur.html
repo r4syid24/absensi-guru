@@ -1,0 +1,849 @@
+```html
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Hari Libur - Aplikasi Absensi Guru</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <style>
+        body {
+            background: #f1f5f9;
+        }
+
+        .modal-bg {
+            background: rgba(15, 23, 42, 0.55);
+        }
+    </style>
+</head>
+
+<body class="min-h-screen">
+
+    <!-- HEADER -->
+    <header class="bg-blue-700 text-white shadow-lg">
+
+        <div class="max-w-7xl mx-auto px-4 py-4">
+
+            <div class="flex flex-col md:flex-row
+                        md:items-center md:justify-between gap-4">
+
+                <div>
+
+                    <h1 class="text-2xl font-bold">
+                        📅 Hari Libur
+                    </h1>
+
+                    <p class="text-blue-100 text-sm">
+                        Kelola tanggal hari libur sekolah
+                    </p>
+
+                </div>
+
+                <button
+                    onclick="kembaliDashboard()"
+                    class="bg-white text-blue-700
+                           px-4 py-2 rounded-lg
+                           font-semibold hover:bg-blue-50 transition">
+
+                    ← Kembali ke Dashboard
+
+                </button>
+
+            </div>
+
+        </div>
+
+    </header>
+
+
+    <!-- CONTENT -->
+    <main class="max-w-7xl mx-auto px-4 py-6">
+
+        <!-- INFO -->
+        <div class="bg-blue-50 border border-blue-200
+                    rounded-xl p-4 mb-5">
+
+            <p class="text-blue-800 text-sm">
+                ℹ️ Tanggal yang dimasukkan sebagai hari libur
+                otomatis tidak dapat digunakan untuk absensi guru.
+            </p>
+
+        </div>
+
+
+        <!-- ACTION -->
+        <div class="bg-white rounded-xl shadow-sm p-5 mb-5">
+
+            <div class="flex flex-col md:flex-row
+                        md:items-center md:justify-between gap-4">
+
+                <div>
+
+                    <h2 class="text-lg font-bold text-slate-800">
+                        Daftar Hari Libur
+                    </h2>
+
+                    <p class="text-sm text-slate-500">
+                        Total:
+                        <span
+                            id="jumlahLibur"
+                            class="font-semibold text-blue-700">
+                            0
+                        </span>
+                        tanggal
+                    </p>
+
+                </div>
+
+
+                <button
+                    onclick="bukaModalTambah()"
+                    class="bg-blue-600 hover:bg-blue-700
+                           text-white px-5 py-2.5
+                           rounded-lg font-semibold">
+
+                    + Tambah Hari Libur
+
+                </button>
+
+            </div>
+
+        </div>
+
+
+        <!-- TABLE -->
+        <div class="bg-white rounded-xl shadow-sm overflow-hidden">
+
+            <div class="overflow-x-auto">
+
+                <table class="w-full text-sm">
+
+                    <thead class="bg-slate-100 border-b">
+
+                        <tr>
+
+                            <th class="px-4 py-3 text-left">
+                                No
+                            </th>
+
+                            <th class="px-4 py-3 text-left">
+                                Tanggal
+                            </th>
+
+                            <th class="px-4 py-3 text-left">
+                                Keterangan
+                            </th>
+
+                            <th class="px-4 py-3 text-center">
+                                Aksi
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+                    <tbody id="tabelLibur"></tbody>
+
+                </table>
+
+            </div>
+
+
+            <!-- KOSONG -->
+            <div
+                id="dataKosong"
+                class="hidden text-center py-12 px-4">
+
+                <div class="text-5xl mb-3">
+                    📅
+                </div>
+
+                <h3 class="font-bold text-lg text-slate-700">
+                    Belum ada hari libur
+                </h3>
+
+                <p class="text-slate-500 text-sm mt-1">
+                    Tambahkan tanggal hari libur sekolah.
+                </p>
+
+            </div>
+
+        </div>
+
+    </main>
+
+
+    <!-- MODAL -->
+    <div
+        id="modalLibur"
+        class="hidden fixed inset-0 z-50
+               modal-bg items-center justify-center p-4">
+
+        <div class="bg-white w-full max-w-lg
+                    rounded-2xl shadow-2xl">
+
+            <!-- HEADER MODAL -->
+            <div class="px-6 py-4 border-b
+                        flex items-center justify-between">
+
+                <div>
+
+                    <h2
+                        id="judulModal"
+                        class="text-xl font-bold text-slate-800">
+
+                        Tambah Hari Libur
+
+                    </h2>
+
+                    <p class="text-sm text-slate-500">
+                        Masukkan tanggal dan keterangan
+                    </p>
+
+                </div>
+
+                <button
+                    onclick="tutupModal()"
+                    class="text-slate-400
+                           hover:text-red-500 text-2xl">
+
+                    ×
+
+                </button>
+
+            </div>
+
+
+            <!-- FORM -->
+            <form
+                id="formLibur"
+                onsubmit="simpanLibur(event)"
+                class="p-6">
+
+                <input
+                    type="hidden"
+                    id="editIndex">
+
+
+                <!-- TANGGAL -->
+                <div class="mb-4">
+
+                    <label
+                        class="block text-sm font-semibold
+                               text-slate-700 mb-1">
+
+                        Tanggal
+
+                    </label>
+
+                    <input
+                        type="date"
+                        id="tanggalLibur"
+                        required
+                        class="w-full border border-slate-300
+                               rounded-lg px-4 py-2.5
+                               focus:outline-none
+                               focus:ring-2 focus:ring-blue-500">
+
+                </div>
+
+
+                <!-- KETERANGAN -->
+                <div class="mb-4">
+
+                    <label
+                        class="block text-sm font-semibold
+                               text-slate-700 mb-1">
+
+                        Keterangan
+
+                    </label>
+
+                    <input
+                        type="text"
+                        id="keteranganLibur"
+                        required
+                        placeholder="Contoh: Hari Kemerdekaan RI"
+                        class="w-full border border-slate-300
+                               rounded-lg px-4 py-2.5
+                               focus:outline-none
+                               focus:ring-2 focus:ring-blue-500">
+
+                </div>
+
+
+                <!-- BUTTON -->
+                <div class="flex gap-3 pt-3">
+
+                    <button
+                        type="button"
+                        onclick="tutupModal()"
+                        class="flex-1 border border-slate-300
+                               text-slate-700 py-2.5
+                               rounded-lg font-semibold">
+
+                        Batal
+
+                    </button>
+
+                    <button
+                        type="submit"
+                        class="flex-1 bg-blue-600
+                               hover:bg-blue-700
+                               text-white py-2.5
+                               rounded-lg font-semibold">
+
+                        💾 Simpan
+
+                    </button>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+
+    <!-- JAVASCRIPT -->
+    <script>
+
+        // =====================================================
+        // DATA HARI LIBUR
+        // =====================================================
+
+        let dataHariLibur =
+            JSON.parse(
+                localStorage.getItem("dataHariLibur")
+            ) || [];
+
+
+        // =====================================================
+        // TAMPILKAN DATA
+        // =====================================================
+
+        function tampilkanLibur() {
+
+            const tabel =
+                document.getElementById(
+                    "tabelLibur"
+                );
+
+            const kosong =
+                document.getElementById(
+                    "dataKosong"
+                );
+
+
+            tabel.innerHTML = "";
+
+
+            document.getElementById(
+                "jumlahLibur"
+            ).textContent =
+                dataHariLibur.length;
+
+
+            if (dataHariLibur.length === 0) {
+
+                kosong.classList.remove("hidden");
+
+                return;
+
+            }
+
+
+            kosong.classList.add("hidden");
+
+
+            // Urutkan berdasarkan tanggal
+            const dataUrut =
+                [...dataHariLibur]
+                    .map((item, index) => ({
+                        ...item,
+                        indexAsli: index
+                    }))
+                    .sort(
+                        (a, b) =>
+                            a.tanggal.localeCompare(
+                                b.tanggal
+                            )
+                    );
+
+
+            dataUrut.forEach(
+                (libur, nomor) => {
+
+                    const tr =
+                        document.createElement("tr");
+
+                    tr.className =
+                        "border-b hover:bg-slate-50";
+
+
+                    tr.innerHTML = `
+
+                        <td class="px-4 py-3">
+                            ${nomor + 1}
+                        </td>
+
+                        <td class="px-4 py-3 font-semibold">
+                            ${formatTanggal(
+                                libur.tanggal
+                            )}
+                        </td>
+
+                        <td class="px-4 py-3">
+                            <span
+                                class="inline-block
+                                       bg-red-100
+                                       text-red-700
+                                       px-3 py-1
+                                       rounded-full
+                                       text-xs
+                                       font-semibold">
+
+                                📅 ${escapeHTML(
+                                    libur.keterangan
+                                )}
+
+                            </span>
+                        </td>
+
+                        <td class="px-4 py-3">
+
+                            <div
+                                class="flex justify-center gap-2">
+
+                                <button
+                                    onclick="editLibur(${libur.indexAsli})"
+                                    class="bg-amber-100
+                                           text-amber-700
+                                           hover:bg-amber-200
+                                           px-3 py-1.5
+                                           rounded-lg
+                                           font-semibold">
+
+                                    ✏️ Edit
+
+                                </button>
+
+                                <button
+                                    onclick="hapusLibur(${libur.indexAsli})"
+                                    class="bg-red-100
+                                           text-red-700
+                                           hover:bg-red-200
+                                           px-3 py-1.5
+                                           rounded-lg
+                                           font-semibold">
+
+                                    🗑️ Hapus
+
+                                </button>
+
+                            </div>
+
+                        </td>
+
+                    `;
+
+
+                    tabel.appendChild(tr);
+
+                }
+            );
+
+        }
+
+
+        // =====================================================
+        // MODAL TAMBAH
+        // =====================================================
+
+        function bukaModalTambah() {
+
+            document
+                .getElementById("formLibur")
+                .reset();
+
+
+            document.getElementById(
+                "editIndex"
+            ).value = "";
+
+
+            document.getElementById(
+                "judulModal"
+            ).textContent =
+                "Tambah Hari Libur";
+
+
+            const modal =
+                document.getElementById(
+                    "modalLibur"
+                );
+
+
+            modal.classList.remove(
+                "hidden"
+            );
+
+            modal.classList.add(
+                "flex"
+            );
+
+        }
+
+
+        // =====================================================
+        // TUTUP MODAL
+        // =====================================================
+
+        function tutupModal() {
+
+            const modal =
+                document.getElementById(
+                    "modalLibur"
+                );
+
+
+            modal.classList.add(
+                "hidden"
+            );
+
+            modal.classList.remove(
+                "flex"
+            );
+
+        }
+
+
+        // =====================================================
+        // SIMPAN
+        // =====================================================
+
+        function simpanLibur(event) {
+
+            event.preventDefault();
+
+
+            const tanggal =
+                document.getElementById(
+                    "tanggalLibur"
+                ).value;
+
+
+            const keterangan =
+                document.getElementById(
+                    "keteranganLibur"
+                ).value.trim();
+
+
+            const editIndex =
+                document.getElementById(
+                    "editIndex"
+                ).value;
+
+
+            if (!tanggal || !keterangan) {
+
+                alert(
+                    "Tanggal dan keterangan wajib diisi."
+                );
+
+                return;
+
+            }
+
+
+            // Cek tanggal duplikat
+            const sudahAda =
+                dataHariLibur.some(
+                    (item, index) =>
+                        item.tanggal === tanggal &&
+                        String(index) !==
+                            editIndex
+                );
+
+
+            if (sudahAda) {
+
+                alert(
+                    "Tanggal tersebut sudah terdaftar sebagai hari libur."
+                );
+
+                return;
+
+            }
+
+
+            const dataBaru = {
+
+                tanggal: tanggal,
+
+                keterangan: keterangan
+
+            };
+
+
+            if (editIndex === "") {
+
+                dataHariLibur.push(
+                    dataBaru
+                );
+
+                alert(
+                    "Hari libur berhasil ditambahkan."
+                );
+
+            } else {
+
+                dataHariLibur[
+                    parseInt(editIndex)
+                ] = dataBaru;
+
+                alert(
+                    "Hari libur berhasil diperbarui."
+                );
+
+            }
+
+
+            simpanKeLocalStorage();
+
+            tampilkanLibur();
+
+            tutupModal();
+
+        }
+
+
+        // =====================================================
+        // EDIT
+        // =====================================================
+
+        function editLibur(index) {
+
+            const libur =
+                dataHariLibur[index];
+
+
+            document.getElementById(
+                "editIndex"
+            ).value = index;
+
+
+            document.getElementById(
+                "tanggalLibur"
+            ).value =
+                libur.tanggal;
+
+
+            document.getElementById(
+                "keteranganLibur"
+            ).value =
+                libur.keterangan;
+
+
+            document.getElementById(
+                "judulModal"
+            ).textContent =
+                "Edit Hari Libur";
+
+
+            const modal =
+                document.getElementById(
+                    "modalLibur"
+                );
+
+
+            modal.classList.remove(
+                "hidden"
+            );
+
+            modal.classList.add(
+                "flex"
+            );
+
+        }
+
+
+        // =====================================================
+        // HAPUS
+        // =====================================================
+
+        function hapusLibur(index) {
+
+            const libur =
+                dataHariLibur[index];
+
+
+            const yakin =
+                confirm(
+                    "Hapus hari libur \"" +
+                    libur.keterangan +
+                    "\"?"
+                );
+
+
+            if (!yakin) {
+                return;
+            }
+
+
+            dataHariLibur.splice(
+                index,
+                1
+            );
+
+
+            simpanKeLocalStorage();
+
+            tampilkanLibur();
+
+        }
+
+
+        // =====================================================
+        // LOCAL STORAGE
+        // =====================================================
+
+        function simpanKeLocalStorage() {
+
+            localStorage.setItem(
+                "dataHariLibur",
+                JSON.stringify(
+                    dataHariLibur
+                )
+            );
+
+        }
+
+
+        // =====================================================
+        // FORMAT TANGGAL
+        // =====================================================
+
+        function formatTanggal(tanggal) {
+
+            const bagian =
+                tanggal.split("-");
+
+
+            const namaBulan = [
+
+                "",
+                "Januari",
+                "Februari",
+                "Maret",
+                "April",
+                "Mei",
+                "Juni",
+                "Juli",
+                "Agustus",
+                "September",
+                "Oktober",
+                "November",
+                "Desember"
+
+            ];
+
+
+            return (
+                parseInt(bagian[2]) +
+                " " +
+                namaBulan[
+                    parseInt(bagian[1])
+                ] +
+                " " +
+                bagian[0]
+            );
+
+        }
+
+
+        // =====================================================
+        // ESCAPE HTML
+        // =====================================================
+
+        function escapeHTML(text) {
+
+            return String(text)
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#039;");
+
+        }
+
+
+        // =====================================================
+        // KEMBALI DASHBOARD
+        // =====================================================
+
+        function kembaliDashboard() {
+
+            window.location.href =
+                "dashboard.html";
+
+        }
+
+
+        // =====================================================
+        // KLIK LUAR MODAL
+        // =====================================================
+
+        document
+            .getElementById("modalLibur")
+            .addEventListener(
+                "click",
+                function(event) {
+
+                    if (
+                        event.target === this
+                    ) {
+
+                        tutupModal();
+
+                    }
+
+                }
+            );
+
+
+        // =====================================================
+        // ESC
+        // =====================================================
+
+        document.addEventListener(
+            "keydown",
+            function(event) {
+
+                if (
+                    event.key === "Escape"
+                ) {
+
+                    tutupModal();
+
+                }
+
+            }
+        );
+
+
+        // =====================================================
+        // JALANKAN
+        // =====================================================
+
+        tampilkanLibur();
+
+    </script>
+
+</body>
+</html>
+```
