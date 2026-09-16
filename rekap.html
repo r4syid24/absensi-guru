@@ -1,10 +1,9 @@
-
 <!DOCTYPE html>
+
 <html lang="id">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
   <title>Rekap Absensi Guru</title>
 
   <script src="https://cdn.tailwindcss.com"></script>
@@ -13,14 +12,10 @@
     @media print {
       @page {
         size: A4 landscape;
-        margin: 8mm;
+        margin: 10mm;
       }
 
-      html,
       body {
-        width: 100% !important;
-        margin: 0 !important;
-        padding: 0 !important;
         background: white !important;
       }
 
@@ -29,518 +24,326 @@
       }
 
       .print-area {
-        width: 100% !important;
-        margin: 0 !important;
-        padding: 0 !important;
         box-shadow: none !important;
         border: none !important;
-        background: white !important;
       }
-
-      .judul-print {
-        display: block !important;
-      }
-
-      .judul-print h2 {
-        font-size: 18px !important;
-      }
-
-      .judul-print p {
-        font-size: 12px !important;
-      }
-
-      table {
-        width: 100% !important;
-        border-collapse: collapse !important;
-        table-layout: fixed !important;
-        font-size: 9px !important;
-      }
-
-      th,
-      td {
-        border: 1px solid #000 !important;
-        padding: 5px !important;
-        word-wrap: break-word !important;
-      }
-
-      th {
-        background: #1d4ed8 !important;
-        color: white !important;
-        -webkit-print-color-adjust: exact !important;
-        print-color-adjust: exact !important;
-      }
-
-      tr {
-        page-break-inside: avoid !important;
-        break-inside: avoid !important;
-      }
-
-      thead {
-        display: table-header-group !important;
-      }
-
-      .footer-cetak {
-        display: flex !important;
-      }
-
-      .data-kosong-print {
-        display: none !important;
-      }
-    }
-
-    .footer-cetak {
-      display: none;
     }
   </style>
+
 </head>
 
-<body class="bg-gray-100 min-h-screen">
+<body class="bg-slate-100 min-h-screen">
 
   <!-- HEADER -->
-  <header class="bg-blue-700 text-white shadow-lg no-print">
+
+  <header class="bg-blue-700 text-white shadow no-print">
     <div class="max-w-7xl mx-auto px-4 py-4 flex flex-col md:flex-row md:items-center md:justify-between gap-3">
-
       <div>
-        <h1 class="text-2xl font-bold">
-          📋 Rekap Absensi
-        </h1>
-
+        <h1 class="text-2xl font-bold">📋 Rekap Absensi Guru</h1>
         <p class="text-blue-100 text-sm">
-          Rekapitulasi kehadiran guru
+          Rekap kehadiran guru berdasarkan data absensi
         </p>
       </div>
 
-      <div class="flex gap-2">
+```
+  <button
+    onclick="kembaliDashboard()"
+    class="bg-white text-blue-700 px-4 py-2 rounded-lg font-semibold hover:bg-blue-50">
+    ← Kembali ke Dashboard
+  </button>
+</div>
+```
 
-        <button
-          onclick="window.location.href='dashboard.html'"
-          class="bg-white text-blue-700 px-4 py-2 rounded-lg font-semibold hover:bg-blue-50">
-          ↩️ Dashboard
-        </button>
-
-        <button
-          onclick="window.print()"
-          class="bg-green-500 text-white px-4 py-2 rounded-lg font-semibold hover:bg-green-600">
-          🖨️ Cetak
-        </button>
-
-      </div>
-
-    </div>
   </header>
 
-
-  <!-- KONTEN -->
   <main class="max-w-7xl mx-auto p-4">
 
-    <!-- FILTER -->
-    <section class="bg-white rounded-xl shadow p-5 mb-5 no-print">
+```
+<!-- FILTER -->
+<section class="bg-white rounded-xl shadow p-5 mb-5 no-print">
+
+  <h2 class="text-lg font-bold text-slate-700 mb-4">
+    🔎 Filter Rekap
+  </h2>
+
+  <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+
+    <!-- BULAN -->
+    <div>
+      <label class="block text-sm font-semibold text-slate-600 mb-1">
+        Bulan
+      </label>
+
+      <select
+        id="filterBulan"
+        onchange="tampilkanRekap()"
+        class="w-full border rounded-lg px-3 py-2">
+        <option value="semua">Semua Bulan</option>
+        <option value="01">Januari</option>
+        <option value="02">Februari</option>
+        <option value="03">Maret</option>
+        <option value="04">April</option>
+        <option value="05">Mei</option>
+        <option value="06">Juni</option>
+        <option value="07">Juli</option>
+        <option value="08">Agustus</option>
+        <option value="09">September</option>
+        <option value="10">Oktober</option>
+        <option value="11">November</option>
+        <option value="12">Desember</option>
+      </select>
+    </div>
+
+
+    <!-- TAHUN -->
+    <div>
+      <label class="block text-sm font-semibold text-slate-600 mb-1">
+        Tahun
+      </label>
+
+      <select
+        id="filterTahun"
+        onchange="tampilkanRekap()"
+        class="w-full border rounded-lg px-3 py-2">
+      </select>
+    </div>
+
+
+    <!-- PENCARIAN -->
+    <div class="md:col-span-2">
+      <label class="block text-sm font-semibold text-slate-600 mb-1">
+        Cari Guru
+      </label>
+
+      <input
+        id="cariGuru"
+        type="text"
+        oninput="tampilkanRekap()"
+        placeholder="Cari nama, NIP, atau jabatan..."
+        class="w-full border rounded-lg px-3 py-2">
+    </div>
+
+  </div>
+
+  <div class="mt-4 flex gap-2">
+    <button
+      onclick="window.print()"
+      class="bg-green-600 text-white px-4 py-2 rounded-lg font-semibold hover:bg-green-700">
+      🖨️ Cetak Rekap
+    </button>
+
+    <button
+      onclick="resetFilter()"
+      class="bg-slate-500 text-white px-4 py-2 rounded-lg font-semibold hover:bg-slate-600">
+      🔄 Reset
+    </button>
+  </div>
+
+</section>
+
+
+<!-- JUDUL CETAK -->
+<section class="print-area bg-white rounded-xl shadow p-5">
+
+  <div class="text-center mb-5">
+
+    <h2 class="text-xl font-bold text-slate-800">
+      REKAP ABSENSI GURU
+    </h2>
+
+    <p id="periodeText" class="text-slate-600 mt-1">
+      Periode: Semua Bulan
+    </p>
+
+  </div>
+
+
+  <!-- RINGKASAN -->
+  <div class="grid grid-cols-2 md:grid-cols-6 gap-3 mb-5">
 
-      <h2 class="text-lg font-bold text-gray-800 mb-4">
-        🔎 Filter Rekap
-      </h2>
+    <div class="bg-blue-50 border border-blue-200 rounded-lg p-4 text-center">
+      <div class="text-sm text-slate-600">Total Guru</div>
+      <div id="totalGuru" class="text-2xl font-bold text-blue-700">0</div>
+    </div>
 
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+    <div class="bg-green-50 border border-green-200 rounded-lg p-4 text-center">
+      <div class="text-sm text-slate-600">Hadir</div>
+      <div id="totalHadir" class="text-2xl font-bold text-green-700">0</div>
+    </div>
 
-        <!-- BULAN -->
-        <div>
+    <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-4 text-center">
+      <div class="text-sm text-slate-600">Izin</div>
+      <div id="totalIzin" class="text-2xl font-bold text-yellow-700">0</div>
+    </div>
 
-          <label class="block text-sm font-semibold text-gray-700 mb-1">
-            Bulan
-          </label>
+    <div class="bg-orange-50 border border-orange-200 rounded-lg p-4 text-center">
+      <div class="text-sm text-slate-600">Sakit</div>
+      <div id="totalSakit" class="text-2xl font-bold text-orange-700">0</div>
+    </div>
 
-          <select
-            id="bulan"
-            onchange="tampilkanRekap()"
-            class="w-full border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+    <div class="bg-purple-50 border border-purple-200 rounded-lg p-4 text-center">
+      <div class="text-sm text-slate-600">Dinas</div>
+      <div id="totalDinas" class="text-2xl font-bold text-purple-700">0</div>
+    </div>
 
-            <option value="semua">Semua Bulan</option>
+    <div class="bg-red-50 border border-red-200 rounded-lg p-4 text-center">
+      <div class="text-sm text-slate-600">Alpa</div>
+      <div id="totalAlpa" class="text-2xl font-bold text-red-700">0</div>
+    </div>
 
-            <option value="0">Januari</option>
-            <option value="1">Februari</option>
-            <option value="2">Maret</option>
-            <option value="3">April</option>
-            <option value="4">Mei</option>
-            <option value="5">Juni</option>
-            <option value="6">Juli</option>
-            <option value="7">Agustus</option>
-            <option value="8">September</option>
-            <option value="9">Oktober</option>
-            <option value="10">November</option>
-            <option value="11">Desember</option>
+  </div>
 
-          </select>
 
-        </div>
+  <!-- INFO -->
+  <div
+    id="infoData"
+    class="bg-slate-50 border rounded-lg p-3 mb-4 text-sm text-slate-600">
+    Memuat data...
+  </div>
 
 
-        <!-- TAHUN -->
-        <div>
+  <!-- TABLE -->
+  <div class="overflow-x-auto">
 
-          <label class="block text-sm font-semibold text-gray-700 mb-1">
-            Tahun
-          </label>
+    <table class="w-full border-collapse text-sm">
 
-          <select
-            id="tahun"
-            onchange="tampilkanRekap()"
-            class="w-full border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
-          </select>
+      <thead>
+        <tr class="bg-slate-700 text-white">
 
-        </div>
+          <th class="border px-3 py-2">No</th>
+          <th class="border px-3 py-2 text-left">Nama Guru</th>
+          <th class="border px-3 py-2">NIP</th>
+          <th class="border px-3 py-2">Hadir</th>
+          <th class="border px-3 py-2">Izin</th>
+          <th class="border px-3 py-2">Sakit</th>
+          <th class="border px-3 py-2">Dinas</th>
+          <th class="border px-3 py-2">Alpa</th>
+          <th class="border px-3 py-2">Persentase</th>
+          <th class="border px-3 py-2">Total</th>
 
+        </tr>
+      </thead>
 
-        <!-- CARI -->
-        <div>
+      <tbody id="tabelRekap"></tbody>
 
-          <label class="block text-sm font-semibold text-gray-700 mb-1">
-            Cari Guru
-          </label>
+    </table>
 
-          <input
-            type="text"
-            id="pencarian"
-            placeholder="Cari nama, NIP, atau jabatan..."
-            oninput="tampilkanRekap()"
-            class="w-full border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+  </div>
 
-        </div>
-
-      </div>
-
-    </section>
-
-
-    <!-- AREA CETAK -->
-    <section class="bg-white rounded-xl shadow p-5 print-area">
-
-      <!-- JUDUL -->
-      <div class="judul-print text-center mb-5">
-
-        <h2 class="text-xl font-bold uppercase">
-          REKAPITULASI ABSENSI GURU
-        </h2>
-
-        <p class="text-gray-700 font-semibold mt-1">
-          Periode:
-          <span id="periode">-</span>
-        </p>
-
-      </div>
-
-
-      <!-- RINGKASAN -->
-      <div class="grid grid-cols-2 md:grid-cols-6 gap-3 mb-5 no-print">
-
-        <div class="bg-blue-50 border border-blue-200 rounded-lg p-3">
-          <p class="text-xs text-blue-700">Total Guru</p>
-          <p id="totalGuru" class="text-2xl font-bold text-blue-700">0</p>
-        </div>
-
-        <div class="bg-green-50 border border-green-200 rounded-lg p-3">
-          <p class="text-xs text-green-700">Hadir</p>
-          <p id="totalHadir" class="text-2xl font-bold text-green-700">0</p>
-        </div>
-
-        <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-3">
-          <p class="text-xs text-yellow-700">Izin</p>
-          <p id="totalIzin" class="text-2xl font-bold text-yellow-700">0</p>
-        </div>
-
-        <div class="bg-purple-50 border border-purple-200 rounded-lg p-3">
-          <p class="text-xs text-purple-700">Sakit</p>
-          <p id="totalSakit" class="text-2xl font-bold text-purple-700">0</p>
-        </div>
-
-        <div class="bg-indigo-50 border border-indigo-200 rounded-lg p-3">
-          <p class="text-xs text-indigo-700">Dinas</p>
-          <p id="totalDinas" class="text-2xl font-bold text-indigo-700">0</p>
-        </div>
-
-        <div class="bg-red-50 border border-red-200 rounded-lg p-3">
-          <p class="text-xs text-red-700">Alpa</p>
-          <p id="totalAlpa" class="text-2xl font-bold text-red-700">0</p>
-        </div>
-
-      </div>
-
-
-      <!-- INFORMASI -->
-      <div
-        id="informasi"
-        class="mb-4 text-sm text-gray-600 no-print">
-        Menampilkan 0 data absensi.
-      </div>
-
-
-      <!-- TABEL -->
-      <div class="overflow-x-auto">
-
-        <table class="w-full border-collapse border border-gray-300">
-
-          <thead class="bg-blue-700 text-white">
-
-            <tr>
-
-              <th class="border border-gray-300 px-3 py-3 w-[5%]">
-                No
-              </th>
-
-              <th class="border border-gray-300 px-3 py-3 w-[25%]">
-                Nama Guru
-              </th>
-
-              <th class="border border-gray-300 px-3 py-3 w-[16%]">
-                NIP
-              </th>
-
-              <th class="border border-gray-300 px-3 py-3 w-[8%]">
-                Hadir
-              </th>
-
-              <th class="border border-gray-300 px-3 py-3 w-[8%]">
-                Izin
-              </th>
-
-              <th class="border border-gray-300 px-3 py-3 w-[8%]">
-                Sakit
-              </th>
-
-              <th class="border border-gray-300 px-3 py-3 w-[8%]">
-                Dinas
-              </th>
-
-              <th class="border border-gray-300 px-3 py-3 w-[8%]">
-                Alpa
-              </th>
-
-              <th class="border border-gray-300 px-3 py-3 w-[8%]">
-                Persentase
-              </th>
-
-              <th class="border border-gray-300 px-3 py-3 w-[6%]">
-                Total
-              </th>
-
-            </tr>
-
-          </thead>
-
-          <tbody id="tabelRekap"></tbody>
-
-        </table>
-
-      </div>
-
-
-      <!-- DATA KOSONG -->
-      <div
-        id="dataKosong"
-        class="data-kosong-print hidden text-center py-10 text-gray-500">
-
-        <div class="text-5xl mb-3">
-          📭
-        </div>
-
-        <p class="font-semibold">
-          Belum ada data absensi pada periode ini.
-        </p>
-
-      </div>
-
-
-      <!-- FOOTER CETAK -->
-      <div class="footer-cetak w-full justify-between mt-16 text-sm">
-
-        <div>
-          <p>Mengetahui,</p>
-          <p>Kepala Sekolah</p>
-
-          <br>
-          <br>
-          <br>
-
-          <p>
-            ______________________________
-          </p>
-
-          <p>
-            NIP. _________________________
-          </p>
-        </div>
-
-        <div class="text-center">
-
-          <p>Dicetak pada:</p>
-
-          <p id="tanggalCetak">
-            -
-          </p>
-
-        </div>
-
-      </div>
-
-    </section>
+</section>
+```
 
   </main>
-
 
 <script>
 
   /* =====================================================
-     CEK LOGIN
+     DATA LOCAL STORAGE
   ===================================================== */
 
-  const sudahLogin =
-    sessionStorage.getItem("loginAdmin");
+  let dataGuru = [];
+  let dataAbsensi = {};
+  let dataHariLibur = [];
 
-  if (sudahLogin !== "true") {
-    window.location.href = "index.html";
+
+  function bacaData() {
+
+    try {
+      dataGuru = JSON.parse(
+        localStorage.getItem("dataGuru") || "[]"
+      );
+    } catch (e) {
+      dataGuru = [];
+    }
+
+
+    try {
+      dataAbsensi = JSON.parse(
+        localStorage.getItem("dataAbsensi") || "{}"
+      );
+    } catch (e) {
+      dataAbsensi = {};
+    }
+
+
+    try {
+      dataHariLibur = JSON.parse(
+        localStorage.getItem("dataHariLibur") || "[]"
+      );
+    } catch (e) {
+      dataHariLibur = [];
+    }
+
   }
 
 
-  /* =====================================================
-     AMBIL DATA
-  ===================================================== */
-
-  let dataGuru =
-    JSON.parse(
-      localStorage.getItem("dataGuru")
-    ) || [];
-
-  let dataAbsensi =
-    JSON.parse(
-      localStorage.getItem("dataAbsensi")
-    ) || {};
-
-  let dataHariLibur =
-    JSON.parse(
-      localStorage.getItem("dataHariLibur")
-    ) || [];
-
 
   /* =====================================================
-     ELEMEN
-  ===================================================== */
-
-  const bulanInput =
-    document.getElementById("bulan");
-
-  const tahunInput =
-    document.getElementById("tahun");
-
-  const pencarianInput =
-    document.getElementById("pencarian");
-
-  const tabelRekap =
-    document.getElementById("tabelRekap");
-
-  const dataKosong =
-    document.getElementById("dataKosong");
-
-  const informasi =
-    document.getElementById("informasi");
-
-
-  /* =====================================================
-     BULAN
-  ===================================================== */
-
-  const namaBulan = [
-    "Januari",
-    "Februari",
-    "Maret",
-    "April",
-    "Mei",
-    "Juni",
-    "Juli",
-    "Agustus",
-    "September",
-    "Oktober",
-    "November",
-    "Desember"
-  ];
-
-
-  /* =====================================================
-     ISI TAHUN
+     TAHUN
   ===================================================== */
 
   function isiTahun() {
 
-    const tahunSekarang =
-      new Date().getFullYear();
+    const select = document.getElementById("filterTahun");
 
-    tahunInput.innerHTML = "";
+    const tahunSekarang = new Date().getFullYear();
 
-    /*
-      Ambil tahun dari data absensi
-      supaya tahun yang sudah memiliki
-      data tetap muncul.
-    */
+    const tahunSet = new Set();
 
-    const daftarTahun =
-      new Set();
+    tahunSet.add(tahunSekarang);
 
-    daftarTahun.add(tahunSekarang);
+    Object.keys(dataAbsensi || {}).forEach(tanggal => {
 
-    Object.keys(dataAbsensi).forEach(
-      tanggal => {
-
-        const bagian =
-          tanggal.split("-");
-
-        if (bagian.length === 3) {
-
-          daftarTahun.add(
-            parseInt(bagian[0])
-          );
-
-        }
-
+      if (/^\d{4}-\d{2}-\d{2}$/.test(tanggal)) {
+        tahunSet.add(tanggal.substring(0, 4));
       }
-    );
 
-    /*
-      Tambahkan beberapa tahun
-      untuk kemudahan penggunaan.
-    */
+    });
 
-    for (
-      let tahun = tahunSekarang - 2;
-      tahun <= tahunSekarang + 2;
-      tahun++
-    ) {
 
-      daftarTahun.add(tahun);
+    dataHariLibur.forEach(item => {
 
+      if (
+        item &&
+        typeof item.tanggal === "string" &&
+        /^\d{4}-\d{2}-\d{2}$/.test(item.tanggal)
+      ) {
+        tahunSet.add(item.tanggal.substring(0, 4));
+      }
+
+    });
+
+
+    for (let i = tahunSekarang - 3; i <= tahunSekarang + 2; i++) {
+      tahunSet.add(i);
     }
 
-    const tahunUrut =
-      Array.from(daftarTahun)
-        .sort((a, b) => b - a);
 
-    tahunUrut.forEach(
-      tahun => {
+    const tahunArray = [...tahunSet]
+      .map(Number)
+      .sort((a, b) => b - a);
 
-        const option =
-          document.createElement("option");
 
-        option.value = tahun;
+    select.innerHTML = "";
 
-        option.textContent = tahun;
 
-        if (tahun === tahunSekarang) {
-          option.selected = true;
-        }
+    tahunArray.forEach(tahun => {
 
-        tahunInput.appendChild(option);
+      const option = document.createElement("option");
 
+      option.value = tahun;
+      option.textContent = tahun;
+
+      if (tahun === tahunSekarang) {
+        option.selected = true;
       }
-    );
+
+      select.appendChild(option);
+
+    });
 
   }
+
 
 
   /* =====================================================
@@ -549,350 +352,375 @@
 
   function formatTanggalIndonesia(tanggal) {
 
+    const bulan = [
+      "Januari",
+      "Februari",
+      "Maret",
+      "April",
+      "Mei",
+      "Juni",
+      "Juli",
+      "Agustus",
+      "September",
+      "Oktober",
+      "November",
+      "Desember"
+    ];
+
     if (!tanggal) return "";
 
-    const bagian =
-      tanggal.split("-");
+    const bagian = tanggal.split("-");
 
-    if (bagian.length !== 3) {
-      return tanggal;
-    }
+    if (bagian.length !== 3) return tanggal;
 
-    const tahun =
-      parseInt(bagian[0]);
+    const tahun = bagian[0];
+    const nomorBulan = parseInt(bagian[1], 10);
+    const hari = parseInt(bagian[2], 10);
 
-    const bulan =
-      parseInt(bagian[1]) - 1;
-
-    const hari =
-      parseInt(bagian[2]);
-
-    return `${hari} ${namaBulan[bulan]} ${tahun}`;
+    return `${hari} ${bulan[nomorBulan - 1]} ${tahun}`;
 
   }
 
 
-  /* =====================================================
-     TANGGAL CETAK
-  ===================================================== */
-
-  function tampilkanTanggalCetak() {
-
-    const sekarang =
-      new Date();
-
-    const tanggal =
-      sekarang.toLocaleDateString(
-        "id-ID",
-        {
-          day: "numeric",
-          month: "long",
-          year: "numeric"
-        }
-      );
-
-    document.getElementById(
-      "tanggalCetak"
-    ).textContent = tanggal;
-
-  }
-
 
   /* =====================================================
-     CEK STATUS
-     Dibuat fleksibel agar membaca:
-     Hadir
-     Terlambat
-     Izin
-     Sakit
-     Dinas
-     Alpa
+     NORMALISASI STATUS
   ===================================================== */
 
-  function normalisasiStatus(status) {
+  function normalisasiStatus(data) {
 
-    if (!status) {
+    if (data === null || data === undefined) {
       return "";
     }
 
-    return String(status)
-      .trim()
-      .toLowerCase();
+
+    if (typeof data === "string") {
+
+      return data
+        .trim()
+        .toLowerCase();
+
+    }
+
+
+    if (typeof data === "object") {
+
+      const status =
+        data.status ??
+        data.kehadiran ??
+        data.keteranganStatus ??
+        data.keterangan ??
+        "";
+
+      return String(status)
+        .trim()
+        .toLowerCase();
+
+    }
+
+
+    return "";
 
   }
 
-
-  function masukkanStatus(
-    hasil,
-    status
-  ) {
-
-    const s =
-      normalisasiStatus(status);
-
-    if (!s) {
-      return;
-    }
-
-    if (
-      s === "hadir" ||
-      s === "h"
-    ) {
-
-      hasil.hadir++;
-
-    }
-
-    else if (
-      s === "terlambat" ||
-      s === "terlambat hadir" ||
-      s === "t"
-    ) {
-
-      /*
-        Terlambat tetap dihitung
-        sebagai kehadiran.
-      */
-
-      hasil.hadir++;
-
-    }
-
-    else if (
-      s === "izin" ||
-      s === "i"
-    ) {
-
-      hasil.izin++;
-
-    }
-
-    else if (
-      s === "sakit" ||
-      s === "s"
-    ) {
-
-      hasil.sakit++;
-
-    }
-
-    else if (
-      s === "dinas" ||
-      s === "d"
-    ) {
-
-      hasil.dinas++;
-
-    }
-
-    else if (
-      s === "alpa" ||
-      s === "alpha" ||
-      s === "a"
-    ) {
-
-      hasil.alpa++;
-
-    }
-
-  }
 
 
   /* =====================================================
-     AMBIL ABSENSI GURU
+     KONVERSI STATUS
   ===================================================== */
 
-  function ambilAbsensiGuru(
-    dataTanggal,
-    indexGuru,
-    guru
-  ) {
+  function statusStandar(data) {
 
-    if (!dataTanggal) {
-      return null;
+    const status = normalisasiStatus(data);
+
+
+    if (
+      status === "hadir" ||
+      status === "h" ||
+      status.includes("hadir")
+    ) {
+      return "Hadir";
+    }
+
+
+    if (
+      status === "terlambat" ||
+      status === "t" ||
+      status.includes("terlambat")
+    ) {
+      return "Hadir";
+    }
+
+
+    if (
+      status === "izin" ||
+      status === "i" ||
+      status.includes("izin")
+    ) {
+      return "Izin";
+    }
+
+
+    if (
+      status === "sakit" ||
+      status === "s" ||
+      status.includes("sakit")
+    ) {
+      return "Sakit";
+    }
+
+
+    if (
+      status === "dinas" ||
+      status === "d" ||
+      status.includes("dinas")
+    ) {
+      return "Dinas";
+    }
+
+
+    if (
+      status === "alpa" ||
+      status === "alpha" ||
+      status === "a" ||
+      status.includes("alpa") ||
+      status.includes("alpha")
+    ) {
+      return "Alpa";
+    }
+
+
+    return "";
+
+  }
+
+
+
+  /* =====================================================
+     MENGAMBIL DATA ABSENSI GURU
+  ===================================================== */
+
+  function ambilDataGuruPadaTanggal(tanggal, guru, indexGuru) {
+
+    const dataTanggal = dataAbsensi?.[tanggal];
+
+    if (
+      dataTanggal === undefined ||
+      dataTanggal === null
+    ) {
+      return "";
     }
 
 
     /*
-      FORMAT UTAMA APLIKASI KITA:
-
-      dataAbsensi[tanggal][indexGuru]
+      PRIORITAS 1
+      index guru
     */
-
-    if (
-      Array.isArray(dataTanggal) &&
-      dataTanggal[indexGuru]
-    ) {
-
-      return dataTanggal[indexGuru];
-
-    }
-
 
     if (
       typeof dataTanggal === "object" &&
-      dataTanggal[indexGuru]
+      dataTanggal[indexGuru] !== undefined
     ) {
 
-      return dataTanggal[indexGuru];
+      const hasil = statusStandar(
+        dataTanggal[indexGuru]
+      );
+
+      if (hasil) return hasil;
 
     }
 
 
     /*
-      Beberapa kemungkinan format lain
-      agar rekap tetap kompatibel.
+      PRIORITAS 2
+      NIP
     */
 
     if (
-      guru &&
       guru.nip &&
-      dataTanggal[guru.nip]
+      typeof dataTanggal === "object" &&
+      dataTanggal[guru.nip] !== undefined
     ) {
 
-      return dataTanggal[guru.nip];
+      const hasil = statusStandar(
+        dataTanggal[guru.nip]
+      );
+
+      if (hasil) return hasil;
 
     }
 
+
+    /*
+      PRIORITAS 3
+      NAMA
+    */
 
     if (
-      guru &&
       guru.nama &&
-      dataTanggal[guru.nama]
+      typeof dataTanggal === "object" &&
+      dataTanggal[guru.nama] !== undefined
     ) {
 
-      return dataTanggal[guru.nama];
+      const hasil = statusStandar(
+        dataTanggal[guru.nama]
+      );
+
+      if (hasil) return hasil;
 
     }
 
 
-    return null;
+    /*
+      Jika data tanggal berupa array
+    */
+
+    if (Array.isArray(dataTanggal)) {
+
+      const item = dataTanggal[indexGuru];
+
+      const hasil = statusStandar(item);
+
+      if (hasil) return hasil;
+
+    }
+
+
+    /*
+      Jika data tanggal langsung berupa data guru tunggal
+    */
+
+    if (
+      dataTanggal.status ||
+      dataTanggal.kehadiran
+    ) {
+
+      const hasil = statusStandar(dataTanggal);
+
+      if (hasil) return hasil;
+
+    }
+
+
+    return "";
 
   }
 
 
+
   /* =====================================================
-     HITUNG STATUS GURU
+     CEK TANGGAL SESUAI FILTER
   ===================================================== */
 
-  function hitungGuru(
-    guru,
-    indexGuru,
-    tahun,
-    bulan
-  ) {
+  function tanggalSesuaiFilter(tanggal, tahun, bulan) {
+
+    if (
+      typeof tanggal !== "string" ||
+      !/^\d{4}-\d{2}-\d{2}$/.test(tanggal)
+    ) {
+      return false;
+    }
+
+
+    if (!tanggal.startsWith(String(tahun))) {
+      return false;
+    }
+
+
+    if (
+      bulan !== "semua" &&
+      tanggal.substring(5, 7) !== bulan
+    ) {
+      return false;
+    }
+
+
+    return true;
+
+  }
+
+
+
+  /* =====================================================
+     MENGAMBIL SEMUA TANGGAL ABSENSI
+  ===================================================== */
+
+  function daftarTanggalAbsensi(tahun, bulan) {
+
+    return Object.keys(dataAbsensi || {})
+      .filter(tanggal =>
+        tanggalSesuaiFilter(
+          tanggal,
+          tahun,
+          bulan
+        )
+      )
+      .sort();
+
+  }
+
+
+
+  /* =====================================================
+     REKAP
+  ===================================================== */
+
+  function hitungGuru(guru, indexGuru, tanggalList) {
 
     const hasil = {
-      hadir: 0,
-      izin: 0,
-      sakit: 0,
-      dinas: 0,
-      alpa: 0
+      Hadir: 0,
+      Izin: 0,
+      Sakit: 0,
+      Dinas: 0,
+      Alpa: 0
     };
 
 
-    Object.keys(dataAbsensi).forEach(
-      tanggal => {
+    tanggalList.forEach(tanggal => {
 
-        const bagian =
-          tanggal.split("-");
-
-        if (bagian.length !== 3) {
-          return;
-        }
-
-
-        const tahunData =
-          parseInt(bagian[0]);
-
-        const bulanData =
-          parseInt(bagian[1]) - 1;
-
-
-        /*
-          FILTER TAHUN
-        */
-
-        if (
-          tahunData !== tahun
-        ) {
-
-          return;
-
-        }
-
-
-        /*
-          FILTER BULAN
-          Kalau "semua", semua bulan
-          dalam tahun tersebut dihitung.
-        */
-
-        if (
-          bulan !== "semua" &&
-          bulanData !== parseInt(bulan)
-        ) {
-
-          return;
-
-        }
-
-
-        const dataTanggal =
-          dataAbsensi[tanggal];
-
-
-        const absensiGuru =
-          ambilAbsensiGuru(
-            dataTanggal,
-            indexGuru,
-            guru
-          );
-
-
-        if (!absensiGuru) {
-          return;
-        }
-
-
-        /*
-          Format utama:
-          { status: "Hadir" }
-
-          Tetapi kita juga antisipasi
-          kalau data hanya berupa string.
-        */
-
-        let status = "";
-
-        if (
-          typeof absensiGuru === "string"
-        ) {
-
-          status = absensiGuru;
-
-        }
-
-        else if (
-          typeof absensiGuru === "object"
-        ) {
-
-          status =
-            absensiGuru.status ||
-            absensiGuru.kehadiran ||
-            absensiGuru.keteranganStatus ||
-            "";
-
-        }
-
-
-        masukkanStatus(
-          hasil,
-          status
+      const status =
+        ambilDataGuruPadaTanggal(
+          tanggal,
+          guru,
+          indexGuru
         );
 
+
+      if (status === "Hadir") {
+        hasil.Hadir++;
       }
-    );
+
+      else if (status === "Izin") {
+        hasil.Izin++;
+      }
+
+      else if (status === "Sakit") {
+        hasil.Sakit++;
+      }
+
+      else if (status === "Dinas") {
+        hasil.Dinas++;
+      }
+
+      else if (status === "Alpa") {
+        hasil.Alpa++;
+      }
+
+    });
+
+
+    hasil.Total =
+      hasil.Hadir +
+      hasil.Izin +
+      hasil.Sakit +
+      hasil.Dinas +
+      hasil.Alpa;
+
+
+    hasil.Persentase =
+      hasil.Total > 0
+        ? (hasil.Hadir / hasil.Total) * 100
+        : 0;
 
 
     return hasil;
@@ -900,448 +728,14 @@
   }
 
 
-  /* =====================================================
-     TAMPILKAN REKAP
-  ===================================================== */
-
-  function tampilkanRekap() {
-
-    const tahun =
-      parseInt(
-        tahunInput.value
-      );
-
-    const bulan =
-      bulanInput.value;
-
-    const pencarian =
-      pencarianInput.value
-        .toLowerCase()
-        .trim();
-
-
-    /*
-      PERIODE
-    */
-
-    let teksPeriode = "";
-
-    if (bulan === "semua") {
-
-      teksPeriode =
-        `Semua Bulan Tahun ${tahun}`;
-
-    } else {
-
-      teksPeriode =
-        `${namaBulan[parseInt(bulan)]} ${tahun}`;
-
-    }
-
-
-    document.getElementById(
-      "periode"
-    ).textContent =
-      teksPeriode;
-
-
-    /*
-      BERSIHKAN TABEL
-    */
-
-    tabelRekap.innerHTML = "";
-
-
-    /*
-      TOTAL
-    */
-
-    let totalHadir = 0;
-    let totalIzin = 0;
-    let totalSakit = 0;
-    let totalDinas = 0;
-    let totalAlpa = 0;
-
-    let jumlahDataAbsensi = 0;
-
-    let nomor = 1;
-
-    let guruDitampilkan = 0;
-
-
-    /*
-      HITUNG JUMLAH DATA ABSENSI
-      berdasarkan tanggal yang sesuai.
-    */
-
-    Object.keys(dataAbsensi).forEach(
-      tanggal => {
-
-        const bagian =
-          tanggal.split("-");
-
-        if (bagian.length !== 3) {
-          return;
-        }
-
-        const tahunData =
-          parseInt(bagian[0]);
-
-        const bulanData =
-          parseInt(bagian[1]) - 1;
-
-
-        if (
-          tahunData !== tahun
-        ) {
-
-          return;
-
-        }
-
-
-        if (
-          bulan !== "semua" &&
-          bulanData !== parseInt(bulan)
-        ) {
-
-          return;
-
-        }
-
-
-        jumlahDataAbsensi++;
-
-      }
-    );
-
-
-    /*
-      LOOP GURU
-    */
-
-    dataGuru.forEach(
-      (guru, indexGuru) => {
-
-        const namaGuru =
-          String(
-            guru.nama || ""
-          ).toLowerCase();
-
-        const nipGuru =
-          String(
-            guru.nip || ""
-          ).toLowerCase();
-
-        const jabatanGuru =
-          String(
-            guru.jabatan || ""
-          ).toLowerCase();
-
-
-        /*
-          SEARCH
-        */
-
-        if (
-          pencarian &&
-          !namaGuru.includes(pencarian) &&
-          !nipGuru.includes(pencarian) &&
-          !jabatanGuru.includes(pencarian)
-        ) {
-
-          return;
-
-        }
-
-
-        const hasil =
-          hitungGuru(
-            guru,
-            indexGuru,
-            tahun,
-            bulan
-          );
-
-
-        const total =
-          hasil.hadir +
-          hasil.izin +
-          hasil.sakit +
-          hasil.dinas +
-          hasil.alpa;
-
-
-        /*
-          Persentase kehadiran:
-          Hadir / seluruh status
-        */
-
-        let persentase = 0;
-
-        if (total > 0) {
-
-          persentase =
-            (
-              hasil.hadir /
-              total
-            ) * 100;
-
-        }
-
-
-        /*
-          TOTAL KESELURUHAN
-        */
-
-        totalHadir +=
-          hasil.hadir;
-
-        totalIzin +=
-          hasil.izin;
-
-        totalSakit +=
-          hasil.sakit;
-
-        totalDinas +=
-          hasil.dinas;
-
-        totalAlpa +=
-          hasil.alpa;
-
-
-        guruDitampilkan++;
-
-
-        /*
-          BARIS
-        */
-
-        const tr =
-          document.createElement("tr");
-
-        tr.className =
-          "hover:bg-gray-50";
-
-
-        tr.innerHTML = `
-
-          <td class="border border-gray-300 px-3 py-2 text-center">
-            ${nomor}
-          </td>
-
-          <td class="border border-gray-300 px-3 py-2 font-semibold">
-            ${escapeHTML(guru.nama || "-")}
-          </td>
-
-          <td class="border border-gray-300 px-3 py-2">
-            ${escapeHTML(guru.nip || "-")}
-          </td>
-
-          <td class="border border-gray-300 px-3 py-2 text-center font-bold text-green-700">
-            ${hasil.hadir}
-          </td>
-
-          <td class="border border-gray-300 px-3 py-2 text-center font-bold text-yellow-700">
-            ${hasil.izin}
-          </td>
-
-          <td class="border border-gray-300 px-3 py-2 text-center font-bold text-purple-700">
-            ${hasil.sakit}
-          </td>
-
-          <td class="border border-gray-300 px-3 py-2 text-center font-bold text-indigo-700">
-            ${hasil.dinas}
-          </td>
-
-          <td class="border border-gray-300 px-3 py-2 text-center font-bold text-red-700">
-            ${hasil.alpa}
-          </td>
-
-          <td class="border border-gray-300 px-3 py-2 text-center font-bold">
-            ${persentase.toFixed(1)}%
-          </td>
-
-          <td class="border border-gray-300 px-3 py-2 text-center font-bold">
-            ${total}
-          </td>
-
-        `;
-
-
-        tabelRekap.appendChild(tr);
-
-        nomor++;
-
-      }
-    );
-
-
-    /*
-      TOTAL GURU
-    */
-
-    document.getElementById(
-      "totalGuru"
-    ).textContent =
-      dataGuru.length;
-
-
-    /*
-      TOTAL CARD
-    */
-
-    document.getElementById(
-      "totalHadir"
-    ).textContent =
-      totalHadir;
-
-    document.getElementById(
-      "totalIzin"
-    ).textContent =
-      totalIzin;
-
-    document.getElementById(
-      "totalSakit"
-    ).textContent =
-      totalSakit;
-
-    document.getElementById(
-      "totalDinas"
-    ).textContent =
-      totalDinas;
-
-    document.getElementById(
-      "totalAlpa"
-    ).textContent =
-      totalAlpa;
-
-
-    /*
-      INFORMASI
-    */
-
-    const jumlahHariLibur =
-      dataHariLibur.filter(
-        item => {
-
-          if (!item.tanggal) {
-            return false;
-          }
-
-          const bagian =
-            item.tanggal.split("-");
-
-          if (bagian.length !== 3) {
-            return false;
-          }
-
-          const tahunLibur =
-            parseInt(bagian[0]);
-
-          const bulanLibur =
-            parseInt(bagian[1]) - 1;
-
-          if (
-            tahunLibur !== tahun
-          ) {
-
-            return false;
-
-          }
-
-          if (
-            bulan === "semua"
-          ) {
-
-            return true;
-
-          }
-
-          return (
-            bulanLibur ===
-            parseInt(bulan)
-          );
-
-        }
-      ).length;
-
-
-    informasi.innerHTML = `
-      Menampilkan
-      <strong>${jumlahDataAbsensi}</strong>
-      tanggal absensi.
-
-      Terdapat
-      <strong>${jumlahHariLibur}</strong>
-      tanggal hari libur yang tersimpan.
-
-      Menampilkan
-      <strong>${guruDitampilkan}</strong>
-      guru.
-    `;
-
-
-    /*
-      DATA KOSONG
-    */
-
-    if (
-      dataGuru.length === 0
-    ) {
-
-      dataKosong.classList.remove(
-        "hidden"
-      );
-
-      dataKosong.innerHTML = `
-        <div class="text-5xl mb-3">👨‍🏫</div>
-        <p class="font-semibold">
-          Belum ada data guru.
-        </p>
-      `;
-
-    }
-
-    else if (
-      jumlahDataAbsensi === 0
-    ) {
-
-      dataKosong.classList.remove(
-        "hidden"
-      );
-
-      dataKosong.innerHTML = `
-        <div class="text-5xl mb-3">📭</div>
-        <p class="font-semibold">
-          Belum ada data absensi pada periode ini.
-        </p>
-        <p class="text-sm mt-1">
-          Silakan pilih bulan atau tahun yang memiliki data absensi.
-        </p>
-      `;
-
-    }
-
-    else {
-
-      dataKosong.classList.add(
-        "hidden"
-      );
-
-    }
-
-  }
-
 
   /* =====================================================
      ESCAPE HTML
-     Agar nama/NIP aman ditampilkan
   ===================================================== */
 
   function escapeHTML(teks) {
 
-    return String(teks)
+    return String(teks ?? "")
       .replace(/&/g, "&amp;")
       .replace(/</g, "&lt;")
       .replace(/>/g, "&gt;")
@@ -1351,20 +745,340 @@
   }
 
 
+
   /* =====================================================
-     JALANKAN
+     TAMPILKAN REKAP
   ===================================================== */
 
-  isiTahun();
+  function tampilkanRekap() {
 
-  bulanInput.value = "semua";
+    bacaData();
 
-  tampilkanTanggalCetak();
 
-  tampilkanRekap();
+    const bulan =
+      document.getElementById("filterBulan").value;
+
+    const tahun =
+      document.getElementById("filterTahun").value;
+
+    const pencarian =
+      document.getElementById("cariGuru")
+        .value
+        .trim()
+        .toLowerCase();
+
+
+    const tanggalList =
+      daftarTanggalAbsensi(
+        tahun,
+        bulan
+      );
+
+
+    let guruTampil =
+      dataGuru.filter(guru => {
+
+        if (!pencarian) return true;
+
+        const teks = [
+          guru.nama,
+          guru.nip,
+          guru.jabatan
+        ]
+          .filter(Boolean)
+          .join(" ")
+          .toLowerCase();
+
+        return teks.includes(pencarian);
+
+      });
+
+
+    let totalHadir = 0;
+    let totalIzin = 0;
+    let totalSakit = 0;
+    let totalDinas = 0;
+    let totalAlpa = 0;
+
+
+    const tbody =
+      document.getElementById("tabelRekap");
+
+    tbody.innerHTML = "";
+
+
+    guruTampil.forEach((guru, indexTampil) => {
+
+      const indexAsli =
+        dataGuru.indexOf(guru);
+
+
+      const hasil =
+        hitungGuru(
+          guru,
+          indexAsli,
+          tanggalList
+        );
+
+
+      totalHadir += hasil.Hadir;
+      totalIzin += hasil.Izin;
+      totalSakit += hasil.Sakit;
+      totalDinas += hasil.Dinas;
+      totalAlpa += hasil.Alpa;
+
+
+      const tr =
+        document.createElement("tr");
+
+      tr.className =
+        "hover:bg-slate-50";
+
+
+      tr.innerHTML = `
+
+        <td class="border px-3 py-2 text-center">
+          ${indexTampil + 1}
+        </td>
+
+        <td class="border px-3 py-2 font-semibold">
+          ${escapeHTML(guru.nama || "-")}
+        </td>
+
+        <td class="border px-3 py-2 text-center">
+          ${escapeHTML(guru.nip || "-")}
+        </td>
+
+        <td class="border px-3 py-2 text-center font-semibold text-green-700">
+          ${hasil.Hadir}
+        </td>
+
+        <td class="border px-3 py-2 text-center">
+          ${hasil.Izin}
+        </td>
+
+        <td class="border px-3 py-2 text-center">
+          ${hasil.Sakit}
+        </td>
+
+        <td class="border px-3 py-2 text-center">
+          ${hasil.Dinas}
+        </td>
+
+        <td class="border px-3 py-2 text-center text-red-700">
+          ${hasil.Alpa}
+        </td>
+
+        <td class="border px-3 py-2 text-center font-semibold">
+          ${hasil.Persentase.toFixed(1)}%
+        </td>
+
+        <td class="border px-3 py-2 text-center">
+          ${hasil.Total}
+        </td>
+
+      `;
+
+
+      tbody.appendChild(tr);
+
+    });
+
+
+    if (guruTampil.length === 0) {
+
+      tbody.innerHTML = `
+
+        <tr>
+          <td
+            colspan="10"
+            class="border px-3 py-8 text-center text-slate-500">
+            Tidak ada data guru yang sesuai pencarian.
+          </td>
+        </tr>
+
+      `;
+
+    }
+
+
+    /*
+      UPDATE KARTU
+    */
+
+    document.getElementById("totalGuru")
+      .textContent = dataGuru.length;
+
+
+    document.getElementById("totalHadir")
+      .textContent = totalHadir;
+
+
+    document.getElementById("totalIzin")
+      .textContent = totalIzin;
+
+
+    document.getElementById("totalSakit")
+      .textContent = totalSakit;
+
+
+    document.getElementById("totalDinas")
+      .textContent = totalDinas;
+
+
+    document.getElementById("totalAlpa")
+      .textContent = totalAlpa;
+
+
+    /*
+      PERIODE
+    */
+
+    let namaBulan = "Semua Bulan";
+
+    if (bulan !== "semua") {
+
+      const daftarBulan = [
+        "",
+        "Januari",
+        "Februari",
+        "Maret",
+        "April",
+        "Mei",
+        "Juni",
+        "Juli",
+        "Agustus",
+        "September",
+        "Oktober",
+        "November",
+        "Desember"
+      ];
+
+      namaBulan =
+        daftarBulan[
+          parseInt(bulan, 10)
+        ];
+
+    }
+
+
+    document.getElementById("periodeText")
+      .textContent =
+      `Periode: ${namaBulan} ${tahun}`;
+
+
+    /*
+      HITUNG DATA ABSENSI YANG BENAR-BENAR TERISI
+    */
+
+    let jumlahDataTerisi = 0;
+
+
+    dataGuru.forEach((guru, indexGuru) => {
+
+      tanggalList.forEach(tanggal => {
+
+        const status =
+          ambilDataGuruPadaTanggal(
+            tanggal,
+            guru,
+            indexGuru
+          );
+
+        if (status) {
+          jumlahDataTerisi++;
+        }
+
+      });
+
+    });
+
+
+    /*
+      HARI LIBUR
+    */
+
+    const jumlahHariLibur =
+      dataHariLibur.filter(item => {
+
+        if (
+          !item ||
+          typeof item.tanggal !== "string"
+        ) {
+          return false;
+        }
+
+        return tanggalSesuaiFilter(
+          item.tanggal,
+          tahun,
+          bulan
+        );
+
+      }).length;
+
+
+    document.getElementById("infoData")
+      .textContent =
+      `Menampilkan ${jumlahDataTerisi} data absensi. ` +
+      `Terdapat ${jumlahHariLibur} tanggal hari libur yang tersimpan. ` +
+      `Terdapat ${tanggalList.length} tanggal yang tersimpan pada data absensi.`;
+
+  }
+
+
+
+  /* =====================================================
+     RESET
+  ===================================================== */
+
+  function resetFilter() {
+
+    document.getElementById("filterBulan")
+      .value = "semua";
+
+    document.getElementById("filterTahun")
+      .value = new Date().getFullYear();
+
+    document.getElementById("cariGuru")
+      .value = "";
+
+    tampilkanRekap();
+
+  }
+
+
+
+  /* =====================================================
+     KEMBALI
+  ===================================================== */
+
+  function kembaliDashboard() {
+
+    window.location.href =
+      "dashboard.html";
+
+  }
+
+
+
+  /* =====================================================
+     INIT
+  ===================================================== */
+
+  document.addEventListener(
+    "DOMContentLoaded",
+    function() {
+
+      bacaData();
+
+      isiTahun();
+
+      tampilkanRekap();
+
+    }
+  );
 
 </script>
 
 </body>
 </html>
-```
