@@ -1,4 +1,3 @@
-```html
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -13,78 +12,100 @@
 <body class="bg-gray-100 min-h-screen">
 
     <!-- HEADER -->
-    <header class="bg-blue-700 text-white shadow">
-
-        <div class="max-w-5xl mx-auto px-4 py-5">
+    <header class="bg-blue-700 text-white shadow-lg">
+        <div class="max-w-7xl mx-auto px-4 py-5">
 
             <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
 
                 <div>
-
                     <h1 class="text-2xl md:text-3xl font-bold">
                         📋 Aplikasi Absensi Guru
                     </h1>
 
-                    <p class="text-blue-100 text-sm mt-1">
-                        Dashboard Administrasi Kehadiran Guru
+                    <p class="text-blue-100 mt-1">
+                        Sistem Absensi Guru
                     </p>
-
                 </div>
 
                 <button
                     onclick="logout()"
-                    class="bg-red-500 hover:bg-red-600 text-white
-                           px-4 py-2 rounded-lg font-semibold transition">
-
-                    🚪 Keluar
-
+                    class="bg-red-500 hover:bg-red-600 px-5 py-2.5 rounded-lg font-semibold transition">
+                    🚪 Logout
                 </button>
 
             </div>
 
         </div>
-
     </header>
 
 
     <!-- CONTENT -->
-    <main class="max-w-5xl mx-auto px-4 py-6">
+    <main class="max-w-7xl mx-auto px-4 py-6">
+
+        <!-- IDENTITAS SEKOLAH -->
+        <section class="bg-white rounded-2xl shadow-sm border border-gray-200 p-6 mb-6">
+
+            <div class="flex flex-col md:flex-row md:items-center gap-4">
+
+                <div class="w-16 h-16 bg-blue-100 rounded-2xl flex items-center justify-center text-3xl">
+                    🏫
+                </div>
+
+                <div class="flex-1">
+
+                    <h2
+                        id="namaSekolah"
+                        class="text-xl md:text-2xl font-bold text-gray-800">
+                        Memuat nama sekolah...
+                    </h2>
+
+                    <p
+                        id="alamatSekolah"
+                        class="text-gray-500 mt-1">
+                        Memuat alamat sekolah...
+                    </p>
+
+                </div>
+
+            </div>
+
+        </section>
+
 
         <!-- WELCOME -->
-        <div class="bg-white rounded-xl shadow p-6 mb-6">
+        <section class="bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-2xl shadow-sm p-6 mb-6">
 
-            <h2 class="text-2xl font-bold text-gray-800">
+            <h2 class="text-2xl font-bold">
                 Selamat Datang, <span id="namaAdmin">Admin</span> 👋
             </h2>
 
-            <p class="text-gray-600 mt-2">
+            <p class="text-blue-100 mt-2">
                 Silakan pilih menu yang ingin Anda gunakan.
             </p>
 
-        </div>
+        </section>
 
 
         <!-- MENU -->
-        <div class="max-w-5xl mx-auto">
+        <section>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
 
 
                 <!-- DATA GURU -->
-                <a href="data-guru.html"
-                   class="bg-white rounded-xl shadow p-5
-                          hover:shadow-lg hover:-translate-y-1
-                          transition">
+                <a
+                    href="data-guru.html"
+                    class="block bg-white rounded-xl shadow-sm border border-gray-200 p-6 hover:shadow-lg hover:-translate-y-1 transition">
 
-                    <div class="text-4xl mb-3">
+                    <div class="text-4xl mb-4">
                         👨‍🏫
                     </div>
 
-                    <h3 class="font-bold text-lg text-gray-800">
+                    <h3 class="text-lg font-bold text-gray-800">
                         Data Guru
                     </h3>
 
-                    <p class="text-sm text-gray-500 mt-1">
+                    <p class="text-gray-500 text-sm mt-2">
                         Tambah dan kelola data guru
                     </p>
 
@@ -92,126 +113,120 @@
 
 
                 <!-- ABSENSI -->
-                <a href="absensi.html"
-                   class="bg-white rounded-xl shadow p-5
-                          hover:shadow-lg hover:-translate-y-1
-                          transition">
+                <a
+                    href="absensi.html"
+                    class="block bg-white rounded-xl shadow-sm border border-gray-200 p-6 hover:shadow-lg hover:-translate-y-1 transition">
 
-                    <div class="text-4xl mb-3">
+                    <div class="text-4xl mb-4">
                         📝
                     </div>
 
-                    <h3 class="font-bold text-lg text-gray-800">
+                    <h3 class="text-lg font-bold text-gray-800">
                         Absensi
                     </h3>
 
-                    <p class="text-sm text-gray-500 mt-1">
+                    <p class="text-gray-500 text-sm mt-2">
                         Catat kehadiran guru
                     </p>
 
                 </a>
 
 
-                <!-- REKAP -->
-                <a href="rekap.html"
-                   class="bg-white rounded-xl shadow p-5
-                          hover:shadow-lg hover:-translate-y-1
-                          transition">
+                <!-- REKAP ABSENSI -->
+                <a
+                    href="rekap.html"
+                    class="block bg-white rounded-xl shadow-sm border border-gray-200 p-6 hover:shadow-lg hover:-translate-y-1 transition">
 
-                    <div class="text-4xl mb-3">
+                    <div class="text-4xl mb-4">
                         📊
                     </div>
 
-                    <h3 class="font-bold text-lg text-gray-800">
+                    <h3 class="text-lg font-bold text-gray-800">
                         Rekap Absensi
                     </h3>
 
-                    <p class="text-sm text-gray-500 mt-1">
-                        Lihat rekap kehadiran guru
+                    <p class="text-gray-500 text-sm mt-2">
+                        Lihat rekapitulasi kehadiran guru
                     </p>
 
                 </a>
 
 
                 <!-- HARI LIBUR -->
-                <a href="hari-libur.html"
-                   class="bg-white rounded-xl shadow p-5
-                          hover:shadow-lg hover:-translate-y-1
-                          transition">
+                <a
+                    href="hari-libur.html"
+                    class="block bg-white rounded-xl shadow-sm border border-gray-200 p-6 hover:shadow-lg hover:-translate-y-1 transition">
 
-                    <div class="text-4xl mb-3">
+                    <div class="text-4xl mb-4">
                         📅
                     </div>
 
-                    <h3 class="font-bold text-lg text-gray-800">
+                    <h3 class="text-lg font-bold text-gray-800">
                         Hari Libur
                     </h3>
 
-                    <p class="text-sm text-gray-500 mt-1">
+                    <p class="text-gray-500 text-sm mt-2">
                         Kelola tanggal hari libur sekolah
                     </p>
 
                 </a>
 
 
-                <!-- BACKUP -->
-                <a href="backup.html"
-                   class="bg-white rounded-xl shadow p-5
-                          hover:shadow-lg hover:-translate-y-1
-                          transition">
+                <!-- LAPORAN -->
+                <a
+                    href="laporan.html"
+                    class="block bg-white rounded-xl shadow-sm border border-gray-200 p-6 hover:shadow-lg hover:-translate-y-1 transition">
 
-                    <div class="text-4xl mb-3">
+                    <div class="text-4xl mb-4">
+                        🖨️
+                    </div>
+
+                    <h3 class="text-lg font-bold text-gray-800">
+                        Laporan
+                    </h3>
+
+                    <p class="text-gray-500 text-sm mt-2">
+                        Lihat dan cetak laporan absensi
+                    </p>
+
+                </a>
+
+
+                <!-- BACKUP RESTORE -->
+                <a
+                    href="backup.html"
+                    class="block bg-white rounded-xl shadow-sm border border-gray-200 p-6 hover:shadow-lg hover:-translate-y-1 transition">
+
+                    <div class="text-4xl mb-4">
                         💾
                     </div>
 
-                    <h3 class="font-bold text-lg text-gray-800">
+                    <h3 class="text-lg font-bold text-gray-800">
                         Backup & Restore
                     </h3>
 
-                    <p class="text-sm text-gray-500 mt-1">
-                        Cadangkan dan pulihkan data
+                    <p class="text-gray-500 text-sm mt-2">
+                        Cadangkan dan pulihkan data aplikasi
                     </p>
 
                 </a>
 
 
                 <!-- PENGATURAN -->
-                <a href="pengaturan.html"
-                   class="bg-white rounded-xl shadow p-5
-                          hover:shadow-lg hover:-translate-y-1
-                          transition">
+                <a
+                    href="pengaturan.html"
+                    class="block bg-white rounded-xl shadow-sm border border-gray-200 p-6 hover:shadow-lg hover:-translate-y-1 transition">
 
-                    <div class="text-4xl mb-3">
+                    <div class="text-4xl mb-4">
                         ⚙️
                     </div>
 
-                    <h3 class="font-bold text-lg text-gray-800">
+                    <h3 class="text-lg font-bold text-gray-800">
                         Pengaturan
                     </h3>
 
-                    <p class="text-sm text-gray-500 mt-1">
-                        Pengaturan identitas sekolah
-                    </p>
-
-                </a>
-
-
-                <!-- LAPORAN -->
-                <a href="laporan.html"
-                   class="bg-white rounded-xl shadow p-5
-                          hover:shadow-lg hover:-translate-y-1
-                          transition">
-
-                    <div class="text-4xl mb-3">
-                        📄
-                    </div>
-
-                    <h3 class="font-bold text-lg text-gray-800">
-                        Laporan
-                    </h3>
-
-                    <p class="text-sm text-gray-500 mt-1">
-                        Cetak laporan absensi
+                    <p class="text-gray-500 text-sm mt-2">
+                        Kelola identitas sekolah
                     </p>
 
                 </a>
@@ -219,85 +234,209 @@
 
             </div>
 
-        </div>
+        </section>
 
     </main>
 
 
     <!-- FOOTER -->
-    <footer class="text-center text-gray-500 text-sm py-6">
+    <footer class="mt-10 border-t bg-white">
 
-        © 2026 Aplikasi Absensi Guru
-        <br>
-        SD Negeri 1 Anggaraksa
+        <div class="max-w-7xl mx-auto px-4 py-6 text-center">
+
+            <p class="text-gray-600 font-medium">
+                © 2026 Aplikasi Absensi Guru
+            </p>
+
+            <p
+                id="footerSekolah"
+                class="text-gray-400 text-sm mt-1">
+                SD Negeri 1 Anggaraksa
+            </p>
+
+        </div>
 
     </footer>
 
 
+    <!-- JAVASCRIPT -->
     <script>
 
-        // =====================================================
+        // ==========================================
         // CEK LOGIN
-        // =====================================================
+        // ==========================================
 
-        document.addEventListener(
-            "DOMContentLoaded",
-            function() {
+        const loginAdmin =
+            sessionStorage.getItem("loginAdmin");
 
-                const sudahLogin =
-                    sessionStorage.getItem("loginAdmin");
+        if (loginAdmin !== "true") {
 
+            window.location.href = "index.html";
 
-                if (sudahLogin !== "true") {
-
-                    window.location.href =
-                        "index.html";
-
-                    return;
-
-                }
+        }
 
 
-                const namaAdmin =
-                    sessionStorage.getItem("namaAdmin");
+        // ==========================================
+        // NAMA ADMIN
+        // ==========================================
+
+        const namaAdmin =
+            sessionStorage.getItem("namaAdmin");
+
+        if (namaAdmin) {
+
+            document.getElementById("namaAdmin").textContent =
+                namaAdmin;
+
+        }
 
 
-                if (namaAdmin) {
+        // ==========================================
+        // LOAD PENGATURAN SEKOLAH
+        // ==========================================
 
-                    document.getElementById(
-                        "namaAdmin"
-                    ).textContent = namaAdmin;
+        function loadPengaturanSekolah() {
 
-                }
+            /*
+             * Pengaturan dari pengaturan.html
+             *
+             * Key:
+             * pengaturanSekolah
+             */
+
+            const data =
+                localStorage.getItem("pengaturanSekolah");
+
+
+            if (!data) {
+
+                document.getElementById("namaSekolah").textContent =
+                    "SD Negeri 1 Anggaraksa";
+
+                document.getElementById("alamatSekolah").textContent =
+                    "Silakan lengkapi pengaturan sekolah.";
+
+                document.getElementById("footerSekolah").textContent =
+                    "SD Negeri 1 Anggaraksa";
+
+                return;
 
             }
-        );
 
 
-        // =====================================================
+            try {
+
+                const sekolah =
+                    JSON.parse(data);
+
+
+                // Nama sekolah
+
+                const nama =
+                    sekolah.namaSekolah ||
+                    "SD Negeri 1 Anggaraksa";
+
+
+                document.getElementById("namaSekolah").textContent =
+                    nama;
+
+
+                // Alamat
+
+                let alamat = "";
+
+
+                if (sekolah.alamat) {
+
+                    alamat += sekolah.alamat;
+
+                }
+
+
+                if (sekolah.desa) {
+
+                    if (alamat) alamat += ", ";
+
+                    alamat += sekolah.desa;
+
+                }
+
+
+                if (sekolah.kecamatan) {
+
+                    if (alamat) alamat += ", ";
+
+                    alamat += sekolah.kecamatan;
+
+                }
+
+
+                if (sekolah.kabupaten) {
+
+                    if (alamat) alamat += ", ";
+
+                    alamat += sekolah.kabupaten;
+
+                }
+
+
+                if (sekolah.provinsi) {
+
+                    if (alamat) alamat += ", ";
+
+                    alamat += sekolah.provinsi;
+
+                }
+
+
+                document.getElementById("alamatSekolah").textContent =
+                    alamat || "Alamat sekolah belum diatur.";
+
+
+                // Footer
+
+                document.getElementById("footerSekolah").textContent =
+                    nama;
+
+
+            } catch (error) {
+
+                console.error(
+                    "Gagal membaca pengaturan sekolah:",
+                    error
+                );
+
+
+                document.getElementById("namaSekolah").textContent =
+                    "SD Negeri 1 Anggaraksa";
+
+                document.getElementById("alamatSekolah").textContent =
+                    "Data pengaturan sekolah tidak dapat dibaca.";
+
+            }
+
+        }
+
+
+        // ==========================================
         // LOGOUT
-        // =====================================================
+        // ==========================================
 
         function logout() {
 
-            const konfirmasi = confirm(
-                "Apakah Anda yakin ingin keluar?"
-            );
+            const yakin =
+                confirm("Apakah Anda yakin ingin keluar?");
 
 
-            if (!konfirmasi) {
+            if (!yakin) {
+
                 return;
+
             }
 
 
-            sessionStorage.removeItem(
-                "loginAdmin"
-            );
-
-
-            sessionStorage.removeItem(
-                "namaAdmin"
-            );
+            sessionStorage.removeItem("loginAdmin");
+            sessionStorage.removeItem("namaAdmin");
 
 
             window.location.href =
@@ -305,8 +444,41 @@
 
         }
 
+
+        // ==========================================
+        // JALANKAN SAAT HALAMAN DIBUKA
+        // ==========================================
+
+        document.addEventListener(
+            "DOMContentLoaded",
+            function () {
+
+                loadPengaturanSekolah();
+
+            }
+        );
+
+
+        // ==========================================
+        // UPDATE OTOMATIS JIKA DATA BERUBAH
+        // ==========================================
+
+        window.addEventListener(
+            "storage",
+            function (event) {
+
+                if (
+                    event.key === "pengaturanSekolah"
+                ) {
+
+                    loadPengaturanSekolah();
+
+                }
+
+            }
+        );
+
     </script>
 
 </body>
 </html>
-```
