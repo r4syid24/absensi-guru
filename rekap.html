@@ -1,639 +1,938 @@
-
+```html
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title>Rekap Absensi Guru</title>
+    <title>Rekap Absensi Guru</title>
 
-  <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
 
-  <style>
-    @media print {
-      body {
-        background: white !important;
-      }
+    <style>
+        @media print {
 
-      .no-print {
-        display: none !important;
-      }
+            body {
+                background: white !important;
+            }
 
-      .print-area {
-        box-shadow: none !important;
-        border: none !important;
-      }
+            .no-print {
+                display: none !important;
+            }
 
-      table {
-        width: 100% !important;
-      }
-    }
-  </style>
+            .print-area {
+                box-shadow: none !important;
+                border: none !important;
+            }
+
+            table {
+                width: 100% !important;
+            }
+        }
+    </style>
 </head>
+
 
 <body class="bg-gray-100 min-h-screen">
 
-  <!-- HEADER -->
-  <header class="bg-blue-700 text-white shadow no-print">
 
-    <div class="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
+    <!-- HEADER -->
+    <header class="bg-blue-700 text-white shadow no-print">
 
-      <div>
-        <h1 class="text-xl md:text-2xl font-bold">
-          📊 Rekap Absensi Guru
-        </h1>
+        <div class="max-w-7xl mx-auto px-4 py-4
+                    flex flex-col md:flex-row
+                    justify-between items-center gap-3">
 
-        <p class="text-blue-100 text-sm">
-          Rekapitulasi kehadiran guru
-        </p>
-      </div>
+            <div>
 
-      <button
-        onclick="kembaliDashboard()"
-        class="bg-white text-blue-700 px-4 py-2 rounded-lg font-semibold hover:bg-blue-50"
-      >
-        ← Dashboard
-      </button>
+                <h1 class="text-xl md:text-2xl font-bold">
+                    📊 Rekap Absensi Guru
+                </h1>
 
-    </div>
+                <p id="namaSekolah"
+                   class="text-blue-100 text-sm">
+                    Rekapitulasi kehadiran guru
+                </p>
 
-  </header>
+            </div>
 
 
-  <!-- KONTEN -->
-  <main class="max-w-7xl mx-auto px-4 py-6">
+            <button
+                onclick="kembaliDashboard()"
+                class="bg-white text-blue-700
+                       px-4 py-2 rounded-lg
+                       font-semibold hover:bg-blue-50">
 
-    <!-- IDENTITAS REKAP -->
-    <div class="bg-white rounded-xl shadow p-5 mb-5">
+                ← Dashboard
 
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            </button>
 
-        <div>
-          <p class="text-sm text-gray-500">
-            Tahun Pelajaran
-          </p>
-
-          <p class="text-lg font-bold text-blue-700">
-            2026/2027
-          </p>
         </div>
 
-        <div>
-          <p class="text-sm text-gray-500">
-            Semester
-          </p>
-
-          <p class="text-lg font-bold text-blue-700">
-            Ganjil
-          </p>
-        </div>
-
-        <div>
-          <p class="text-sm text-gray-500">
-            Periode
-          </p>
-
-          <p
-            id="labelPeriode"
-            class="text-lg font-bold text-blue-700"
-          >
-            Semua Bulan Tahun 2026
-          </p>
-        </div>
-
-      </div>
-
-    </div>
+    </header>
 
 
-    <!-- FILTER -->
-    <div class="bg-white rounded-xl shadow p-5 mb-5 no-print">
 
-      <h2 class="text-lg font-bold text-gray-800 mb-4">
-        🔎 Filter Rekap
-      </h2>
+    <!-- KONTEN -->
+    <main class="max-w-7xl mx-auto px-4 py-6">
 
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
 
-        <!-- TANGGAL MULAI -->
-        <div>
+        <!-- IDENTITAS -->
+        <div class="bg-white rounded-xl shadow p-5 mb-5">
 
-          <label class="block text-sm font-semibold text-gray-700 mb-2">
-            📅 Dari Tanggal
-          </label>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
 
-          <input
-            type="date"
-            id="tanggalMulai"
-            onchange="renderSemua()"
-            class="w-full border border-gray-300 rounded-lg px-4 py-3 outline-none focus:ring-2 focus:ring-blue-500"
-          >
+
+                <div>
+
+                    <p class="text-sm text-gray-500">
+                        Tahun Pelajaran
+                    </p>
+
+                    <p class="text-lg font-bold text-blue-700">
+                        2026/2027
+                    </p>
+
+                </div>
+
+
+                <div>
+
+                    <p class="text-sm text-gray-500">
+                        Semester
+                    </p>
+
+                    <p class="text-lg font-bold text-blue-700">
+                        Ganjil
+                    </p>
+
+                </div>
+
+
+                <div>
+
+                    <p class="text-sm text-gray-500">
+                        Periode
+                    </p>
+
+                    <p
+                        id="labelPeriode"
+                        class="text-lg font-bold text-blue-700">
+
+                        Semua Bulan Tahun 2026
+
+                    </p>
+
+                </div>
+
+
+            </div>
 
         </div>
 
 
-        <!-- TANGGAL SELESAI -->
-        <div>
 
-          <label class="block text-sm font-semibold text-gray-700 mb-2">
-            📅 Sampai Tanggal
-          </label>
+        <!-- FILTER -->
+        <div class="bg-white rounded-xl shadow p-5 mb-5 no-print">
 
-          <input
-            type="date"
-            id="tanggalSelesai"
-            onchange="renderSemua()"
-            class="w-full border border-gray-300 rounded-lg px-4 py-3 outline-none focus:ring-2 focus:ring-blue-500"
-          >
+            <h2 class="text-lg font-bold text-gray-800 mb-4">
+                🔎 Filter Rekap
+            </h2>
+
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+
+
+                <div>
+
+                    <label class="block text-sm font-semibold
+                                  text-gray-700 mb-2">
+
+                        📅 Dari Tanggal
+
+                    </label>
+
+
+                    <input
+                        type="date"
+                        id="tanggalMulai"
+                        onchange="renderSemua()"
+                        class="w-full border border-gray-300
+                               rounded-lg px-4 py-3
+                               focus:ring-2 focus:ring-blue-500">
+
+                </div>
+
+
+
+                <div>
+
+                    <label class="block text-sm font-semibold
+                                  text-gray-700 mb-2">
+
+                        📅 Sampai Tanggal
+
+                    </label>
+
+
+                    <input
+                        type="date"
+                        id="tanggalSelesai"
+                        onchange="renderSemua()"
+                        class="w-full border border-gray-300
+                               rounded-lg px-4 py-3
+                               focus:ring-2 focus:ring-blue-500">
+
+                </div>
+
+
+
+                <div>
+
+                    <label class="block text-sm font-semibold
+                                  text-gray-700 mb-2">
+
+                        🔎 Cari Guru
+
+                    </label>
+
+
+                    <input
+                        type="text"
+                        id="cariGuru"
+                        placeholder="Cari nama, NIP, atau jabatan..."
+                        oninput="renderSemua()"
+                        class="w-full border border-gray-300
+                               rounded-lg px-4 py-3
+                               focus:ring-2 focus:ring-blue-500">
+
+                </div>
+
+
+            </div>
 
         </div>
 
 
-        <!-- CARI GURU -->
-        <div>
 
-          <label class="block text-sm font-semibold text-gray-700 mb-2">
-            🔎 Cari Guru
-          </label>
+        <!-- RINGKASAN -->
+        <div class="grid grid-cols-2 md:grid-cols-6
+                    gap-4 mb-5">
 
-          <input
-            type="text"
-            id="cariGuru"
-            placeholder="Cari nama, NIP, atau jabatan..."
-            oninput="renderSemua()"
-            class="w-full border border-gray-300 rounded-lg px-4 py-3 outline-none focus:ring-2 focus:ring-blue-500"
-          >
+
+            <div class="bg-white rounded-xl shadow p-4">
+
+                <p class="text-sm text-gray-500">
+                    Total Guru
+                </p>
+
+                <p id="totalGuru"
+                   class="text-2xl font-bold text-blue-700">
+
+                    0
+
+                </p>
+
+            </div>
+
+
+
+            <div class="bg-white rounded-xl shadow p-4">
+
+                <p class="text-sm text-gray-500">
+                    Hadir
+                </p>
+
+                <p id="totalHadir"
+                   class="text-2xl font-bold text-green-600">
+
+                    0
+
+                </p>
+
+            </div>
+
+
+
+            <div class="bg-white rounded-xl shadow p-4">
+
+                <p class="text-sm text-gray-500">
+                    Izin
+                </p>
+
+                <p id="totalIzin"
+                   class="text-2xl font-bold text-orange-600">
+
+                    0
+
+                </p>
+
+            </div>
+
+
+
+            <div class="bg-white rounded-xl shadow p-4">
+
+                <p class="text-sm text-gray-500">
+                    Sakit
+                </p>
+
+                <p id="totalSakit"
+                   class="text-2xl font-bold text-purple-600">
+
+                    0
+
+                </p>
+
+            </div>
+
+
+
+            <div class="bg-white rounded-xl shadow p-4">
+
+                <p class="text-sm text-gray-500">
+                    Dinas
+                </p>
+
+                <p id="totalDinas"
+                   class="text-2xl font-bold text-indigo-600">
+
+                    0
+
+                </p>
+
+            </div>
+
+
+
+            <div class="bg-white rounded-xl shadow p-4">
+
+                <p class="text-sm text-gray-500">
+                    Alpa
+                </p>
+
+                <p id="totalAlpa"
+                   class="text-2xl font-bold text-red-600">
+
+                    0
+
+                </p>
+
+            </div>
+
 
         </div>
 
-      </div>
-
-    </div>
 
 
-    <!-- RINGKASAN -->
-    <div class="grid grid-cols-2 md:grid-cols-6 gap-4 mb-5">
+        <!-- INFORMASI -->
+        <div
+            id="infoRekap"
+            class="bg-blue-50 border border-blue-200
+                   text-blue-800 rounded-xl p-4 mb-5">
 
-      <!-- TOTAL GURU -->
-      <div class="bg-white rounded-xl shadow p-4">
+            Memuat data...
 
-        <p class="text-sm text-gray-500">
-          Total Guru
-        </p>
-
-        <p
-          id="totalGuru"
-          class="text-2xl font-bold text-blue-700"
-        >
-          0
-        </p>
-
-      </div>
-
-
-      <!-- HADIR -->
-      <div class="bg-white rounded-xl shadow p-4">
-
-        <p class="text-sm text-gray-500">
-          Hadir
-        </p>
-
-        <p
-          id="totalHadir"
-          class="text-2xl font-bold text-green-600"
-        >
-          0
-        </p>
-
-      </div>
-
-
-      <!-- IZIN -->
-      <div class="bg-white rounded-xl shadow p-4">
-
-        <p class="text-sm text-gray-500">
-          Izin
-        </p>
-
-        <p
-          id="totalIzin"
-          class="text-2xl font-bold text-orange-600"
-        >
-          0
-        </p>
-
-      </div>
-
-
-      <!-- SAKIT -->
-      <div class="bg-white rounded-xl shadow p-4">
-
-        <p class="text-sm text-gray-500">
-          Sakit
-        </p>
-
-        <p
-          id="totalSakit"
-          class="text-2xl font-bold text-purple-600"
-        >
-          0
-        </p>
-
-      </div>
-
-
-      <!-- DINAS -->
-      <div class="bg-white rounded-xl shadow p-4">
-
-        <p class="text-sm text-gray-500">
-          Dinas
-        </p>
-
-        <p
-          id="totalDinas"
-          class="text-2xl font-bold text-indigo-600"
-        >
-          0
-        </p>
-
-      </div>
-
-
-      <!-- ALPA -->
-      <div class="bg-white rounded-xl shadow p-4">
-
-        <p class="text-sm text-gray-500">
-          Alpa
-        </p>
-
-        <p
-          id="totalAlpa"
-          class="text-2xl font-bold text-red-600"
-        >
-          0
-        </p>
-
-      </div>
-
-    </div>
-
-
-    <!-- INFORMASI -->
-    <div
-      id="infoRekap"
-      class="bg-blue-50 border border-blue-200 text-blue-800 rounded-xl p-4 mb-5"
-    >
-      Memuat data...
-    </div>
-
-
-    <!-- REKAP PER GURU -->
-    <div class="bg-white rounded-xl shadow overflow-hidden mb-5 print-area">
-
-      <div class="p-5 border-b">
-
-        <h2 class="text-lg font-bold text-gray-800">
-          👨‍🏫 Rekap Absensi Per Guru
-        </h2>
-
-        <p class="text-sm text-gray-500 mt-1">
-          Rekapitulasi kehadiran berdasarkan periode yang dipilih.
-        </p>
-
-      </div>
-
-
-      <div class="overflow-x-auto">
-
-        <table class="w-full text-sm">
-
-          <thead class="bg-gray-50 border-b">
-
-            <tr>
-
-              <th class="px-4 py-3 text-left">
-                No
-              </th>
-
-              <th class="px-4 py-3 text-left">
-                Nama Guru
-              </th>
-
-              <th class="px-4 py-3 text-left">
-                NIP
-              </th>
-
-              <th class="px-4 py-3 text-center">
-                Hadir
-              </th>
-
-              <th class="px-4 py-3 text-center">
-                Izin
-              </th>
-
-              <th class="px-4 py-3 text-center">
-                Sakit
-              </th>
-
-              <th class="px-4 py-3 text-center">
-                Dinas
-              </th>
-
-              <th class="px-4 py-3 text-center">
-                Alpa
-              </th>
-
-              <th class="px-4 py-3 text-center">
-                Persentase
-              </th>
-
-            </tr>
-
-          </thead>
-
-          <tbody id="tabelRekap"></tbody>
-
-        </table>
-
-      </div>
-
-
-      <div
-        id="rekapKosong"
-        class="hidden p-10 text-center text-gray-500"
-      >
-
-        <div class="text-5xl mb-3">
-          📭
         </div>
 
-        <p class="font-semibold text-lg">
-          Belum ada data guru
-        </p>
-
-      </div>
-
-    </div>
 
 
-    <!-- DETAIL -->
-    <div class="bg-white rounded-xl shadow overflow-hidden print-area">
-
-      <div class="p-5 border-b">
-
-        <h2 class="text-lg font-bold text-gray-800">
-          📋 Detail Absensi
-        </h2>
-
-        <p class="text-sm text-gray-500 mt-1">
-          Daftar absensi yang tersimpan berdasarkan tanggal.
-        </p>
-
-      </div>
+        <!-- REKAP PER GURU -->
+        <div class="bg-white rounded-xl shadow
+                    overflow-hidden mb-5 print-area">
 
 
-      <div class="overflow-x-auto">
+            <div class="p-5 border-b">
 
-        <table class="w-full text-sm">
+                <h2 class="text-lg font-bold text-gray-800">
 
-          <thead class="bg-gray-50 border-b">
+                    👨‍🏫 Rekap Absensi Per Guru
 
-            <tr>
-
-              <th class="px-4 py-3 text-left">
-                No
-              </th>
-
-              <th class="px-4 py-3 text-left">
-                Tanggal
-              </th>
-
-              <th class="px-4 py-3 text-left">
-                NIP
-              </th>
-
-              <th class="px-4 py-3 text-left">
-                Nama Guru
-              </th>
-
-              <th class="px-4 py-3 text-left">
-                Status
-              </th>
-
-              <th class="px-4 py-3 text-left">
-                Jam Masuk
-              </th>
-
-              <th class="px-4 py-3 text-left">
-                Jam Pulang
-              </th>
-
-            </tr>
-
-          </thead>
-
-          <tbody id="tabelDetail"></tbody>
-
-        </table>
-
-      </div>
+                </h2>
 
 
-      <div
-        id="detailKosong"
-        class="hidden p-10 text-center text-gray-500"
-      >
+                <p class="text-sm text-gray-500 mt-1">
 
-        <div class="text-5xl mb-3">
-          📭
+                    Rekapitulasi kehadiran berdasarkan
+                    periode yang dipilih.
+
+                </p>
+
+            </div>
+
+
+
+            <div class="overflow-x-auto">
+
+                <table class="w-full text-sm">
+
+
+                    <thead class="bg-gray-50 border-b">
+
+                        <tr>
+
+                            <th class="px-4 py-3 text-left">
+                                No
+                            </th>
+
+                            <th class="px-4 py-3 text-left">
+                                Nama Guru
+                            </th>
+
+                            <th class="px-4 py-3 text-left">
+                                NIP
+                            </th>
+
+                            <th class="px-4 py-3 text-center">
+                                Hadir
+                            </th>
+
+                            <th class="px-4 py-3 text-center">
+                                Izin
+                            </th>
+
+                            <th class="px-4 py-3 text-center">
+                                Sakit
+                            </th>
+
+                            <th class="px-4 py-3 text-center">
+                                Dinas
+                            </th>
+
+                            <th class="px-4 py-3 text-center">
+                                Alpa
+                            </th>
+
+                            <th class="px-4 py-3 text-center">
+                                Persentase
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody id="tabelRekap"></tbody>
+
+
+                </table>
+
+            </div>
+
+
+            <div
+                id="rekapKosong"
+                class="hidden p-10 text-center text-gray-500">
+
+                <div class="text-5xl mb-3">
+                    📭
+                </div>
+
+                <p class="font-semibold text-lg">
+                    Belum ada data guru
+                </p>
+
+            </div>
+
+
         </div>
 
-        <p class="font-semibold text-lg">
-          Belum ada data absensi
-        </p>
-
-        <p class="text-sm mt-1">
-          Data akan muncul setelah absensi disimpan.
-        </p>
-
-      </div>
-
-    </div>
 
 
-    <!-- TOMBOL PRINT -->
-    <div class="mt-5 flex justify-end no-print">
-
-      <button
-        onclick="window.print()"
-        class="bg-green-600 text-white px-5 py-3 rounded-lg font-semibold hover:bg-green-700"
-      >
-        🖨️ Cetak Rekap
-      </button>
-
-    </div>
-
-  </main>
+        <!-- DETAIL ABSENSI -->
+        <div class="bg-white rounded-xl shadow
+                    overflow-hidden print-area">
 
 
-  <script>
+            <div class="p-5 border-b">
 
-    // ======================================================
-    // DATA LOCALSTORAGE
-    // ======================================================
+                <h2 class="text-lg font-bold text-gray-800">
 
-    let dataGuru = [];
-    let dataAbsensi = [];
-    let dataHariLibur = [];
+                    📋 Detail Absensi
+
+                </h2>
 
 
-    // ======================================================
-    // ELEMENT
-    // ======================================================
+                <p class="text-sm text-gray-500 mt-1">
 
-    const tanggalMulai =
-      document.getElementById("tanggalMulai");
+                    Data di bawah ini membaca langsung
+                    data absensi yang tersimpan.
 
-    const tanggalSelesai =
-      document.getElementById("tanggalSelesai");
+                </p>
 
-    const cariGuru =
-      document.getElementById("cariGuru");
-
-    const tabelRekap =
-      document.getElementById("tabelRekap");
-
-    const tabelDetail =
-      document.getElementById("tabelDetail");
-
-    const rekapKosong =
-      document.getElementById("rekapKosong");
-
-    const detailKosong =
-      document.getElementById("detailKosong");
-
-    const infoRekap =
-      document.getElementById("infoRekap");
-
-    const labelPeriode =
-      document.getElementById("labelPeriode");
+            </div>
 
 
-    // ======================================================
-    // BACA LOCALSTORAGE
-    // ======================================================
 
-    function bacaData() {
+            <div class="overflow-x-auto">
 
-      try {
+                <table class="w-full text-sm">
+
+
+                    <thead class="bg-gray-50 border-b">
+
+                        <tr>
+
+                            <th class="px-4 py-3 text-left">
+                                No
+                            </th>
+
+                            <th class="px-4 py-3 text-left">
+                                Tanggal
+                            </th>
+
+                            <th class="px-4 py-3 text-left">
+                                NIP
+                            </th>
+
+                            <th class="px-4 py-3 text-left">
+                                Nama Guru
+                            </th>
+
+                            <th class="px-4 py-3 text-left">
+                                Status
+                            </th>
+
+                            <th class="px-4 py-3 text-left">
+                                Keterangan
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody id="tabelDetail"></tbody>
+
+
+                </table>
+
+            </div>
+
+
+            <div
+                id="detailKosong"
+                class="hidden p-10 text-center text-gray-500">
+
+                <div class="text-5xl mb-3">
+                    📭
+                </div>
+
+                <p class="font-semibold text-lg">
+                    Belum ada data absensi
+                </p>
+
+                <p class="text-sm mt-1">
+                    Data akan muncul setelah absensi disimpan.
+                </p>
+
+            </div>
+
+
+        </div>
+
+
+
+        <!-- CETAK -->
+        <div class="mt-5 flex justify-end no-print">
+
+            <button
+                onclick="window.print()"
+                class="bg-green-600 text-white
+                       px-5 py-3 rounded-lg
+                       font-semibold hover:bg-green-700">
+
+                🖨️ Cetak Rekap
+
+            </button>
+
+        </div>
+
+
+    </main>
+
+
+
+<script>
+
+
+// ============================================================
+// VARIABEL DATA
+// ============================================================
+
+let dataGuru = [];
+
+let dataAbsensi = [];
+
+let dataHariLibur = [];
+
+
+// ============================================================
+// AMBIL ELEMENT
+// ============================================================
+
+const tanggalMulai =
+    document.getElementById("tanggalMulai");
+
+const tanggalSelesai =
+    document.getElementById("tanggalSelesai");
+
+const cariGuru =
+    document.getElementById("cariGuru");
+
+const tabelRekap =
+    document.getElementById("tabelRekap");
+
+const tabelDetail =
+    document.getElementById("tabelDetail");
+
+const rekapKosong =
+    document.getElementById("rekapKosong");
+
+const detailKosong =
+    document.getElementById("detailKosong");
+
+const infoRekap =
+    document.getElementById("infoRekap");
+
+const labelPeriode =
+    document.getElementById("labelPeriode");
+
+
+// ============================================================
+// BACA LOCALSTORAGE
+// ============================================================
+
+function bacaData() {
+
+    /*
+     * PENTING:
+     * Fungsi ini HANYA membaca data.
+     *
+     * Tidak ada localStorage.setItem()
+     * di dalam fungsi ini.
+     */
+
+    try {
+
+        const guru =
+            localStorage.getItem("dataGuru");
 
         dataGuru =
-          JSON.parse(
-            localStorage.getItem("dataGuru")
-          ) || [];
+            guru
+                ? JSON.parse(guru)
+                : [];
 
-      } catch (error) {
+    } catch (error) {
+
+        console.error(
+            "Gagal membaca dataGuru:",
+            error
+        );
 
         dataGuru = [];
-
-      }
-
-
-      try {
-
-        dataAbsensi =
-          JSON.parse(
-            localStorage.getItem("dataAbsensi")
-          ) || [];
-
-      } catch (error) {
-
-        dataAbsensi = [];
-
-      }
-
-
-      try {
-
-        dataHariLibur =
-          JSON.parse(
-            localStorage.getItem("dataHariLibur")
-          ) || [];
-
-      } catch (error) {
-
-        dataHariLibur = [];
-
-      }
-
-
-      if (!Array.isArray(dataGuru)) {
-        dataGuru = [];
-      }
-
-
-      if (!Array.isArray(dataAbsensi)) {
-        dataAbsensi = [];
-      }
-
-
-      if (!Array.isArray(dataHariLibur)) {
-        dataHariLibur = [];
-      }
 
     }
 
 
-    // ======================================================
-    // FORMAT TANGGAL
-    // ======================================================
+    try {
 
-    function formatTanggal(tanggal) {
+        const absensi =
+            localStorage.getItem("dataAbsensi");
 
-      if (!tanggal) {
+        dataAbsensi =
+            absensi
+                ? JSON.parse(absensi)
+                : [];
+
+    } catch (error) {
+
+        console.error(
+            "Gagal membaca dataAbsensi:",
+            error
+        );
+
+        dataAbsensi = [];
+
+    }
+
+
+    try {
+
+        const libur =
+            localStorage.getItem("dataHariLibur");
+
+        dataHariLibur =
+            libur
+                ? JSON.parse(libur)
+                : [];
+
+    } catch (error) {
+
+        console.error(
+            "Gagal membaca dataHariLibur:",
+            error
+        );
+
+        dataHariLibur = [];
+
+    }
+
+
+    if (!Array.isArray(dataGuru)) {
+        dataGuru = [];
+    }
+
+    if (!Array.isArray(dataAbsensi)) {
+        dataAbsensi = [];
+    }
+
+    if (!Array.isArray(dataHariLibur)) {
+        dataHariLibur = [];
+    }
+
+
+    console.log(
+        "DATA GURU:",
+        dataGuru
+    );
+
+    console.log(
+        "DATA ABSENSI:",
+        dataAbsensi
+    );
+
+}
+
+
+// ============================================================
+// NORMALISASI STATUS
+// ============================================================
+
+function normalisasiStatus(status) {
+
+    const teks =
+        String(status || "")
+            .trim()
+            .toLowerCase();
+
+
+    if (
+        teks === "hadir" ||
+        teks === "terlambat" ||
+        teks === "telat"
+    ) {
+
+        return "Hadir";
+
+    }
+
+
+    if (
+        teks === "izin" ||
+        teks === "ijin"
+    ) {
+
+        return "Izin";
+
+    }
+
+
+    if (teks === "sakit") {
+
+        return "Sakit";
+
+    }
+
+
+    if (
+        teks === "dinas" ||
+        teks === "dinas luar" ||
+        teks === "tugas dinas"
+    ) {
+
+        return "Dinas";
+
+    }
+
+
+    if (
+        teks === "alpa" ||
+        teks === "alpha" ||
+        teks === "tanpa keterangan" ||
+        teks === "absen"
+    ) {
+
+        return "Alpa";
+
+    }
+
+
+    return "";
+
+}
+
+
+// ============================================================
+// AMBIL ID GURU DARI DATA ABSENSI
+// ============================================================
+
+function ambilGuruId(absensi) {
+
+    if (!absensi) {
+        return "";
+    }
+
+
+    return String(
+
+        absensi.guruId ??
+        absensi.idGuru ??
+        absensi.guru_id ??
+        ""
+
+    );
+
+}
+
+
+// ============================================================
+// AMBIL NAMA GURU DARI DATA ABSENSI
+// ============================================================
+
+function ambilNamaGuru(absensi) {
+
+    if (!absensi) {
+        return "";
+    }
+
+
+    return String(
+
+        absensi.namaGuru ??
+        absensi.nama ??
+        absensi.guru ??
+        ""
+
+    ).trim();
+
+}
+
+
+// ============================================================
+// AMBIL TANGGAL
+// ============================================================
+
+function ambilTanggal(absensi) {
+
+    if (!absensi) {
+        return "";
+    }
+
+
+    return String(
+
+        absensi.tanggal ??
+        absensi.date ??
+        absensi.tgl ??
+        ""
+
+    );
+
+}
+
+
+// ============================================================
+// CARI GURU
+// ============================================================
+
+function cariGuruDariAbsensi(absensi) {
+
+    const idAbsensi =
+        ambilGuruId(absensi);
+
+
+    const namaAbsensi =
+        ambilNamaGuru(absensi)
+            .toLowerCase();
+
+
+    // CARI DENGAN ID
+    if (idAbsensi) {
+
+        const guru =
+            dataGuru.find(
+                item =>
+                    String(item.id ?? "") ===
+                    idAbsensi
+            );
+
+
+        if (guru) {
+            return guru;
+        }
+
+    }
+
+
+    // CARI DENGAN NAMA
+    if (namaAbsensi) {
+
+        const guru =
+            dataGuru.find(
+                item =>
+                    String(item.nama ?? "")
+                        .trim()
+                        .toLowerCase() ===
+                    namaAbsensi
+            );
+
+
+        if (guru) {
+            return guru;
+        }
+
+    }
+
+
+    return null;
+
+}
+
+
+// ============================================================
+// FORMAT TANGGAL
+// ============================================================
+
+function formatTanggal(tanggal) {
+
+    if (!tanggal) {
         return "-";
-      }
+    }
 
 
-      const bagian =
-        String(tanggal).split("-");
+    const bagian =
+        tanggal.split("-");
 
 
-      if (bagian.length !== 3) {
+    if (bagian.length !== 3) {
         return tanggal;
-      }
+    }
 
 
-      const tahun =
+    const tahun =
         parseInt(bagian[0]);
 
-      const bulan =
+    const bulan =
         parseInt(bagian[1]) - 1;
 
-      const hari =
+    const hari =
         parseInt(bagian[2]);
 
 
-      const tanggalObjek =
-        new Date(
-          tahun,
-          bulan,
-          hari
-        );
+    const namaBulan = [
 
-
-      const namaHari = [
-        "Minggu",
-        "Senin",
-        "Selasa",
-        "Rabu",
-        "Kamis",
-        "Jumat",
-        "Sabtu"
-      ];
-
-
-      const namaBulan = [
         "Januari",
         "Februari",
         "Maret",
@@ -646,474 +945,294 @@
         "Oktober",
         "November",
         "Desember"
-      ];
+
+    ];
 
 
-      return `${namaHari[tanggalObjek.getDay()]}, ${hari} ${namaBulan[bulan]} ${tahun}`;
+    return `${hari} ${namaBulan[bulan]} ${tahun}`;
 
-    }
-
-
-    // ======================================================
-    // CARI DATA GURU
-    // ======================================================
-
-    function cariDataGuru(absensi) {
-
-      if (!absensi) {
-        return null;
-      }
+}
 
 
-      if (absensi.guruId !== undefined) {
+// ============================================================
+// FILTER TANGGAL
+// ============================================================
 
-        const guruId =
-          String(absensi.guruId);
+function tanggalMasukFilter(tanggal) {
 
-
-        const guru =
-          dataGuru.find(
-            item =>
-              String(item.id || "") === guruId
-          );
-
-
-        if (guru) {
-          return guru;
-        }
-
-      }
-
-
-      const namaAbsensi =
-        String(
-          absensi.namaGuru || ""
-        )
-        .trim()
-        .toLowerCase();
-
-
-      if (namaAbsensi) {
-
-        const guru =
-          dataGuru.find(
-            item =>
-              String(item.nama || "")
-                .trim()
-                .toLowerCase() === namaAbsensi
-          );
-
-
-        if (guru) {
-          return guru;
-        }
-
-      }
-
-
-      return null;
-
-    }
-
-
-    // ======================================================
-    // FILTER TANGGAL
-    // ======================================================
-
-    function tanggalDalamFilter(tanggal) {
-
-      const mulai =
+    const mulai =
         tanggalMulai.value;
 
-      const selesai =
+    const selesai =
         tanggalSelesai.value;
 
 
-      if (mulai && tanggal < mulai) {
+    if (mulai && tanggal < mulai) {
         return false;
-      }
-
-
-      if (selesai && tanggal > selesai) {
-        return false;
-      }
-
-
-      return true;
-
     }
 
 
-    // ======================================================
-    // NORMALISASI STATUS
-    // ======================================================
-
-    function normalisasiStatus(status) {
-
-      if (!status) {
-        return "";
-      }
-
-
-      const teks =
-        String(status)
-          .trim()
-          .toLowerCase();
-
-
-      if (
-        teks === "hadir"
-      ) {
-        return "Hadir";
-      }
-
-
-      if (
-        teks === "izin"
-      ) {
-        return "Izin";
-      }
-
-
-      if (
-        teks === "sakit"
-      ) {
-        return "Sakit";
-      }
-
-
-      if (
-        teks === "dinas" ||
-        teks === "dinas luar" ||
-        teks === "tugas dinas"
-      ) {
-        return "Dinas";
-      }
-
-
-      if (
-        teks === "alpa" ||
-        teks === "alpha" ||
-        teks === "tanpa keterangan"
-      ) {
-        return "Alpa";
-      }
-
-
-      /*
-       * Data lama mungkin mempunyai status
-       * "Terlambat".
-       *
-       * Tetap dipertahankan sebagai status
-       * Terlambat agar data tidak berubah.
-       */
-
-      if (
-        teks === "terlambat" ||
-        teks === "telat"
-      ) {
-        return "Terlambat";
-      }
-
-
-      return status;
-
+    if (selesai && tanggal > selesai) {
+        return false;
     }
 
 
-    // ======================================================
-    // AMBIL ABSENSI SESUAI FILTER
-    // ======================================================
+    return true;
 
-    function ambilAbsensiFilter() {
+}
 
-      return dataAbsensi.filter(
+
+// ============================================================
+// AMBIL DATA ABSENSI SESUAI FILTER
+// ============================================================
+
+function ambilDataFilter() {
+
+    return dataAbsensi.filter(
         item => {
 
-          if (!item) {
-            return false;
-          }
+            const tanggal =
+                ambilTanggal(item);
 
 
-          if (!item.tanggal) {
-            return false;
-          }
+            if (!tanggal) {
+                return false;
+            }
 
 
-          if (
-            !tanggalDalamFilter(
-              String(item.tanggal)
-            )
-          ) {
-            return false;
-          }
-
-
-          return true;
+            return tanggalMasukFilter(
+                tanggal
+            );
 
         }
-      );
+    );
 
-    }
-
-
-    // ======================================================
-    // AMBIL ABSENSI GURU
-    // ======================================================
-
-    function ambilAbsensiGuru(guru) {
-
-      if (!guru) {
-        return [];
-      }
+}
 
 
-      const guruId =
-        guru.id !== undefined
-          ? String(guru.id)
-          : "";
+// ============================================================
+// CARI ABSENSI MILIK GURU
+// ============================================================
+
+function absensiMilikGuru(guru) {
+
+    const guruId =
+        String(guru.id ?? "");
 
 
-      const namaGuru =
-        String(guru.nama || "")
-          .trim()
-          .toLowerCase();
+    const namaGuru =
+        String(guru.nama ?? "")
+            .trim()
+            .toLowerCase();
 
 
-      return ambilAbsensiFilter()
-        .filter(
-          item => {
+    return ambilDataFilter()
+        .filter(item => {
 
             const idAbsensi =
-              item.guruId !== undefined
-                ? String(item.guruId)
-                : "";
+                ambilGuruId(item);
 
 
             const namaAbsensi =
-              String(item.namaGuru || "")
-                .trim()
-                .toLowerCase();
+                ambilNamaGuru(item)
+                    .toLowerCase();
 
 
             if (
-              guruId &&
-              idAbsensi &&
-              guruId === idAbsensi
+                guruId &&
+                idAbsensi &&
+                guruId === idAbsensi
             ) {
-              return true;
+
+                return true;
+
             }
 
 
             if (
-              namaGuru &&
-              namaAbsensi &&
-              namaGuru === namaAbsensi
+                namaGuru &&
+                namaAbsensi &&
+                namaGuru === namaAbsensi
             ) {
-              return true;
+
+                return true;
+
             }
 
 
             return false;
 
-          }
-        );
+        });
 
-    }
+}
 
 
-    // ======================================================
-    // HITUNG REKAP GURU
-    // ======================================================
+// ============================================================
+// HITUNG REKAP
+// ============================================================
 
-    function hitungRekapGuru(guru) {
+function hitungGuru(guru) {
 
-      const hasil = {
+    const hasil = {
 
         Hadir: 0,
-
         Izin: 0,
-
         Sakit: 0,
-
         Dinas: 0,
+        Alpa: 0
 
-        Alpa: 0,
-
-        Terlambat: 0
-
-      };
+    };
 
 
-      const daftar =
-        ambilAbsensiGuru(guru);
+    const daftar =
+        absensiMilikGuru(guru);
 
 
-      daftar.forEach(
-        item => {
+    daftar.forEach(item => {
 
-          const status =
+        const status =
             normalisasiStatus(
-              item.status
+                item.status ??
+                item.kehadiran ??
+                ""
             );
 
 
-          if (
-            Object.prototype.hasOwnProperty.call(
-              hasil,
-              status
-            )
-          ) {
+        if (
+            Object.prototype.hasOwnProperty
+                .call(hasil, status)
+        ) {
 
             hasil[status]++;
 
-          }
-
         }
-      );
+
+    });
 
 
-      return hasil;
+    return hasil;
 
-    }
+}
 
 
-    // ======================================================
-    // HITUNG PERSENTASE
-    // ======================================================
+// ============================================================
+// PERSENTASE
+// ============================================================
 
-    function hitungPersentase(hasil) {
+function hitungPersentase(hasil) {
 
-      const total =
+    const total =
+
         hasil.Hadir +
         hasil.Izin +
         hasil.Sakit +
         hasil.Dinas +
-        hasil.Alpa +
-        hasil.Terlambat;
+        hasil.Alpa;
 
 
-      if (total === 0) {
+    if (total === 0) {
         return "0.0%";
-      }
-
-
-      /*
-       * Persentase dihitung dari kehadiran
-       * terhadap seluruh data absensi guru.
-       *
-       * Terlambat tidak dianggap Alpa,
-       * tetapi tetap bukan Hadir murni.
-       */
-
-      const persentase =
-        (
-          (
-            hasil.Hadir +
-            hasil.Terlambat
-          ) / total
-        ) * 100;
-
-
-      return `${persentase.toFixed(1)}%`;
-
     }
 
 
-    // ======================================================
-    // RENDER RINGKASAN
-    // ======================================================
+    return (
+        (hasil.Hadir / total) * 100
+    ).toFixed(1) + "%";
 
-    function renderRingkasan() {
-
-      const daftar =
-        ambilAbsensiFilter();
+}
 
 
-      let hadir = 0;
-      let izin = 0;
-      let sakit = 0;
-      let dinas = 0;
-      let alpa = 0;
+// ============================================================
+// RENDER RINGKASAN
+// ============================================================
+
+function renderRingkasan() {
+
+    const daftar =
+        ambilDataFilter();
 
 
-      daftar.forEach(
-        item => {
+    let hadir = 0;
 
-          const status =
+    let izin = 0;
+
+    let sakit = 0;
+
+    let dinas = 0;
+
+    let alpa = 0;
+
+
+    daftar.forEach(item => {
+
+        const status =
             normalisasiStatus(
-              item.status
+                item.status ??
+                item.kehadiran ??
+                ""
             );
 
 
-          if (status === "Hadir") {
+        if (status === "Hadir") {
             hadir++;
-          }
-
-          else if (status === "Izin") {
-            izin++;
-          }
-
-          else if (status === "Sakit") {
-            sakit++;
-          }
-
-          else if (status === "Dinas") {
-            dinas++;
-          }
-
-          else if (status === "Alpa") {
-            alpa++;
-          }
-
-          /*
-           * Terlambat tidak dimasukkan
-           * ke kartu ringkasan karena
-           * format rekap baru tidak
-           * menyediakan kartu Terlambat.
-           */
-
         }
-      );
+
+        else if (status === "Izin") {
+            izin++;
+        }
+
+        else if (status === "Sakit") {
+            sakit++;
+        }
+
+        else if (status === "Dinas") {
+            dinas++;
+        }
+
+        else if (status === "Alpa") {
+            alpa++;
+        }
+
+    });
 
 
-      document.getElementById(
+    document.getElementById(
         "totalGuru"
-      ).textContent =
+    ).textContent =
         dataGuru.length;
 
 
-      document.getElementById(
+    document.getElementById(
         "totalHadir"
-      ).textContent =
+    ).textContent =
         hadir;
 
 
-      document.getElementById(
+    document.getElementById(
         "totalIzin"
-      ).textContent =
+    ).textContent =
         izin;
 
 
-      document.getElementById(
+    document.getElementById(
         "totalSakit"
-      ).textContent =
+    ).textContent =
         sakit;
 
 
-      document.getElementById(
+    document.getElementById(
         "totalDinas"
-      ).textContent =
+    ).textContent =
         dinas;
 
 
-      document.getElementById(
+    document.getElementById(
         "totalAlpa"
-      ).textContent =
+    ).textContent =
         alpa;
 
 
-      infoRekap.innerHTML = `
+    infoRekap.innerHTML = `
 
         📊 Menampilkan
         <strong>${daftar.length}</strong>
@@ -1121,492 +1240,505 @@
 
         &nbsp;•&nbsp;
 
-        👨‍🏫 Terdapat
+        👨‍🏫 Total Guru:
         <strong>${dataGuru.length}</strong>
-        guru terdaftar.
 
         &nbsp;•&nbsp;
 
-        📅 Terdapat
+        📅 Hari Libur:
         <strong>${dataHariLibur.length}</strong>
-        tanggal hari libur yang tersimpan.
 
-      `;
+    `;
 
-    }
-
-
-    // ======================================================
-    // UPDATE LABEL PERIODE
-    // ======================================================
-
-    function updateLabelPeriode() {
-
-      const mulai =
-        tanggalMulai.value;
-
-      const selesai =
-        tanggalSelesai.value;
+}
 
 
-      if (!mulai && !selesai) {
+// ============================================================
+// RENDER REKAP PER GURU
+// ============================================================
 
-        labelPeriode.textContent =
-          "Semua Bulan Tahun 2026";
+function renderRekapGuru() {
 
-        return;
-
-      }
-
-
-      if (mulai && selesai) {
-
-        labelPeriode.textContent =
-          `${formatTanggal(mulai)} s/d ${formatTanggal(selesai)}`;
-
-        return;
-
-      }
+    tabelRekap.innerHTML = "";
 
 
-      if (mulai) {
-
-        labelPeriode.textContent =
-          `Mulai ${formatTanggal(mulai)}`;
-
-        return;
-
-      }
-
-
-      if (selesai) {
-
-        labelPeriode.textContent =
-          `Sampai ${formatTanggal(selesai)}`;
-
-      }
-
-    }
-
-
-    // ======================================================
-    // RENDER REKAP PER GURU
-    // ======================================================
-
-    function renderRekapGuru() {
-
-      tabelRekap.innerHTML = "";
-
-
-      const keyword =
+    const keyword =
         cariGuru.value
-          .trim()
-          .toLowerCase();
+            .trim()
+            .toLowerCase();
 
 
-      let nomor = 0;
+    let nomor = 0;
 
 
-      dataGuru.forEach(
-        guru => {
+    dataGuru.forEach(guru => {
 
-          const nama =
-            String(guru.nama || "")
-              .toLowerCase();
-
-
-          const nip =
-            String(guru.nip || "")
-              .toLowerCase();
+        const nama =
+            String(guru.nama ?? "")
+                .toLowerCase();
 
 
-          const jabatan =
-            String(guru.jabatan || "")
-              .toLowerCase();
+        const nip =
+            String(guru.nip ?? "")
+                .toLowerCase();
 
 
-          const cocok =
+        const jabatan =
+            String(guru.jabatan ?? "")
+                .toLowerCase();
+
+
+        const cocok =
+
             !keyword ||
+
             nama.includes(keyword) ||
+
             nip.includes(keyword) ||
+
             jabatan.includes(keyword);
 
 
-          if (!cocok) {
+        if (!cocok) {
             return;
-          }
+        }
 
 
-          const hasil =
-            hitungRekapGuru(guru);
+        const hasil =
+            hitungGuru(guru);
 
 
-          const persentase =
+        const persentase =
             hitungPersentase(hasil);
 
 
-          nomor++;
+        nomor++;
 
 
-          const row =
+        const tr =
             document.createElement("tr");
 
 
-          row.className =
+        tr.className =
             "border-b hover:bg-gray-50";
 
 
-          row.innerHTML = `
+        tr.innerHTML = `
 
             <td class="px-4 py-3">
-              ${nomor}
+                ${nomor}
             </td>
 
-
-            <td class="px-4 py-3 font-semibold text-gray-800">
-              ${guru.nama || "-"}
+            <td class="px-4 py-3 font-semibold">
+                ${escapeHTML(guru.nama || "-")}
             </td>
-
 
             <td class="px-4 py-3">
-              ${guru.nip || "-"}
+                ${escapeHTML(guru.nip || "-")}
             </td>
 
-
-            <td class="px-4 py-3 text-center font-bold text-green-600">
-              ${hasil.Hadir + hasil.Terlambat}
+            <td class="px-4 py-3 text-center
+                       font-bold text-green-600">
+                ${hasil.Hadir}
             </td>
 
-
-            <td class="px-4 py-3 text-center font-bold text-orange-600">
-              ${hasil.Izin}
+            <td class="px-4 py-3 text-center
+                       font-bold text-orange-600">
+                ${hasil.Izin}
             </td>
 
-
-            <td class="px-4 py-3 text-center font-bold text-purple-600">
-              ${hasil.Sakit}
+            <td class="px-4 py-3 text-center
+                       font-bold text-purple-600">
+                ${hasil.Sakit}
             </td>
 
-
-            <td class="px-4 py-3 text-center font-bold text-indigo-600">
-              ${hasil.Dinas}
+            <td class="px-4 py-3 text-center
+                       font-bold text-indigo-600">
+                ${hasil.Dinas}
             </td>
 
-
-            <td class="px-4 py-3 text-center font-bold text-red-600">
-              ${hasil.Alpa}
+            <td class="px-4 py-3 text-center
+                       font-bold text-red-600">
+                ${hasil.Alpa}
             </td>
 
-
-            <td class="px-4 py-3 text-center font-bold text-blue-700">
-              ${persentase}
+            <td class="px-4 py-3 text-center
+                       font-bold text-blue-700">
+                ${persentase}
             </td>
 
-          `;
+        `;
 
 
-          tabelRekap.appendChild(row);
+        tabelRekap.appendChild(tr);
 
-        }
-      );
+    });
 
 
-      if (nomor === 0) {
+    if (nomor === 0) {
 
-        rekapKosong
-          .classList
-          .remove("hidden");
+        rekapKosong.classList.remove(
+            "hidden"
+        );
 
-      }
+    } else {
 
-      else {
-
-        rekapKosong
-          .classList
-          .add("hidden");
-
-      }
+        rekapKosong.classList.add(
+            "hidden"
+        );
 
     }
 
-
-    // ======================================================
-    // RENDER DETAIL
-    // ======================================================
-
-    function renderDetail() {
-
-      tabelDetail.innerHTML = "";
+}
 
 
-      const keyword =
+// ============================================================
+// RENDER DETAIL
+// ============================================================
+
+function renderDetail() {
+
+    tabelDetail.innerHTML = "";
+
+
+    const keyword =
         cariGuru.value
-          .trim()
-          .toLowerCase();
+            .trim()
+            .toLowerCase();
 
 
-      const daftar =
-        ambilAbsensiFilter()
-          .slice()
-          .sort(
-            (a, b) =>
-              String(a.tanggal)
-                .localeCompare(
-                  String(b.tanggal)
-                )
-          );
-
-
-      let nomor = 0;
-
-
-      daftar.forEach(
-        item => {
-
-          const guru =
-            cariDataGuru(item);
-
-
-          const nama =
-            item.namaGuru ||
-            (guru ? guru.nama : "-");
-
-
-          const nip =
-            guru
-              ? guru.nip
-              : "-";
-
-
-          const jabatan =
-            guru
-              ? guru.jabatan
-              : "";
-
-
-          const teksPencarian =
-            `${nama} ${nip || ""} ${jabatan || ""}`
-              .toLowerCase();
-
-
-          if (
-            keyword &&
-            !teksPencarian.includes(keyword)
-          ) {
-            return;
-          }
-
-
-          nomor++;
-
-
-          const status =
-            normalisasiStatus(
-              item.status
+    const daftar =
+        ambilDataFilter()
+            .slice()
+            .sort(
+                (a, b) =>
+                    ambilTanggal(a)
+                        .localeCompare(
+                            ambilTanggal(b)
+                        )
             );
 
 
-          let kelasStatus =
+    let nomor = 0;
+
+
+    daftar.forEach(item => {
+
+        const guru =
+            cariGuruDariAbsensi(item);
+
+
+        const nama =
+            guru?.nama ||
+            ambilNamaGuru(item) ||
+            "-";
+
+
+        const nip =
+            guru?.nip ||
+            "-";
+
+
+        const jabatan =
+            guru?.jabatan ||
+            "";
+
+
+        const pencarian =
+
+            `${nama} ${nip} ${jabatan}`
+                .toLowerCase();
+
+
+        if (
+            keyword &&
+            !pencarian.includes(keyword)
+        ) {
+
+            return;
+
+        }
+
+
+        nomor++;
+
+
+        const status =
+            normalisasiStatus(
+                item.status ??
+                item.kehadiran ??
+                ""
+            );
+
+
+        let kelas =
             "bg-gray-100 text-gray-700";
 
 
-          if (status === "Hadir") {
+        if (status === "Hadir") {
 
-            kelasStatus =
-              "bg-green-100 text-green-700";
+            kelas =
+                "bg-green-100 text-green-700";
 
-          }
+        }
 
-          else if (status === "Izin") {
+        else if (status === "Izin") {
 
-            kelasStatus =
-              "bg-orange-100 text-orange-700";
+            kelas =
+                "bg-orange-100 text-orange-700";
 
-          }
+        }
 
-          else if (status === "Sakit") {
+        else if (status === "Sakit") {
 
-            kelasStatus =
-              "bg-purple-100 text-purple-700";
+            kelas =
+                "bg-purple-100 text-purple-700";
 
-          }
+        }
 
-          else if (status === "Dinas") {
+        else if (status === "Dinas") {
 
-            kelasStatus =
-              "bg-indigo-100 text-indigo-700";
+            kelas =
+                "bg-indigo-100 text-indigo-700";
 
-          }
+        }
 
-          else if (status === "Alpa") {
+        else if (status === "Alpa") {
 
-            kelasStatus =
-              "bg-red-100 text-red-700";
+            kelas =
+                "bg-red-100 text-red-700";
 
-          }
-
-          else if (status === "Terlambat") {
-
-            kelasStatus =
-              "bg-yellow-100 text-yellow-700";
-
-          }
+        }
 
 
-          const row =
+        const keterangan =
+            item.keterangan ||
+            "-";
+
+
+        const tr =
             document.createElement("tr");
 
 
-          row.className =
+        tr.className =
             "border-b hover:bg-gray-50";
 
 
-          row.innerHTML = `
+        tr.innerHTML = `
 
             <td class="px-4 py-3">
-              ${nomor}
+                ${nomor}
             </td>
-
 
             <td class="px-4 py-3 whitespace-nowrap">
-              ${formatTanggal(item.tanggal)}
+                ${formatTanggal(
+                    ambilTanggal(item)
+                )}
             </td>
-
 
             <td class="px-4 py-3">
-              ${nip || "-"}
+                ${escapeHTML(nip)}
             </td>
-
 
             <td class="px-4 py-3 font-semibold">
-              ${nama}
+                ${escapeHTML(nama)}
             </td>
-
 
             <td class="px-4 py-3">
 
-              <span
-                class="inline-block px-3 py-1 rounded-full text-xs font-bold ${kelasStatus}"
-              >
-                ${status || "-"}
-              </span>
+                <span
+                    class="inline-block px-3 py-1
+                           rounded-full text-xs font-bold
+                           ${kelas}">
+
+                    ${status || "-"}
+
+                </span>
 
             </td>
-
 
             <td class="px-4 py-3">
-              ${item.jamMasuk || "-"}
+                ${escapeHTML(keterangan)}
             </td>
 
-
-            <td class="px-4 py-3">
-              ${item.jamPulang || "-"}
-            </td>
-
-          `;
+        `;
 
 
-          tabelDetail.appendChild(row);
+        tabelDetail.appendChild(tr);
 
-        }
-      );
+    });
 
 
-      if (nomor === 0) {
+    if (nomor === 0) {
 
-        detailKosong
-          .classList
-          .remove("hidden");
+        detailKosong.classList.remove(
+            "hidden"
+        );
 
-      }
+    } else {
 
-      else {
+        detailKosong.classList.add(
+            "hidden"
+        );
 
-        detailKosong
-          .classList
-          .add("hidden");
+    }
 
-      }
+}
+
+
+// ============================================================
+// LABEL PERIODE
+// ============================================================
+
+function updateLabelPeriode() {
+
+    const mulai =
+        tanggalMulai.value;
+
+    const selesai =
+        tanggalSelesai.value;
+
+
+    if (mulai && selesai) {
+
+        labelPeriode.textContent =
+            `${formatTanggal(mulai)}
+             s/d
+             ${formatTanggal(selesai)}`;
+
+        return;
 
     }
 
 
-    // ======================================================
-    // RENDER SEMUA
-    // ======================================================
+    if (mulai) {
 
-    function renderSemua() {
+        labelPeriode.textContent =
+            `Mulai ${formatTanggal(mulai)}`;
 
-      bacaData();
-
-      updateLabelPeriode();
-
-      renderRingkasan();
-
-      renderRekapGuru();
-
-      renderDetail();
+        return;
 
     }
 
 
-    // ======================================================
-    // TANGGAL DEFAULT
-    // ======================================================
+    if (selesai) {
 
-    function setTanggalDefault() {
+        labelPeriode.textContent =
+            `Sampai ${formatTanggal(selesai)}`;
 
-      /*
-       * Karena laporan yang diinginkan adalah
-       * "Semua Bulan Tahun 2026", filter default
-       * dibuat dari 1 Januari sampai 31 Desember 2026.
-       */
+        return;
 
-      tanggalMulai.value =
+    }
+
+
+    labelPeriode.textContent =
+        "Semua Data Absensi";
+
+}
+
+
+// ============================================================
+// RENDER SEMUA
+// ============================================================
+
+function renderSemua() {
+
+    /*
+     * BACA ULANG LOCALSTORAGE
+     * setiap kali render.
+     */
+
+    bacaData();
+
+
+    updateLabelPeriode();
+
+    renderRingkasan();
+
+    renderRekapGuru();
+
+    renderDetail();
+
+}
+
+
+// ============================================================
+// ESCAPE HTML
+// ============================================================
+
+function escapeHTML(value) {
+
+    return String(value ?? "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+
+}
+
+
+// ============================================================
+// TANGGAL DEFAULT
+// ============================================================
+
+function setTanggalDefault() {
+
+    tanggalMulai.value =
         "2026-01-01";
 
 
-      tanggalSelesai.value =
+    tanggalSelesai.value =
         "2026-12-31";
 
-    }
+}
 
 
-    // ======================================================
-    // KEMBALI DASHBOARD
-    // ======================================================
+// ============================================================
+// DASHBOARD
+// ============================================================
 
-    function kembaliDashboard() {
+function kembaliDashboard() {
 
-      window.location.href =
+    window.location.href =
         "dashboard.html";
 
+}
+
+
+// ============================================================
+// UPDATE OTOMATIS JIKA LOCALSTORAGE BERUBAH
+// ============================================================
+
+window.addEventListener(
+    "storage",
+    function(event) {
+
+        if (
+            event.key === "dataAbsensi" ||
+            event.key === "dataGuru" ||
+            event.key === "dataHariLibur"
+        ) {
+
+            renderSemua();
+
+        }
+
     }
+);
 
 
-    // ======================================================
-    // AUTO REFRESH
-    // ======================================================
+// ============================================================
+// MULAI
+// ============================================================
 
-    window.addEventListener(
-      "storage",
-      function() {
+setTanggalDefault();
 
-        renderSemua();
-
-      }
-    );
+renderSemua();
 
 
-    // ======================================================
-    // MULAI
-    // ======================================================
-
-    setTanggalDefault();
-
-    renderSemua();
-
-  </script>
+</script>
 
 </body>
 </html>
+```
