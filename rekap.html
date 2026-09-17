@@ -8,423 +8,435 @@
   <title>Rekap Absensi Guru</title>
 
   <script src="https://cdn.tailwindcss.com"></script>
-
-  <style>
-    @media print {
-      .no-print {
-        display: none !important;
-      }
-
-      body {
-        background: white !important;
-      }
-
-      .print-area {
-        box-shadow: none !important;
-        border: none !important;
-      }
-    }
-  </style>
 </head>
 
-<body class="bg-slate-100 min-h-screen">
+<body class="bg-gray-100 min-h-screen">
 
   <!-- HEADER -->
-  <header class="bg-blue-700 text-white shadow-lg no-print">
-    <div class="max-w-7xl mx-auto px-4 py-5">
+  <header class="bg-blue-700 text-white shadow">
+    <div class="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
 
-      <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+      <div>
+        <h1 class="text-xl md:text-2xl font-bold">
+          📊 Rekap Absensi Guru
+        </h1>
 
-        <div>
-          <h1 class="text-2xl font-bold">
-            📊 Rekap Absensi Guru
-          </h1>
-
-          <p class="text-blue-100 text-sm mt-1">
-            Rekapitulasi kehadiran guru berdasarkan data absensi
-          </p>
-        </div>
-
-        <div class="flex flex-wrap gap-2">
-
-          <button
-            onclick="window.location.href='dashboard.html'"
-            class="bg-white text-blue-700 px-4 py-2 rounded-lg font-semibold hover:bg-blue-50 transition">
-            🏠 Dashboard
-          </button>
-
-          <button
-            onclick="window.location.href='absensi.html'"
-            class="bg-blue-600 border border-blue-400 px-4 py-2 rounded-lg font-semibold hover:bg-blue-500 transition">
-            📝 Absensi
-          </button>
-
-          <button
-            onclick="window.print()"
-            class="bg-emerald-500 px-4 py-2 rounded-lg font-semibold hover:bg-emerald-600 transition">
-            🖨️ Cetak
-          </button>
-
-        </div>
+        <p class="text-blue-100 text-sm">
+          Rekapitulasi kehadiran guru
+        </p>
       </div>
+
+      <button
+        onclick="kembaliDashboard()"
+        class="bg-white text-blue-700 px-4 py-2 rounded-lg font-semibold hover:bg-blue-50"
+      >
+        ← Dashboard
+      </button>
 
     </div>
   </header>
 
 
-  <!-- CONTENT -->
+  <!-- KONTEN -->
   <main class="max-w-7xl mx-auto px-4 py-6">
 
     <!-- FILTER -->
-    <section class="bg-white rounded-xl shadow-md p-5 mb-6 no-print">
+    <div class="bg-white rounded-xl shadow p-5 mb-5">
 
-      <h2 class="text-lg font-bold text-slate-800 mb-4">
-        🔎 Filter Periode
+      <h2 class="text-lg font-bold text-gray-800 mb-4">
+        🔎 Filter Rekap
       </h2>
 
       <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
 
+        <!-- TANGGAL MULAI -->
         <div>
-          <label class="block text-sm font-semibold text-slate-600 mb-1">
-            Tanggal Mulai
+          <label class="block text-sm font-semibold text-gray-700 mb-2">
+            📅 Dari Tanggal
           </label>
 
           <input
             type="date"
             id="tanggalMulai"
-            class="w-full border border-slate-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+            onchange="renderSemua()"
+            class="w-full border border-gray-300 rounded-lg px-4 py-3 outline-none focus:ring-2 focus:ring-blue-500"
+          >
         </div>
 
+
+        <!-- TANGGAL SELESAI -->
         <div>
-          <label class="block text-sm font-semibold text-slate-600 mb-1">
-            Tanggal Akhir
+          <label class="block text-sm font-semibold text-gray-700 mb-2">
+            📅 Sampai Tanggal
           </label>
 
           <input
             type="date"
-            id="tanggalAkhir"
-            class="w-full border border-slate-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+            id="tanggalSelesai"
+            onchange="renderSemua()"
+            class="w-full border border-gray-300 rounded-lg px-4 py-3 outline-none focus:ring-2 focus:ring-blue-500"
+          >
         </div>
 
-        <div class="flex items-end">
 
-          <button
-            onclick="tampilkanRekap()"
-            class="w-full bg-blue-600 text-white px-4 py-2 rounded-lg font-semibold hover:bg-blue-700 transition">
-            🔄 Tampilkan Rekap
-          </button>
+        <!-- CARI GURU -->
+        <div>
+          <label class="block text-sm font-semibold text-gray-700 mb-2">
+            🔎 Cari Guru
+          </label>
 
+          <input
+            type="text"
+            id="cariGuru"
+            placeholder="Cari nama, NIP, atau jabatan..."
+            oninput="renderSemua()"
+            class="w-full border border-gray-300 rounded-lg px-4 py-3 outline-none focus:ring-2 focus:ring-blue-500"
+          >
         </div>
 
       </div>
+    </div>
 
-    </section>
 
+    <!-- RINGKASAN -->
+    <div class="grid grid-cols-2 md:grid-cols-6 gap-4 mb-5">
 
-    <!-- AREA PRINT -->
-    <section class="print-area bg-white rounded-xl shadow-md p-5">
-
-      <!-- JUDUL CETAK -->
-      <div class="text-center mb-6">
-
-        <h2 class="text-2xl font-bold text-slate-800">
-          REKAPITULASI ABSENSI GURU
-        </h2>
-
-        <p class="text-slate-600 mt-1">
-          Periode:
-          <span id="labelPeriode">-</span>
+      <!-- TOTAL GURU -->
+      <div class="bg-white rounded-xl shadow p-4">
+        <p class="text-sm text-gray-500">
+          Total Guru
         </p>
 
+        <p id="totalGuru" class="text-2xl font-bold text-blue-700">
+          0
+        </p>
       </div>
 
 
-      <!-- RINGKASAN -->
-      <div class="grid grid-cols-2 md:grid-cols-5 gap-3 mb-6">
+      <!-- HADIR -->
+      <div class="bg-white rounded-xl shadow p-4">
+        <p class="text-sm text-gray-500">
+          Hadir
+        </p>
 
-        <div class="bg-blue-50 border border-blue-200 rounded-lg p-4 text-center">
-          <div class="text-sm text-blue-700 font-semibold">
-            Total Guru
-          </div>
-
-          <div id="totalGuru"
-               class="text-2xl font-bold text-blue-800 mt-1">
-            0
-          </div>
-        </div>
-
-
-        <div class="bg-green-50 border border-green-200 rounded-lg p-4 text-center">
-          <div class="text-sm text-green-700 font-semibold">
-            Hadir
-          </div>
-
-          <div id="totalHadir"
-               class="text-2xl font-bold text-green-800 mt-1">
-            0
-          </div>
-        </div>
-
-
-        <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-4 text-center">
-          <div class="text-sm text-yellow-700 font-semibold">
-            Terlambat
-          </div>
-
-          <div id="totalTerlambat"
-               class="text-2xl font-bold text-yellow-800 mt-1">
-            0
-          </div>
-        </div>
-
-
-        <div class="bg-orange-50 border border-orange-200 rounded-lg p-4 text-center">
-          <div class="text-sm text-orange-700 font-semibold">
-            Izin / Sakit
-          </div>
-
-          <div id="totalIzinSakit"
-               class="text-2xl font-bold text-orange-800 mt-1">
-            0
-          </div>
-        </div>
-
-
-        <div class="bg-red-50 border border-red-200 rounded-lg p-4 text-center">
-          <div class="text-sm text-red-700 font-semibold">
-            Alpa
-          </div>
-
-          <div id="totalAlpa"
-               class="text-2xl font-bold text-red-800 mt-1">
-            0
-          </div>
-        </div>
-
+        <p id="totalHadir" class="text-2xl font-bold text-green-600">
+          0
+        </p>
       </div>
 
 
-      <!-- TABEL REKAP GURU -->
+      <!-- TERLAMBAT -->
+      <div class="bg-white rounded-xl shadow p-4">
+        <p class="text-sm text-gray-500">
+          Terlambat
+        </p>
+
+        <p id="totalTerlambat" class="text-2xl font-bold text-yellow-600">
+          0
+        </p>
+      </div>
+
+
+      <!-- IZIN -->
+      <div class="bg-white rounded-xl shadow p-4">
+        <p class="text-sm text-gray-500">
+          Izin
+        </p>
+
+        <p id="totalIzin" class="text-2xl font-bold text-orange-600">
+          0
+        </p>
+      </div>
+
+
+      <!-- SAKIT -->
+      <div class="bg-white rounded-xl shadow p-4">
+        <p class="text-sm text-gray-500">
+          Sakit
+        </p>
+
+        <p id="totalSakit" class="text-2xl font-bold text-purple-600">
+          0
+        </p>
+      </div>
+
+
+      <!-- ALPA -->
+      <div class="bg-white rounded-xl shadow p-4">
+        <p class="text-sm text-gray-500">
+          Alpa
+        </p>
+
+        <p id="totalAlpa" class="text-2xl font-bold text-red-600">
+          0
+        </p>
+      </div>
+
+    </div>
+
+
+    <!-- INFORMASI -->
+    <div
+      id="infoRekap"
+      class="bg-blue-50 border border-blue-200 text-blue-800 rounded-xl p-4 mb-5"
+    >
+      Memuat data...
+    </div>
+
+
+    <!-- REKAP PER GURU -->
+    <div class="bg-white rounded-xl shadow overflow-hidden mb-5">
+
+      <div class="p-5 border-b">
+        <h2 class="text-lg font-bold text-gray-800">
+          👨‍🏫 Rekap Per Guru
+        </h2>
+
+        <p class="text-sm text-gray-500 mt-1">
+          Rekap berdasarkan data absensi yang tersimpan.
+        </p>
+      </div>
+
+
       <div class="overflow-x-auto">
 
-        <table class="w-full border-collapse border border-slate-300">
+        <table class="w-full text-sm">
 
-          <thead>
-            <tr class="bg-slate-100">
+          <thead class="bg-gray-50 border-b">
+            <tr>
 
-              <th class="border border-slate-300 px-3 py-3 text-center">
+              <th class="px-4 py-3 text-left">
                 No
               </th>
 
-              <th class="border border-slate-300 px-3 py-3 text-left">
-                Nama Guru
-              </th>
-
-              <th class="border border-slate-300 px-3 py-3 text-left">
+              <th class="px-4 py-3 text-left">
                 NIP
               </th>
 
-              <th class="border border-slate-300 px-3 py-3 text-left">
+              <th class="px-4 py-3 text-left">
+                Nama Guru
+              </th>
+
+              <th class="px-4 py-3 text-left">
                 Jabatan
               </th>
 
-              <th class="border border-slate-300 px-3 py-3 text-center">
+              <th class="px-4 py-3 text-center">
                 Hadir
               </th>
 
-              <th class="border border-slate-300 px-3 py-3 text-center">
+              <th class="px-4 py-3 text-center">
                 Terlambat
               </th>
 
-              <th class="border border-slate-300 px-3 py-3 text-center">
+              <th class="px-4 py-3 text-center">
                 Izin
               </th>
 
-              <th class="border border-slate-300 px-3 py-3 text-center">
+              <th class="px-4 py-3 text-center">
                 Sakit
               </th>
 
-              <th class="border border-slate-300 px-3 py-3 text-center">
+              <th class="px-4 py-3 text-center">
                 Alpa
               </th>
 
-              <th class="border border-slate-300 px-3 py-3 text-center">
+              <th class="px-4 py-3 text-center">
                 Total
               </th>
 
             </tr>
           </thead>
 
-          <tbody id="tabelRekap">
-          </tbody>
+          <tbody id="tabelRekap"></tbody>
 
         </table>
 
       </div>
 
 
-      <!-- DETAIL ABSENSI -->
-      <div class="mt-8">
+      <div
+        id="rekapKosong"
+        class="hidden p-10 text-center text-gray-500"
+      >
+        <div class="text-5xl mb-3">
+          📭
+        </div>
 
-        <h3 class="text-lg font-bold text-slate-800 mb-3">
+        <p class="font-semibold text-lg">
+          Belum ada data guru
+        </p>
+      </div>
+
+    </div>
+
+
+    <!-- DETAIL -->
+    <div class="bg-white rounded-xl shadow overflow-hidden">
+
+      <div class="p-5 border-b">
+
+        <h2 class="text-lg font-bold text-gray-800">
           📋 Detail Absensi
-        </h3>
+        </h2>
 
-        <div class="overflow-x-auto">
-
-          <table class="w-full border-collapse border border-slate-300">
-
-            <thead>
-
-              <tr class="bg-slate-100">
-
-                <th class="border border-slate-300 px-3 py-3 text-center">
-                  No
-                </th>
-
-                <th class="border border-slate-300 px-3 py-3 text-center">
-                  Tanggal
-                </th>
-
-                <th class="border border-slate-300 px-3 py-3 text-left">
-                  Nama Guru
-                </th>
-
-                <th class="border border-slate-300 px-3 py-3 text-center">
-                  Status
-                </th>
-
-                <th class="border border-slate-300 px-3 py-3 text-center">
-                  Jam Masuk
-                </th>
-
-                <th class="border border-slate-300 px-3 py-3 text-center">
-                  Jam Pulang
-                </th>
-
-              </tr>
-
-            </thead>
-
-            <tbody id="tabelDetail">
-            </tbody>
-
-          </table>
-
-        </div>
+        <p class="text-sm text-gray-500 mt-1">
+          Daftar absensi yang tersimpan berdasarkan tanggal.
+        </p>
 
       </div>
 
 
-      <!-- TANDA TANGAN -->
-      <div class="hidden print:flex justify-end mt-16">
+      <div class="overflow-x-auto">
 
-        <div class="text-center w-64">
+        <table class="w-full text-sm">
 
-          <p>
-            Mengetahui,
-          </p>
+          <thead class="bg-gray-50 border-b">
 
-          <p class="font-semibold mt-1">
-            Kepala Sekolah
-          </p>
+            <tr>
 
-          <div class="h-20"></div>
+              <th class="px-4 py-3 text-left">
+                No
+              </th>
 
-          <p class="font-bold underline">
-            SANUSI MUHLIS,S.PD.I
-          </p>
+              <th class="px-4 py-3 text-left">
+                Tanggal
+              </th>
 
-          <p>
-            NIP. 197804022009011005
-          </p>
+              <th class="px-4 py-3 text-left">
+                NIP
+              </th>
 
-        </div>
+              <th class="px-4 py-3 text-left">
+                Nama Guru
+              </th>
+
+              <th class="px-4 py-3 text-left">
+                Status
+              </th>
+
+              <th class="px-4 py-3 text-left">
+                Jam Masuk
+              </th>
+
+              <th class="px-4 py-3 text-left">
+                Jam Pulang
+              </th>
+
+            </tr>
+
+          </thead>
+
+          <tbody id="tabelDetail"></tbody>
+
+        </table>
 
       </div>
 
-    </section>
+
+      <div
+        id="detailKosong"
+        class="hidden p-10 text-center text-gray-500"
+      >
+
+        <div class="text-5xl mb-3">
+          📭
+        </div>
+
+        <p class="font-semibold text-lg">
+          Belum ada data absensi
+        </p>
+
+        <p class="text-sm mt-1">
+          Data akan muncul setelah absensi disimpan.
+        </p>
+
+      </div>
+
+    </div>
 
   </main>
 
 
   <script>
 
-    /* =====================================================
-       DATA LOCAL STORAGE
-       ===================================================== */
+    // ======================================================
+    // DATA LOCALSTORAGE
+    // ======================================================
 
-    let dataGuru = [];
-    let dataAbsensi = [];
-
-
-    function ambilData() {
-
-      try {
-
-        const guruStorage =
-          localStorage.getItem("dataGuru");
-
-        const absensiStorage =
-          localStorage.getItem("dataAbsensi");
+    let dataGuru =
+      JSON.parse(
+        localStorage.getItem("dataGuru")
+      ) || [];
 
 
-        dataGuru = guruStorage
-          ? JSON.parse(guruStorage)
-          : [];
+    let dataAbsensi =
+      JSON.parse(
+        localStorage.getItem("dataAbsensi")
+      ) || [];
 
 
-        dataAbsensi = absensiStorage
-          ? JSON.parse(absensiStorage)
-          : [];
+    let dataHariLibur =
+      JSON.parse(
+        localStorage.getItem("dataHariLibur")
+      ) || [];
 
 
-        // Pastikan data absensi berbentuk ARRAY
-        if (!Array.isArray(dataAbsensi)) {
-          dataAbsensi = [];
-        }
+    // ======================================================
+    // NORMALISASI DATA
+    // ======================================================
 
+    if (!Array.isArray(dataGuru)) {
+      dataGuru = [];
+    }
 
-        if (!Array.isArray(dataGuru)) {
-          dataGuru = [];
-        }
+    if (!Array.isArray(dataAbsensi)) {
+      dataAbsensi = [];
+    }
 
-      } catch (error) {
-
-        console.error(
-          "Gagal membaca localStorage:",
-          error
-        );
-
-        dataGuru = [];
-        dataAbsensi = [];
-
-      }
-
+    if (!Array.isArray(dataHariLibur)) {
+      dataHariLibur = [];
     }
 
 
-    /* =====================================================
-       NORMALISASI NAMA
-       ===================================================== */
+    // ======================================================
+    // ELEMENT
+    // ======================================================
 
-    function normalisasiNama(nama) {
+    const tanggalMulai =
+      document.getElementById("tanggalMulai");
 
-      return String(nama || "")
-        .trim()
-        .replace(/\s+/g, " ")
-        .toLowerCase();
+    const tanggalSelesai =
+      document.getElementById("tanggalSelesai");
 
-    }
+    const cariGuru =
+      document.getElementById("cariGuru");
+
+    const tabelRekap =
+      document.getElementById("tabelRekap");
+
+    const tabelDetail =
+      document.getElementById("tabelDetail");
+
+    const rekapKosong =
+      document.getElementById("rekapKosong");
+
+    const detailKosong =
+      document.getElementById("detailKosong");
+
+    const infoRekap =
+      document.getElementById("infoRekap");
 
 
-    /* =====================================================
-       FORMAT TANGGAL
-       ===================================================== */
+    // ======================================================
+    // FORMAT TANGGAL
+    // ======================================================
 
     function formatTanggal(tanggal) {
 
-      if (!tanggal) return "-";
+      if (!tanggal) {
+        return "-";
+      }
 
       const bagian =
         tanggal.split("-");
@@ -433,322 +445,433 @@
         return tanggal;
       }
 
-      return (
-        bagian[2] +
-        "-" +
-        bagian[1] +
-        "-" +
-        bagian[0]
-      );
+      const tahun =
+        parseInt(bagian[0]);
 
+      const bulan =
+        parseInt(bagian[1]) - 1;
+
+      const hari =
+        parseInt(bagian[2]);
+
+      const tanggalObjek =
+        new Date(
+          tahun,
+          bulan,
+          hari
+        );
+
+      const namaHari = [
+        "Minggu",
+        "Senin",
+        "Selasa",
+        "Rabu",
+        "Kamis",
+        "Jumat",
+        "Sabtu"
+      ];
+
+      const namaBulan = [
+        "Januari",
+        "Februari",
+        "Maret",
+        "April",
+        "Mei",
+        "Juni",
+        "Juli",
+        "Agustus",
+        "September",
+        "Oktober",
+        "November",
+        "Desember"
+      ];
+
+      return `${namaHari[tanggalObjek.getDay()]}, ${hari} ${namaBulan[bulan]} ${tahun}`;
     }
 
 
-    /* =====================================================
-       FORMAT NAMA UNTUK TAMPILAN
-       ===================================================== */
+    // ======================================================
+    // CARI DATA GURU
+    // ======================================================
 
-    function namaTampilan(nama) {
+    function cariDataGuru(absensi) {
 
-      if (!nama) return "-";
+      if (!absensi) {
+        return null;
+      }
 
-      return String(nama)
-        .replace(/\s+/g, " ")
-        .trim();
 
+      // Prioritas berdasarkan ID guru
+      if (absensi.guruId !== undefined) {
+
+        const guruId =
+          String(absensi.guruId);
+
+        const guru =
+          dataGuru.find(
+            item =>
+              String(item.id || "") === guruId
+          );
+
+        if (guru) {
+          return guru;
+        }
+      }
+
+
+      // Jika ID tidak ditemukan,
+      // cari berdasarkan nama guru
+
+      const namaAbsensi =
+        String(
+          absensi.namaGuru || ""
+        )
+        .trim()
+        .toLowerCase();
+
+
+      if (namaAbsensi) {
+
+        const guru =
+          dataGuru.find(
+            item =>
+              String(item.nama || "")
+                .trim()
+                .toLowerCase() === namaAbsensi
+          );
+
+        if (guru) {
+          return guru;
+        }
+      }
+
+
+      return null;
     }
 
 
-    /* =====================================================
-       CEK STATUS
-       ===================================================== */
+    // ======================================================
+    // CEK TANGGAL FILTER
+    // ======================================================
 
-    function normalisasiStatus(status) {
+    function tanggalDalamFilter(tanggal) {
 
-      const s =
-        String(status || "")
-          .trim()
-          .toLowerCase();
+      const mulai =
+        tanggalMulai.value;
 
-      if (s === "hadir") {
-        return "Hadir";
-      }
+      const selesai =
+        tanggalSelesai.value;
 
-      if (
-        s === "terlambat" ||
-        s === "telat"
-      ) {
-        return "Terlambat";
-      }
-
-      if (s === "izin") {
-        return "Izin";
-      }
-
-      if (s === "sakit") {
-        return "Sakit";
-      }
-
-      if (
-        s === "alpa" ||
-        s === "alpha"
-      ) {
-        return "Alpa";
-      }
-
-      return String(status || "-");
-    }
-
-
-    /* =====================================================
-       CEK APAKAH TANGGAL ADA DALAM PERIODE
-       ===================================================== */
-
-    function dalamPeriode(
-      tanggal,
-      mulai,
-      akhir
-    ) {
-
-      if (!tanggal) {
-        return false;
-      }
 
       if (mulai && tanggal < mulai) {
         return false;
       }
 
-      if (akhir && tanggal > akhir) {
+
+      if (selesai && tanggal > selesai) {
         return false;
       }
 
-      return true;
 
+      return true;
     }
 
 
-    /* =====================================================
-       TAMPILKAN REKAP
-       ===================================================== */
+    // ======================================================
+    // CEK HARI LIBUR
+    // ======================================================
 
-    function tampilkanRekap() {
+    function cekHariLibur(tanggal) {
 
-      ambilData();
-
-
-      const mulai =
-        document.getElementById(
-          "tanggalMulai"
-        ).value;
-
-      const akhir =
-        document.getElementById(
-          "tanggalAkhir"
-        ).value;
+      return dataHariLibur.some(
+        item =>
+          item &&
+          item.tanggal === tanggal
+      );
+    }
 
 
-      if (mulai && akhir && mulai > akhir) {
+    // ======================================================
+    // CEK AKHIR PEKAN
+    // ======================================================
 
-        alert(
-          "Tanggal mulai tidak boleh lebih besar dari tanggal akhir."
+    function cekAkhirPekan(tanggal) {
+
+      if (!tanggal) {
+        return false;
+      }
+
+      const bagian =
+        tanggal.split("-");
+
+      if (bagian.length !== 3) {
+        return false;
+      }
+
+      const objek =
+        new Date(
+          parseInt(bagian[0]),
+          parseInt(bagian[1]) - 1,
+          parseInt(bagian[2])
         );
 
-        return;
+      const hari =
+        objek.getDay();
 
+      return (
+        hari === 0 ||
+        hari === 6
+      );
+    }
+
+
+    // ======================================================
+    // NORMALISASI STATUS
+    // ======================================================
+
+    function normalisasiStatus(status) {
+
+      if (!status) {
+        return "";
+      }
+
+      const teks =
+        String(status)
+          .trim()
+          .toLowerCase();
+
+
+      if (teks === "hadir") {
+        return "Hadir";
       }
 
 
-      /* LABEL PERIODE */
-
-      let label = "Semua Data";
-
-      if (mulai && akhir) {
-
-        label =
-          formatTanggal(mulai) +
-          " s/d " +
-          formatTanggal(akhir);
-
-      } else if (mulai) {
-
-        label =
-          "Mulai " +
-          formatTanggal(mulai);
-
-      } else if (akhir) {
-
-        label =
-          "Sampai " +
-          formatTanggal(akhir);
-
+      if (
+        teks === "terlambat" ||
+        teks === "telat"
+      ) {
+        return "Terlambat";
       }
 
 
-      document.getElementById(
-        "labelPeriode"
-      ).textContent = label;
+      if (teks === "izin") {
+        return "Izin";
+      }
 
 
-      /* =================================================
-         FILTER DATA ABSENSI
-         ================================================= */
-
-      const absensiFilter =
-        dataAbsensi.filter(item => {
-
-          return dalamPeriode(
-            item.tanggal,
-            mulai,
-            akhir
-          );
-
-        });
+      if (teks === "sakit") {
+        return "Sakit";
+      }
 
 
-      /* =================================================
-         BUAT REKAP BERDASARKAN DATA GURU
-         ================================================= */
+      if (
+        teks === "alpa" ||
+        teks === "alpha"
+      ) {
+        return "Alpa";
+      }
 
-      const rekapGuru =
-        dataGuru.map(guru => {
 
-          const namaGuru =
-            guru.nama || "";
+      return status;
+    }
 
-          const namaNormal =
-            normalisasiNama(
-              namaGuru
+
+    // ======================================================
+    // AMBIL ABSENSI SESUAI FILTER
+    // ======================================================
+
+    function ambilAbsensiFilter() {
+
+      return dataAbsensi.filter(
+        item => {
+
+          if (!item) {
+            return false;
+          }
+
+          if (!item.tanggal) {
+            return false;
+          }
+
+          if (
+            !tanggalDalamFilter(
+              item.tanggal
+            )
+          ) {
+            return false;
+          }
+
+          return true;
+        }
+      );
+    }
+
+
+    // ======================================================
+    // AMBIL ABSENSI GURU
+    // ======================================================
+
+    function ambilAbsensiGuru(guru) {
+
+      if (!guru) {
+        return [];
+      }
+
+
+      const guruId =
+        guru.id !== undefined
+          ? String(guru.id)
+          : "";
+
+
+      const namaGuru =
+        String(guru.nama || "")
+          .trim()
+          .toLowerCase();
+
+
+      return ambilAbsensiFilter()
+        .filter(
+          item => {
+
+            const idAbsensi =
+              item.guruId !== undefined
+                ? String(item.guruId)
+                : "";
+
+
+            const namaAbsensi =
+              String(item.namaGuru || "")
+                .trim()
+                .toLowerCase();
+
+
+            if (
+              guruId &&
+              idAbsensi &&
+              guruId === idAbsensi
+            ) {
+              return true;
+            }
+
+
+            if (
+              namaGuru &&
+              namaAbsensi &&
+              namaGuru === namaAbsensi
+            ) {
+              return true;
+            }
+
+
+            return false;
+          }
+        );
+    }
+
+
+    // ======================================================
+    // HITUNG REKAP GURU
+    // ======================================================
+
+    function hitungRekapGuru(guru) {
+
+      const hasil = {
+
+        Hadir: 0,
+
+        Terlambat: 0,
+
+        Izin: 0,
+
+        Sakit: 0,
+
+        Alpa: 0
+
+      };
+
+
+      const daftar =
+        ambilAbsensiGuru(guru);
+
+
+      daftar.forEach(
+        item => {
+
+          const status =
+            normalisasiStatus(
+              item.status
             );
 
 
-          /*
-           * Cocokkan berdasarkan NAMA
-           *
-           * Karena dataGuru saat ini tidak
-           * memiliki ID guru.
-           */
+          if (
+            Object.prototype.hasOwnProperty.call(
+              hasil,
+              status
+            )
+          ) {
 
-          const dataGuruAbsensi =
-            absensiFilter.filter(item => {
+            hasil[status]++;
 
-              return (
-                normalisasiNama(
-                  item.namaGuru
-                ) === namaNormal
-              );
+          }
 
-            });
+        }
+      );
 
 
-          let hadir = 0;
-          let terlambat = 0;
-          let izin = 0;
-          let sakit = 0;
-          let alpa = 0;
+      return hasil;
+    }
 
 
-          dataGuruAbsensi.forEach(item => {
+    // ======================================================
+    // RENDER RINGKASAN
+    // ======================================================
 
-            const status =
-              normalisasiStatus(
-                item.status
-              );
+    function renderRingkasan() {
 
-
-            if (status === "Hadir") {
-              hadir++;
-            }
-
-            else if (
-              status === "Terlambat"
-            ) {
-              terlambat++;
-            }
-
-            else if (
-              status === "Izin"
-            ) {
-              izin++;
-            }
-
-            else if (
-              status === "Sakit"
-            ) {
-              sakit++;
-            }
-
-            else if (
-              status === "Alpa"
-            ) {
-              alpa++;
-            }
-
-          });
+      const daftar =
+        ambilAbsensiFilter();
 
 
-          const total =
-            hadir +
-            terlambat +
-            izin +
-            sakit +
-            alpa;
+      let hadir = 0;
+      let terlambat = 0;
+      let izin = 0;
+      let sakit = 0;
+      let alpa = 0;
 
 
-          return {
+      daftar.forEach(
+        item => {
 
-            nama: namaGuru,
-
-            nip:
-              guru.nip || "-",
-
-            jabatan:
-              guru.jabatan || "-",
-
-            hadir,
-            terlambat,
-            izin,
-            sakit,
-            alpa,
-            total
-
-          };
-
-        });
+          const status =
+            normalisasiStatus(
+              item.status
+            );
 
 
-      /* =================================================
-         HITUNG TOTAL
-         ================================================= */
+          if (status === "Hadir") {
+            hadir++;
+          }
 
-      let totalHadir = 0;
-      let totalTerlambat = 0;
-      let totalIzin = 0;
-      let totalSakit = 0;
-      let totalAlpa = 0;
+          else if (status === "Terlambat") {
+            terlambat++;
+          }
 
+          else if (status === "Izin") {
+            izin++;
+          }
 
-      rekapGuru.forEach(guru => {
+          else if (status === "Sakit") {
+            sakit++;
+          }
 
-        totalHadir += guru.hadir;
+          else if (status === "Alpa") {
+            alpa++;
+          }
 
-        totalTerlambat +=
-          guru.terlambat;
+        }
+      );
 
-        totalIzin +=
-          guru.izin;
-
-        totalSakit +=
-          guru.sakit;
-
-        totalAlpa +=
-          guru.alpa;
-
-      });
-
-
-      /* =================================================
-         TAMPILKAN ANGKA RINGKASAN
-         ================================================= */
 
       document.getElementById(
         "totalGuru"
@@ -759,300 +882,459 @@
       document.getElementById(
         "totalHadir"
       ).textContent =
-        totalHadir;
+        hadir;
 
 
       document.getElementById(
         "totalTerlambat"
       ).textContent =
-        totalTerlambat;
+        terlambat;
 
 
       document.getElementById(
-        "totalIzinSakit"
+        "totalIzin"
       ).textContent =
-        totalIzin + totalSakit;
+        izin;
+
+
+      document.getElementById(
+        "totalSakit"
+      ).textContent =
+        sakit;
 
 
       document.getElementById(
         "totalAlpa"
       ).textContent =
-        totalAlpa;
+        alpa;
 
 
-      /* =================================================
-         TABEL REKAP
-         ================================================= */
+      infoRekap.innerHTML = `
+        📊 Menampilkan
+        <strong>${daftar.length}</strong>
+        data absensi.
 
-      const tabelRekap =
-        document.getElementById(
-          "tabelRekap"
-        );
+        &nbsp;•&nbsp;
 
+        👨‍🏫
+        <strong>${dataGuru.length}</strong>
+        guru terdaftar.
+
+        &nbsp;•&nbsp;
+
+        📅
+        <strong>${dataHariLibur.length}</strong>
+        hari libur tersimpan.
+      `;
+    }
+
+
+    // ======================================================
+    // RENDER REKAP PER GURU
+    // ======================================================
+
+    function renderRekapGuru() {
 
       tabelRekap.innerHTML = "";
 
 
-      if (rekapGuru.length === 0) {
+      const keyword =
+        cariGuru.value
+          .trim()
+          .toLowerCase();
 
-        tabelRekap.innerHTML = `
-          <tr>
-            <td
-              colspan="10"
-              class="border border-slate-300 px-4 py-6 text-center text-slate-500">
-              Belum ada data guru.
-            </td>
-          </tr>
-        `;
 
-      } else {
+      let nomor = 0;
 
-        rekapGuru.forEach(
-          (guru, index) => {
 
-            tabelRekap.innerHTML += `
+      dataGuru.forEach(
+        guru => {
 
-              <tr class="hover:bg-slate-50">
+          const nama =
+            String(guru.nama || "")
+              .toLowerCase();
 
-                <td
-                  class="border border-slate-300 px-3 py-3 text-center">
-                  ${index + 1}
-                </td>
 
-                <td
-                  class="border border-slate-300 px-3 py-3 font-semibold">
-                  ${escapeHtml(
-                    namaTampilan(guru.nama)
-                  )}
-                </td>
+          const nip =
+            String(guru.nip || "")
+              .toLowerCase();
 
-                <td
-                  class="border border-slate-300 px-3 py-3">
-                  ${escapeHtml(guru.nip)}
-                </td>
 
-                <td
-                  class="border border-slate-300 px-3 py-3">
-                  ${escapeHtml(guru.jabatan)}
-                </td>
+          const jabatan =
+            String(guru.jabatan || "")
+              .toLowerCase();
 
-                <td
-                  class="border border-slate-300 px-3 py-3 text-center font-semibold text-green-700">
-                  ${guru.hadir}
-                </td>
 
-                <td
-                  class="border border-slate-300 px-3 py-3 text-center font-semibold text-yellow-700">
-                  ${guru.terlambat}
-                </td>
+          const cocok =
+            !keyword ||
+            nama.includes(keyword) ||
+            nip.includes(keyword) ||
+            jabatan.includes(keyword);
 
-                <td
-                  class="border border-slate-300 px-3 py-3 text-center font-semibold text-orange-700">
-                  ${guru.izin}
-                </td>
 
-                <td
-                  class="border border-slate-300 px-3 py-3 text-center font-semibold text-orange-700">
-                  ${guru.sakit}
-                </td>
-
-                <td
-                  class="border border-slate-300 px-3 py-3 text-center font-semibold text-red-700">
-                  ${guru.alpa}
-                </td>
-
-                <td
-                  class="border border-slate-300 px-3 py-3 text-center font-bold">
-                  ${guru.total}
-                </td>
-
-              </tr>
-
-            `;
-
+          if (!cocok) {
+            return;
           }
-        );
+
+
+          const hasil =
+            hitungRekapGuru(guru);
+
+
+          const total =
+            hasil.Hadir +
+            hasil.Terlambat +
+            hasil.Izin +
+            hasil.Sakit +
+            hasil.Alpa;
+
+
+          nomor++;
+
+
+          const row =
+            document.createElement("tr");
+
+
+          row.className =
+            "border-b hover:bg-gray-50";
+
+
+          row.innerHTML = `
+
+            <td class="px-4 py-3">
+              ${nomor}
+            </td>
+
+            <td class="px-4 py-3">
+              ${guru.nip || "-"}
+            </td>
+
+            <td class="px-4 py-3 font-semibold text-gray-800">
+              ${guru.nama || "-"}
+            </td>
+
+            <td class="px-4 py-3">
+              ${guru.jabatan || "-"}
+            </td>
+
+            <td class="px-4 py-3 text-center font-bold text-green-600">
+              ${hasil.Hadir}
+            </td>
+
+            <td class="px-4 py-3 text-center font-bold text-yellow-600">
+              ${hasil.Terlambat}
+            </td>
+
+            <td class="px-4 py-3 text-center font-bold text-orange-600">
+              ${hasil.Izin}
+            </td>
+
+            <td class="px-4 py-3 text-center font-bold text-purple-600">
+              ${hasil.Sakit}
+            </td>
+
+            <td class="px-4 py-3 text-center font-bold text-red-600">
+              ${hasil.Alpa}
+            </td>
+
+            <td class="px-4 py-3 text-center font-bold text-blue-700">
+              ${total}
+            </td>
+
+          `;
+
+
+          tabelRekap.appendChild(row);
+
+        }
+      );
+
+
+      if (nomor === 0) {
+
+        rekapKosong
+          .classList
+          .remove("hidden");
 
       }
 
+      else {
 
-      /* =================================================
-         TABEL DETAIL
-         ================================================= */
+        rekapKosong
+          .classList
+          .add("hidden");
 
-      const tabelDetail =
-        document.getElementById(
-          "tabelDetail"
-        );
+      }
+    }
 
+
+    // ======================================================
+    // RENDER DETAIL ABSENSI
+    // ======================================================
+
+    function renderDetail() {
 
       tabelDetail.innerHTML = "";
 
 
-      const detailUrut =
-        [...absensiFilter].sort(
-          (a, b) => {
+      const keyword =
+        cariGuru.value
+          .trim()
+          .toLowerCase();
 
-            if (
-              a.tanggal === b.tanggal
-            ) {
-              return normalisasiNama(
-                a.namaGuru
-              ).localeCompare(
-                normalisasiNama(
-                  b.namaGuru
+
+      const daftar =
+        ambilAbsensiFilter()
+          .slice()
+          .sort(
+            (a, b) =>
+              String(a.tanggal)
+                .localeCompare(
+                  String(b.tanggal)
                 )
-              );
-            }
+          );
 
-            return String(a.tanggal)
-              .localeCompare(
-                String(b.tanggal)
-              );
+
+      let nomor = 0;
+
+
+      daftar.forEach(
+        item => {
+
+          const guru =
+            cariDataGuru(item);
+
+
+          const nama =
+            item.namaGuru ||
+            (guru ? guru.nama : "-");
+
+
+          const nip =
+            guru
+              ? guru.nip
+              : "-";
+
+
+          const jabatan =
+            guru
+              ? guru.jabatan
+              : "";
+
+
+          const teksPencarian =
+            `${nama} ${nip || ""} ${jabatan || ""}`
+              .toLowerCase();
+
+
+          if (
+            keyword &&
+            !teksPencarian.includes(keyword)
+          ) {
+            return;
+          }
+
+
+          nomor++;
+
+
+          const status =
+            normalisasiStatus(
+              item.status
+            );
+
+
+          let kelasStatus =
+            "bg-gray-100 text-gray-700";
+
+
+          if (status === "Hadir") {
+
+            kelasStatus =
+              "bg-green-100 text-green-700";
 
           }
-        );
+
+          else if (status === "Terlambat") {
+
+            kelasStatus =
+              "bg-yellow-100 text-yellow-700";
+
+          }
+
+          else if (status === "Izin") {
+
+            kelasStatus =
+              "bg-orange-100 text-orange-700";
+
+          }
+
+          else if (status === "Sakit") {
+
+            kelasStatus =
+              "bg-purple-100 text-purple-700";
+
+          }
+
+          else if (status === "Alpa") {
+
+            kelasStatus =
+              "bg-red-100 text-red-700";
+
+          }
 
 
-      if (detailUrut.length === 0) {
+          const row =
+            document.createElement("tr");
 
-        tabelDetail.innerHTML = `
 
-          <tr>
+          row.className =
+            "border-b hover:bg-gray-50";
 
-            <td
-              colspan="6"
-              class="border border-slate-300 px-4 py-6 text-center text-slate-500">
 
-              Belum ada data absensi
-              pada periode tersebut.
+          row.innerHTML = `
+
+            <td class="px-4 py-3">
+              ${nomor}
+            </td>
+
+            <td class="px-4 py-3 whitespace-nowrap">
+              ${formatTanggal(item.tanggal)}
+            </td>
+
+            <td class="px-4 py-3">
+              ${nip || "-"}
+            </td>
+
+            <td class="px-4 py-3 font-semibold">
+              ${nama}
+            </td>
+
+            <td class="px-4 py-3">
+
+              <span
+                class="inline-block px-3 py-1 rounded-full text-xs font-bold ${kelasStatus}"
+              >
+                ${status || "-"}
+              </span>
 
             </td>
 
-          </tr>
+            <td class="px-4 py-3">
+              ${item.jamMasuk || "-"}
+            </td>
 
-        `;
+            <td class="px-4 py-3">
+              ${item.jamPulang || "-"}
+            </td>
 
-      } else {
-
-        detailUrut.forEach(
-          (item, index) => {
-
-            const status =
-              normalisasiStatus(
-                item.status
-              );
+          `;
 
 
-            let statusClass =
-              "text-slate-700";
+          tabelDetail.appendChild(row);
+
+        }
+      );
 
 
-            if (status === "Hadir") {
-              statusClass =
-                "text-green-700 font-semibold";
-            }
+      if (nomor === 0) {
 
-            else if (
-              status === "Terlambat"
-            ) {
-              statusClass =
-                "text-yellow-700 font-semibold";
-            }
-
-            else if (
-              status === "Izin" ||
-              status === "Sakit"
-            ) {
-              statusClass =
-                "text-orange-700 font-semibold";
-            }
-
-            else if (
-              status === "Alpa"
-            ) {
-              statusClass =
-                "text-red-700 font-semibold";
-            }
-
-
-            tabelDetail.innerHTML += `
-
-              <tr class="hover:bg-slate-50">
-
-                <td
-                  class="border border-slate-300 px-3 py-3 text-center">
-                  ${index + 1}
-                </td>
-
-                <td
-                  class="border border-slate-300 px-3 py-3 text-center">
-                  ${formatTanggal(
-                    item.tanggal
-                  )}
-                </td>
-
-                <td
-                  class="border border-slate-300 px-3 py-3 font-semibold">
-                  ${escapeHtml(
-                    namaTampilan(
-                      item.namaGuru
-                    )
-                  )}
-                </td>
-
-                <td
-                  class="border border-slate-300 px-3 py-3 text-center ${statusClass}">
-                  ${escapeHtml(status)}
-                </td>
-
-                <td
-                  class="border border-slate-300 px-3 py-3 text-center">
-                  ${escapeHtml(
-                    item.jamMasuk || "-"
-                  )}
-                </td>
-
-                <td
-                  class="border border-slate-300 px-3 py-3 text-center">
-                  ${escapeHtml(
-                    item.jamPulang || "-"
-                  )}
-                </td>
-
-              </tr>
-
-            `;
-
-          }
-        );
+        detailKosong
+          .classList
+          .remove("hidden");
 
       }
 
+      else {
+
+        detailKosong
+          .classList
+          .add("hidden");
+
+      }
     }
 
 
-    /* =====================================================
-       ESCAPE HTML
-       ===================================================== */
+    // ======================================================
+    // RENDER SEMUA
+    // ======================================================
 
-    function escapeHtml(value) {
+    function renderSemua() {
 
-      return String(value ?? "")
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/"/g, "&quot;")
-        .replace(/'/g, "&#039;");
+      // Baca ulang LocalStorage
+      // agar data selalu terbaru
 
+      try {
+
+        dataGuru =
+          JSON.parse(
+            localStorage.getItem("dataGuru")
+          ) || [];
+
+      } catch (error) {
+
+        dataGuru = [];
+
+      }
+
+
+      try {
+
+        dataAbsensi =
+          JSON.parse(
+            localStorage.getItem("dataAbsensi")
+          ) || [];
+
+      } catch (error) {
+
+        dataAbsensi = [];
+
+      }
+
+
+      try {
+
+        dataHariLibur =
+          JSON.parse(
+            localStorage.getItem("dataHariLibur")
+          ) || [];
+
+      } catch (error) {
+
+        dataHariLibur = [];
+
+      }
+
+
+      if (!Array.isArray(dataGuru)) {
+        dataGuru = [];
+      }
+
+
+      if (!Array.isArray(dataAbsensi)) {
+        dataAbsensi = [];
+      }
+
+
+      if (!Array.isArray(dataHariLibur)) {
+        dataHariLibur = [];
+      }
+
+
+      renderRingkasan();
+
+      renderRekapGuru();
+
+      renderDetail();
     }
 
 
-    /* =====================================================
-       DEFAULT PERIODE
-       ===================================================== */
+    // ======================================================
+    // TANGGAL DEFAULT
+    // ======================================================
 
-    function setDefaultTanggal() {
+    function setTanggalDefault() {
 
       const sekarang =
         new Date();
@@ -1065,53 +1347,63 @@
       const bulan =
         String(
           sekarang.getMonth() + 1
-        ).padStart(2, "0");
+        )
+        .padStart(2, "0");
 
 
-      const tanggal =
+      const hari =
         String(
           sekarang.getDate()
-        ).padStart(2, "0");
+        )
+        .padStart(2, "0");
 
 
       const hariIni =
-        `${tahun}-${bulan}-${tanggal}`;
+        `${tahun}-${bulan}-${hari}`;
 
 
-      /*
-       * Default:
-       * tanggal 1 bulan berjalan
-       * sampai hari ini
-       */
-
-      document.getElementById(
-        "tanggalMulai"
-      ).value =
+      tanggalMulai.value =
         `${tahun}-${bulan}-01`;
 
 
-      document.getElementById(
-        "tanggalAkhir"
-      ).value =
+      tanggalSelesai.value =
         hariIni;
+    }
+
+
+    // ======================================================
+    // KEMBALI KE DASHBOARD
+    // ======================================================
+
+    function kembaliDashboard() {
+
+      window.location.href =
+        "dashboard.html";
 
     }
 
 
-    /* =====================================================
-       JALANKAN SAAT HALAMAN DIBUKA
-       ===================================================== */
+    // ======================================================
+    // AUTO REFRESH
+    // ======================================================
 
-    document.addEventListener(
-      "DOMContentLoaded",
+    window.addEventListener(
+      "storage",
       function() {
 
-        setDefaultTanggal();
-
-        tampilkanRekap();
+        renderSemua();
 
       }
     );
+
+
+    // ======================================================
+    // MULAI
+    // ======================================================
+
+    setTanggalDefault();
+
+    renderSemua();
 
   </script>
 
