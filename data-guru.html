@@ -1,36 +1,28 @@
-```html
 <!DOCTYPE html>
 <html lang="id">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Data Guru - Absensi Guru</title>
+
+    <title>Data Guru - Aplikasi Absensi Guru</title>
 
     <script src="https://cdn.tailwindcss.com"></script>
-
-    <style>
-        body {
-            background: #f1f5f9;
-        }
-
-        .modal-bg {
-            background: rgba(15, 23, 42, 0.55);
-        }
-    </style>
 </head>
 
-<body class="min-h-screen">
+<body class="bg-gray-100 min-h-screen">
 
     <!-- HEADER -->
     <header class="bg-blue-700 text-white shadow-lg">
-        <div class="max-w-7xl mx-auto px-4 py-4">
+        <div class="max-w-7xl mx-auto px-4 py-5">
+
             <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
 
                 <div>
                     <h1 class="text-2xl font-bold">
                         👨‍🏫 Data Guru
                     </h1>
-                    <p class="text-blue-100 text-sm">
+
+                    <p class="text-blue-100 text-sm mt-1">
                         Kelola data guru sekolah
                     </p>
                 </div>
@@ -38,10 +30,11 @@
                 <button
                     onclick="kembaliDashboard()"
                     class="bg-white text-blue-700 px-4 py-2 rounded-lg font-semibold hover:bg-blue-50 transition">
-                    ← Kembali ke Dashboard
+                    ← Dashboard
                 </button>
 
             </div>
+
         </div>
     </header>
 
@@ -49,566 +42,335 @@
     <!-- CONTENT -->
     <main class="max-w-7xl mx-auto px-4 py-6">
 
-        <!-- TOP ACTION -->
-        <div class="bg-white rounded-xl shadow-sm p-4 mb-5">
 
-            <div class="flex flex-col md:flex-row gap-3 md:items-center md:justify-between">
+        <!-- FORM -->
+        <section class="bg-white rounded-xl shadow-sm border border-gray-200 mb-6">
 
-                <div>
-                    <h2 class="text-lg font-bold text-slate-800">
-                        Daftar Guru
-                    </h2>
-                    <p class="text-sm text-slate-500">
-                        Total guru:
-                        <span id="jumlahGuru" class="font-semibold text-blue-700">0</span>
-                    </p>
+            <div class="border-b px-6 py-4">
+
+                <h2
+                    id="judulForm"
+                    class="text-lg font-bold text-gray-800">
+                    ➕ Tambah Data Guru
+                </h2>
+
+                <p class="text-sm text-gray-500 mt-1">
+                    Isi data guru dengan lengkap.
+                </p>
+
+            </div>
+
+
+            <div class="p-6">
+
+                <form id="formGuru">
+
+                    <input
+                        type="hidden"
+                        id="editId">
+
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+
+
+                        <!-- NAMA -->
+                        <div class="md:col-span-2">
+
+                            <label class="block text-sm font-semibold text-gray-700 mb-2">
+                                Nama Lengkap
+                            </label>
+
+                            <input
+                                type="text"
+                                id="nama"
+                                placeholder="Contoh: MUHAMMAD RASYID, S.PD.I"
+                                required
+                                class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500">
+
+                        </div>
+
+
+                        <!-- NIP -->
+                        <div>
+
+                            <label class="block text-sm font-semibold text-gray-700 mb-2">
+                                NIP
+                            </label>
+
+                            <input
+                                type="text"
+                                id="nip"
+                                placeholder="Contoh: 198309282025211071"
+                                class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500">
+
+                        </div>
+
+
+                        <!-- NIK -->
+                        <div>
+
+                            <label class="block text-sm font-semibold text-gray-700 mb-2">
+                                NIK
+                            </label>
+
+                            <input
+                                type="text"
+                                id="nik"
+                                placeholder="Nomor Induk Kependudukan"
+                                class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500">
+
+                        </div>
+
+
+                        <!-- JABATAN -->
+                        <div>
+
+                            <label class="block text-sm font-semibold text-gray-700 mb-2">
+                                Jabatan
+                            </label>
+
+                            <select
+                                id="jabatan"
+                                class="w-full border border-gray-300 rounded-lg px-4 py-3 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500">
+
+                                <option value="">
+                                    Pilih Jabatan
+                                </option>
+
+                                <option value="Kepala Sekolah">
+                                    Kepala Sekolah
+                                </option>
+
+                                <option value="Guru Kelas">
+                                    Guru Kelas
+                                </option>
+
+                                <option value="Guru Mata Pelajaran">
+                                    Guru Mata Pelajaran
+                                </option>
+
+                                <option value="Guru PJOK">
+                                    Guru PJOK
+                                </option>
+
+                                <option value="Guru PAI">
+                                    Guru PAI
+                                </option>
+
+                                <option value="Operator Sekolah">
+                                    Operator Sekolah
+                                </option>
+
+                                <option value="Tenaga Kependidikan">
+                                    Tenaga Kependidikan
+                                </option>
+
+                                <option value="Lainnya">
+                                    Lainnya
+                                </option>
+
+                            </select>
+
+                        </div>
+
+
+                        <!-- STATUS -->
+                        <div>
+
+                            <label class="block text-sm font-semibold text-gray-700 mb-2">
+                                Status Kepegawaian
+                            </label>
+
+                            <select
+                                id="status"
+                                class="w-full border border-gray-300 rounded-lg px-4 py-3 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500">
+
+                                <option value="">
+                                    Pilih Status
+                                </option>
+
+                                <option value="PNS">
+                                    PNS
+                                </option>
+
+                                <option value="PPPK">
+                                    PPPK
+                                </option>
+
+                                <option value="Non ASN">
+                                    Non ASN
+                                </option>
+
+                                <option value="Honorer">
+                                    Honorer
+                                </option>
+
+                                <option value="Lainnya">
+                                    Lainnya
+                                </option>
+
+                            </select>
+
+                        </div>
+
+
+                    </div>
+
+
+                    <!-- TOMBOL -->
+                    <div class="flex flex-wrap gap-3 mt-6">
+
+                        <button
+                            type="submit"
+                            id="btnSimpan"
+                            class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-semibold transition">
+
+                            💾 Simpan Guru
+
+                        </button>
+
+
+                        <button
+                            type="button"
+                            onclick="resetForm()"
+                            class="bg-gray-200 hover:bg-gray-300 text-gray-700 px-6 py-3 rounded-lg font-semibold transition">
+
+                            🔄 Batal / Reset
+
+                        </button>
+
+                    </div>
+
+                </form>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- DAFTAR GURU -->
+        <section class="bg-white rounded-xl shadow-sm border border-gray-200">
+
+            <div class="border-b px-6 py-4">
+
+                <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+
+                    <div>
+
+                        <h2 class="text-lg font-bold text-gray-800">
+                            📋 Daftar Guru
+                        </h2>
+
+                        <p class="text-sm text-gray-500 mt-1">
+                            <span id="jumlahGuru">0</span> guru terdaftar
+                        </p>
+
+                    </div>
+
+
+                    <!-- PENCARIAN -->
+                    <div class="w-full md:w-80">
+
+                        <input
+                            type="text"
+                            id="cariGuru"
+                            placeholder="🔍 Cari nama atau NIP..."
+                            class="w-full border border-gray-300 rounded-lg px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-blue-500">
+
+                    </div>
+
                 </div>
 
-                <button
-                    onclick="bukaModalTambah()"
-                    class="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2.5 rounded-lg font-semibold transition">
-                    + Tambah Guru
-                </button>
-
             </div>
 
-            <!-- SEARCH -->
-            <div class="mt-4">
-                <input
-                    type="text"
-                    id="searchInput"
-                    oninput="tampilkanGuru()"
-                    placeholder="🔍 Cari berdasarkan NIP, nama, atau jabatan..."
-                    class="w-full border border-slate-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500">
-            </div>
 
-        </div>
-
-
-        <!-- TABLE -->
-        <div class="bg-white rounded-xl shadow-sm overflow-hidden">
-
+            <!-- TABLE -->
             <div class="overflow-x-auto">
 
-                <table class="w-full text-sm">
+                <table class="w-full border-collapse">
 
-                    <thead class="bg-slate-100 border-b">
-                        <tr>
-                            <th class="px-4 py-3 text-left font-bold text-slate-700">
+                    <thead>
+
+                        <tr class="bg-gray-50">
+
+                            <th class="border-b px-4 py-3 text-center text-sm">
                                 No
                             </th>
 
-                            <th class="px-4 py-3 text-left font-bold text-slate-700">
-                                NIP
-                            </th>
-
-                            <th class="px-4 py-3 text-left font-bold text-slate-700">
+                            <th class="border-b px-4 py-3 text-left text-sm">
                                 Nama Guru
                             </th>
 
-                            <th class="px-4 py-3 text-left font-bold text-slate-700">
+                            <th class="border-b px-4 py-3 text-left text-sm">
+                                NIP
+                            </th>
+
+                            <th class="border-b px-4 py-3 text-left text-sm">
                                 Jabatan
                             </th>
 
-                            <th class="px-4 py-3 text-center font-bold text-slate-700">
+                            <th class="border-b px-4 py-3 text-left text-sm">
+                                Status
+                            </th>
+
+                            <th class="border-b px-4 py-3 text-center text-sm">
                                 Aksi
                             </th>
+
                         </tr>
+
                     </thead>
 
-                    <tbody id="tabelGuru"></tbody>
+
+                    <tbody id="tabelGuru">
+
+                        <tr>
+
+                            <td
+                                colspan="6"
+                                class="px-4 py-8 text-center text-gray-500">
+
+                                Belum ada data guru.
+
+                            </td>
+
+                        </tr>
+
+                    </tbody>
 
                 </table>
 
             </div>
 
-            <!-- EMPTY STATE -->
-            <div id="dataKosong" class="hidden text-center py-12 px-4">
+        </section>
 
-                <div class="text-5xl mb-3">
-                    👨‍🏫
-                </div>
 
-                <h3 class="font-bold text-lg text-slate-700">
-                    Belum ada data guru
-                </h3>
-
-                <p class="text-slate-500 text-sm mt-1">
-                    Silakan tambahkan data guru terlebih dahulu.
-                </p>
-
-                <button
-                    onclick="bukaModalTambah()"
-                    class="mt-4 bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded-lg">
-                    + Tambah Guru
-                </button>
-
-            </div>
-
+        <!-- STATUS -->
+        <div
+            id="pesan"
+            class="hidden mt-5 rounded-lg px-4 py-3 text-sm font-medium">
         </div>
+
 
     </main>
-
-
-    <!-- MODAL -->
-    <div
-        id="modalGuru"
-        class="hidden fixed inset-0 z-50 modal-bg items-center justify-center p-4">
-
-        <div class="bg-white w-full max-w-lg rounded-2xl shadow-2xl">
-
-            <!-- MODAL HEADER -->
-            <div class="px-6 py-4 border-b flex items-center justify-between">
-
-                <div>
-                    <h2 id="judulModal" class="text-xl font-bold text-slate-800">
-                        Tambah Guru
-                    </h2>
-
-                    <p class="text-sm text-slate-500">
-                        Lengkapi informasi guru
-                    </p>
-                </div>
-
-                <button
-                    onclick="tutupModal()"
-                    class="text-slate-400 hover:text-red-500 text-2xl">
-                    ×
-                </button>
-
-            </div>
-
-
-            <!-- FORM -->
-            <form id="formGuru" onsubmit="simpanGuru(event)" class="p-6">
-
-                <input type="hidden" id="editIndex">
-
-
-                <!-- NIP -->
-                <div class="mb-4">
-
-                    <label class="block text-sm font-semibold text-slate-700 mb-1">
-                        NIP
-                    </label>
-
-                    <input
-                        type="text"
-                        id="nip"
-                        placeholder="Masukkan NIP"
-                        class="w-full border border-slate-300 rounded-lg px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-blue-500">
-
-                </div>
-
-
-                <!-- NAMA -->
-                <div class="mb-4">
-
-                    <label class="block text-sm font-semibold text-slate-700 mb-1">
-                        Nama Guru
-                    </label>
-
-                    <input
-                        type="text"
-                        id="nama"
-                        placeholder="Masukkan nama lengkap"
-                        required
-                        class="w-full border border-slate-300 rounded-lg px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-blue-500">
-
-                </div>
-
-
-                <!-- JABATAN -->
-                <div class="mb-4">
-
-                    <label class="block text-sm font-semibold text-slate-700 mb-1">
-                        Jabatan
-                    </label>
-
-                    <select
-                        id="jabatan"
-                        required
-                        class="w-full border border-slate-300 rounded-lg px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-blue-500">
-
-                        <option value="">
-                            -- Pilih Jabatan --
-                        </option>
-
-                        <option value="Kepala Sekolah">
-                            Kepala Sekolah
-                        </option>
-
-                        <option value="Guru Kelas">
-                            Guru Kelas
-                        </option>
-
-                        <option value="Guru Mata Pelajaran">
-                            Guru Mata Pelajaran
-                        </option>
-
-                        <option value="Guru PJOK">
-                            Guru PJOK
-                        </option>
-
-                        <option value="Guru PAI">
-                            Guru PAI
-                        </option>
-
-                        <option value="Operator Sekolah">
-                            Operator Sekolah
-                        </option>
-
-                        <option value="Tenaga Kependidikan">
-                            Tenaga Kependidikan
-                        </option>
-
-                    </select>
-
-                </div>
-
-
-                <!-- BUTTON -->
-                <div class="flex gap-3 pt-3">
-
-                    <button
-                        type="button"
-                        onclick="tutupModal()"
-                        class="flex-1 border border-slate-300 text-slate-700 py-2.5 rounded-lg font-semibold hover:bg-slate-50">
-                        Batal
-                    </button>
-
-                    <button
-                        type="submit"
-                        class="flex-1 bg-blue-600 hover:bg-blue-700 text-white py-2.5 rounded-lg font-semibold">
-                        💾 Simpan
-                    </button>
-
-                </div>
-
-            </form>
-
-        </div>
-
-    </div>
 
 
     <!-- JAVASCRIPT -->
     <script>
 
         // ==========================================
-        // DATA GURU
+        // STORAGE
         // ==========================================
 
-        let dataGuru = JSON.parse(
-            localStorage.getItem("dataGuru")
-        ) || [];
+        const STORAGE_KEY = "dataGuru";
 
 
-        // ==========================================
-        // TAMPILKAN DATA
-        // ==========================================
-
-        function tampilkanGuru() {
-
-            const tabel = document.getElementById("tabelGuru");
-            const kosong = document.getElementById("dataKosong");
-            const search = document
-                .getElementById("searchInput")
-                .value
-                .toLowerCase()
-                .trim();
-
-            tabel.innerHTML = "";
-
-            const hasil = dataGuru.filter(guru => {
-
-                return (
-                    guru.nip.toLowerCase().includes(search) ||
-                    guru.nama.toLowerCase().includes(search) ||
-                    guru.jabatan.toLowerCase().includes(search)
-                );
-
-            });
-
-
-            document.getElementById("jumlahGuru").textContent =
-                dataGuru.length;
-
-
-            if (hasil.length === 0) {
-
-                kosong.classList.remove("hidden");
-
-                return;
-
-            }
-
-            kosong.classList.add("hidden");
-
-
-            hasil.forEach((guru) => {
-
-                const indexAsli =
-                    dataGuru.indexOf(guru);
-
-                const tr = document.createElement("tr");
-
-                tr.className =
-                    "border-b hover:bg-slate-50";
-
-
-                tr.innerHTML = `
-
-                    <td class="px-4 py-3">
-                        ${indexAsli + 1}
-                    </td>
-
-                    <td class="px-4 py-3 text-slate-600">
-                        ${escapeHTML(guru.nip || "-")}
-                    </td>
-
-                    <td class="px-4 py-3 font-semibold text-slate-800">
-                        ${escapeHTML(guru.nama)}
-                    </td>
-
-                    <td class="px-4 py-3">
-                        <span class="inline-block bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-xs font-semibold">
-                            ${escapeHTML(guru.jabatan)}
-                        </span>
-                    </td>
-
-                    <td class="px-4 py-3">
-
-                        <div class="flex justify-center gap-2">
-
-                            <button
-                                onclick="editGuru(${indexAsli})"
-                                class="bg-amber-100 text-amber-700 hover:bg-amber-200 px-3 py-1.5 rounded-lg font-semibold">
-                                ✏️ Edit
-                            </button>
-
-                            <button
-                                onclick="hapusGuru(${indexAsli})"
-                                class="bg-red-100 text-red-700 hover:bg-red-200 px-3 py-1.5 rounded-lg font-semibold">
-                                🗑️ Hapus
-                            </button>
-
-                        </div>
-
-                    </td>
-
-                `;
-
-                tabel.appendChild(tr);
-
-            });
-
-        }
+        let dataGuru = [];
 
 
         // ==========================================
-        // MODAL TAMBAH
-        // ==========================================
-
-        function bukaModalTambah() {
-
-            document.getElementById("formGuru").reset();
-
-            document.getElementById("editIndex").value = "";
-
-            document.getElementById("judulModal").textContent =
-                "Tambah Guru";
-
-            const modal =
-                document.getElementById("modalGuru");
-
-            modal.classList.remove("hidden");
-
-            modal.classList.add("flex");
-
-            setTimeout(() => {
-                document.getElementById("nama").focus();
-            }, 100);
-
-        }
-
-
-        // ==========================================
-        // TUTUP MODAL
-        // ==========================================
-
-        function tutupModal() {
-
-            const modal =
-                document.getElementById("modalGuru");
-
-            modal.classList.add("hidden");
-
-            modal.classList.remove("flex");
-
-        }
-
-
-        // ==========================================
-        // SIMPAN DATA
-        // ==========================================
-
-        function simpanGuru(event) {
-
-            event.preventDefault();
-
-
-            const nip =
-                document.getElementById("nip").value.trim();
-
-            const nama =
-                document.getElementById("nama").value.trim();
-
-            const jabatan =
-                document.getElementById("jabatan").value;
-
-
-            if (!nama || !jabatan) {
-
-                alert("Nama guru dan jabatan wajib diisi.");
-
-                return;
-
-            }
-
-
-            const editIndex =
-                document.getElementById("editIndex").value;
-
-
-            const dataBaru = {
-                nip: nip,
-                nama: nama,
-                jabatan: jabatan
-            };
-
-
-            if (editIndex === "") {
-
-                dataGuru.push(dataBaru);
-
-                alert("Data guru berhasil ditambahkan.");
-
-            } else {
-
-                dataGuru[parseInt(editIndex)] =
-                    dataBaru;
-
-                alert("Data guru berhasil diperbarui.");
-
-            }
-
-
-            simpanKeLocalStorage();
-
-            tampilkanGuru();
-
-            tutupModal();
-
-        }
-
-
-        // ==========================================
-        // EDIT GURU
-        // ==========================================
-
-        function editGuru(index) {
-
-            const guru = dataGuru[index];
-
-
-            document.getElementById("editIndex").value =
-                index;
-
-            document.getElementById("nip").value =
-                guru.nip;
-
-            document.getElementById("nama").value =
-                guru.nama;
-
-            document.getElementById("jabatan").value =
-                guru.jabatan;
-
-
-            document.getElementById("judulModal").textContent =
-                "Edit Data Guru";
-
-
-            const modal =
-                document.getElementById("modalGuru");
-
-            modal.classList.remove("hidden");
-
-            modal.classList.add("flex");
-
-        }
-
-
-        // ==========================================
-        // HAPUS GURU
-        // ==========================================
-
-        function hapusGuru(index) {
-
-            const guru = dataGuru[index];
-
-
-            const yakin = confirm(
-                "Hapus data guru \"" +
-                guru.nama +
-                "\"?"
-            );
-
-
-            if (!yakin) return;
-
-
-            dataGuru.splice(index, 1);
-
-            simpanKeLocalStorage();
-
-            tampilkanGuru();
-
-        }
-
-
-        // ==========================================
-        // LOCAL STORAGE
-        // ==========================================
-
-        function simpanKeLocalStorage() {
-
-            localStorage.setItem(
-                "dataGuru",
-                JSON.stringify(dataGuru)
-            );
-
-        }
-
-
-        // ==========================================
-        // ESCAPE HTML
-        // ==========================================
-
-        function escapeHTML(text) {
-
-            return String(text)
-                .replace(/&/g, "&amp;")
-                .replace(/</g, "&lt;")
-                .replace(/>/g, "&gt;")
-                .replace(/"/g, "&quot;")
-                .replace(/'/g, "&#039;");
-
-        }
-
-
-        // ==========================================
-        // KEMBALI DASHBOARD
+        // DASHBOARD
         // ==========================================
 
         function kembaliDashboard() {
@@ -620,48 +382,687 @@
 
 
         // ==========================================
-        // KLIK DI LUAR MODAL
+        // LOAD DATA
+        // ==========================================
+
+        function loadData() {
+
+            const data =
+                localStorage.getItem(STORAGE_KEY);
+
+
+            if (!data) {
+
+                dataGuru = [];
+
+                return;
+
+            }
+
+
+            try {
+
+                const hasil =
+                    JSON.parse(data);
+
+
+                dataGuru =
+                    Array.isArray(hasil)
+                    ? hasil
+                    : [];
+
+
+            } catch (error) {
+
+                console.error(error);
+
+                dataGuru = [];
+
+            }
+
+        }
+
+
+        // ==========================================
+        // SIMPAN STORAGE
+        // ==========================================
+
+        function simpanStorage() {
+
+            localStorage.setItem(
+                STORAGE_KEY,
+                JSON.stringify(dataGuru)
+            );
+
+        }
+
+
+        // ==========================================
+        // BUAT ID
+        // ==========================================
+
+        function buatId() {
+
+            return (
+                Date.now().toString() +
+                Math.random()
+                    .toString(36)
+                    .substring(2, 8)
+            );
+
+        }
+
+
+        // ==========================================
+        // FORM SUBMIT
         // ==========================================
 
         document
-            .getElementById("modalGuru")
-            .addEventListener("click", function(event) {
+            .getElementById("formGuru")
+            .addEventListener(
+                "submit",
+                function (event) {
 
-                if (event.target === this) {
+                    event.preventDefault();
 
-                    tutupModal();
+
+                    const editId =
+                        document.getElementById(
+                            "editId"
+                        ).value;
+
+
+                    const nama =
+                        document.getElementById(
+                            "nama"
+                        ).value.trim();
+
+
+                    const nip =
+                        document.getElementById(
+                            "nip"
+                        ).value.trim();
+
+
+                    const nik =
+                        document.getElementById(
+                            "nik"
+                        ).value.trim();
+
+
+                    const jabatan =
+                        document.getElementById(
+                            "jabatan"
+                        ).value;
+
+
+                    const status =
+                        document.getElementById(
+                            "status"
+                        ).value;
+
+
+                    if (!nama) {
+
+                        tampilkanPesan(
+                            "Nama guru wajib diisi.",
+                            "error"
+                        );
+
+                        return;
+
+                    }
+
+
+                    // ==================================
+                    // EDIT
+                    // ==================================
+
+                    if (editId) {
+
+                        const index =
+                            dataGuru.findIndex(
+                                guru =>
+                                    String(guru.id) ===
+                                    String(editId)
+                            );
+
+
+                        if (index !== -1) {
+
+                            dataGuru[index] = {
+
+                                ...dataGuru[index],
+
+                                nama: nama,
+
+                                nip: nip,
+
+                                nik: nik,
+
+                                jabatan: jabatan,
+
+                                status: status
+
+                            };
+
+                        }
+
+
+                        tampilkanPesan(
+                            "Data guru berhasil diperbarui.",
+                            "success"
+                        );
+
+                    }
+
+
+                    // ==================================
+                    // TAMBAH
+                    // ==================================
+
+                    else {
+
+                        const guruBaru = {
+
+                            id: buatId(),
+
+                            nama: nama,
+
+                            nip: nip,
+
+                            nik: nik,
+
+                            jabatan: jabatan,
+
+                            status: status
+
+                        };
+
+
+                        dataGuru.push(
+                            guruBaru
+                        );
+
+
+                        tampilkanPesan(
+                            "Data guru berhasil ditambahkan.",
+                            "success"
+                        );
+
+                    }
+
+
+                    simpanStorage();
+
+                    resetForm();
+
+                    renderTabel();
 
                 }
-
-            });
+            );
 
 
         // ==========================================
-        // ESC UNTUK TUTUP MODAL
+        // RENDER TABEL
+        // ==========================================
+
+        function renderTabel() {
+
+            const tbody =
+                document.getElementById(
+                    "tabelGuru"
+                );
+
+
+            const pencarian =
+                document.getElementById(
+                    "cariGuru"
+                )
+                .value
+                .trim()
+                .toLowerCase();
+
+
+            const hasil =
+                dataGuru.filter(guru => {
+
+                    const nama =
+                        String(
+                            guru.nama ||
+                            ""
+                        ).toLowerCase();
+
+
+                    const nip =
+                        String(
+                            guru.nip ||
+                            ""
+                        ).toLowerCase();
+
+
+                    return (
+                        nama.includes(pencarian) ||
+                        nip.includes(pencarian)
+                    );
+
+                });
+
+
+            document.getElementById(
+                "jumlahGuru"
+            ).textContent =
+                dataGuru.length;
+
+
+            if (!hasil.length) {
+
+                tbody.innerHTML = `
+
+                    <tr>
+
+                        <td
+                            colspan="6"
+                            class="px-4 py-8 text-center text-gray-500">
+
+                            ${
+                                dataGuru.length
+                                ? "Data guru tidak ditemukan."
+                                : "Belum ada data guru."
+                            }
+
+                        </td>
+
+                    </tr>
+
+                `;
+
+                return;
+
+            }
+
+
+            tbody.innerHTML =
+                hasil.map(
+                    (guru, index) => {
+
+                        return `
+
+                            <tr class="hover:bg-gray-50">
+
+                                <td class="border-b px-4 py-3 text-center text-sm">
+                                    ${index + 1}
+                                </td>
+
+
+                                <td class="border-b px-4 py-3 text-sm font-medium">
+                                    ${escapeHTML(
+                                        guru.nama ||
+                                        "-"
+                                    )}
+                                </td>
+
+
+                                <td class="border-b px-4 py-3 text-sm">
+                                    ${escapeHTML(
+                                        guru.nip ||
+                                        "-"
+                                    )}
+                                </td>
+
+
+                                <td class="border-b px-4 py-3 text-sm">
+                                    ${escapeHTML(
+                                        guru.jabatan ||
+                                        "-"
+                                    )}
+                                </td>
+
+
+                                <td class="border-b px-4 py-3 text-sm">
+                                    ${escapeHTML(
+                                        guru.status ||
+                                        "-"
+                                    )}
+                                </td>
+
+
+                                <td class="border-b px-4 py-3">
+
+                                    <div class="flex justify-center gap-2">
+
+                                        <button
+                                            onclick="editGuru('${guru.id}')"
+                                            class="bg-yellow-500 hover:bg-yellow-600 text-white px-3 py-1.5 rounded-lg text-sm">
+
+                                            ✏️ Edit
+
+                                        </button>
+
+
+                                        <button
+                                            onclick="hapusGuru('${guru.id}')"
+                                            class="bg-red-500 hover:bg-red-600 text-white px-3 py-1.5 rounded-lg text-sm">
+
+                                            🗑️ Hapus
+
+                                        </button>
+
+                                    </div>
+
+                                </td>
+
+                            </tr>
+
+                        `;
+
+                    }
+                )
+                .join("");
+
+        }
+
+
+        // ==========================================
+        // EDIT GURU
+        // ==========================================
+
+        function editGuru(id) {
+
+            const guru =
+                dataGuru.find(
+                    item =>
+                        String(item.id) ===
+                        String(id)
+                );
+
+
+            if (!guru) {
+
+                tampilkanPesan(
+                    "Data guru tidak ditemukan.",
+                    "error"
+                );
+
+                return;
+
+            }
+
+
+            document.getElementById(
+                "editId"
+            ).value =
+                guru.id;
+
+
+            document.getElementById(
+                "nama"
+            ).value =
+                guru.nama || "";
+
+
+            document.getElementById(
+                "nip"
+            ).value =
+                guru.nip || "";
+
+
+            document.getElementById(
+                "nik"
+            ).value =
+                guru.nik || "";
+
+
+            document.getElementById(
+                "jabatan"
+            ).value =
+                guru.jabatan || "";
+
+
+            document.getElementById(
+                "status"
+            ).value =
+                guru.status || "";
+
+
+            document.getElementById(
+                "judulForm"
+            ).textContent =
+                "✏️ Edit Data Guru";
+
+
+            document.getElementById(
+                "btnSimpan"
+            ).textContent =
+                "💾 Update Guru";
+
+
+            window.scrollTo({
+                top: 0,
+                behavior: "smooth"
+            });
+
+        }
+
+
+        // ==========================================
+        // HAPUS GURU
+        // ==========================================
+
+        function hapusGuru(id) {
+
+            const guru =
+                dataGuru.find(
+                    item =>
+                        String(item.id) ===
+                        String(id)
+                );
+
+
+            if (!guru) {
+
+                return;
+
+            }
+
+
+            const yakin =
+                confirm(
+                    "Hapus data guru:\n\n" +
+                    guru.nama +
+                    "?"
+                );
+
+
+            if (!yakin) {
+
+                return;
+
+            }
+
+
+            dataGuru =
+                dataGuru.filter(
+                    item =>
+                        String(item.id) !==
+                        String(id)
+                );
+
+
+            simpanStorage();
+
+            renderTabel();
+
+
+            tampilkanPesan(
+                "Data guru berhasil dihapus.",
+                "success"
+            );
+
+        }
+
+
+        // ==========================================
+        // RESET FORM
+        // ==========================================
+
+        function resetForm() {
+
+            document.getElementById(
+                "formGuru"
+            ).reset();
+
+
+            document.getElementById(
+                "editId"
+            ).value = "";
+
+
+            document.getElementById(
+                "judulForm"
+            ).textContent =
+                "➕ Tambah Data Guru";
+
+
+            document.getElementById(
+                "btnSimpan"
+            ).textContent =
+                "💾 Simpan Guru";
+
+        }
+
+
+        // ==========================================
+        // PENCARIAN
+        // ==========================================
+
+        document
+            .getElementById("cariGuru")
+            .addEventListener(
+                "input",
+                renderTabel
+            );
+
+
+        // ==========================================
+        // PESAN
+        // ==========================================
+
+        function tampilkanPesan(
+            pesan,
+            tipe
+        ) {
+
+            const element =
+                document.getElementById(
+                    "pesan"
+                );
+
+
+            element.textContent =
+                pesan;
+
+
+            element.classList.remove(
+                "hidden",
+                "bg-green-100",
+                "text-green-800",
+                "border-green-300",
+                "bg-red-100",
+                "text-red-800",
+                "border-red-300"
+            );
+
+
+            if (tipe === "success") {
+
+                element.classList.add(
+                    "bg-green-100",
+                    "text-green-800",
+                    "border",
+                    "border-green-300"
+                );
+
+            } else {
+
+                element.classList.add(
+                    "bg-red-100",
+                    "text-red-800",
+                    "border",
+                    "border-red-300"
+                );
+
+            }
+
+
+            setTimeout(
+                function () {
+
+                    element.classList.add(
+                        "hidden"
+                    );
+
+                },
+                3000
+            );
+
+        }
+
+
+        // ==========================================
+        // ESCAPE HTML
+        // ==========================================
+
+        function escapeHTML(value) {
+
+            return String(value ?? "")
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#039;");
+
+        }
+
+
+        // ==========================================
+        // INIT
         // ==========================================
 
         document.addEventListener(
-            "keydown",
-            function(event) {
+            "DOMContentLoaded",
+            function () {
 
-                if (event.key === "Escape") {
+                loadData();
 
-                    tutupModal();
-
-                }
+                renderTabel();
 
             }
         );
 
 
         // ==========================================
-        // JALANKAN SAAT HALAMAN DIBUKA
+        // UPDATE JIKA STORAGE BERUBAH
         // ==========================================
 
-        tampilkanGuru();
+        window.addEventListener(
+            "storage",
+            function (event) {
+
+                if (
+                    event.key === STORAGE_KEY
+                ) {
+
+                    loadData();
+
+                    renderTabel();
+
+                }
+
+            }
+        );
 
     </script>
 
 </body>
 </html>
-```
