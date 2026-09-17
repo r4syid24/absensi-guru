@@ -1,4 +1,4 @@
-```html
+
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -8,12 +8,34 @@
   <title>Rekap Absensi Guru</title>
 
   <script src="https://cdn.tailwindcss.com"></script>
+
+  <style>
+    @media print {
+      body {
+        background: white !important;
+      }
+
+      .no-print {
+        display: none !important;
+      }
+
+      .print-area {
+        box-shadow: none !important;
+        border: none !important;
+      }
+
+      table {
+        width: 100% !important;
+      }
+    }
+  </style>
 </head>
 
 <body class="bg-gray-100 min-h-screen">
 
   <!-- HEADER -->
-  <header class="bg-blue-700 text-white shadow">
+  <header class="bg-blue-700 text-white shadow no-print">
+
     <div class="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
 
       <div>
@@ -34,14 +56,58 @@
       </button>
 
     </div>
+
   </header>
 
 
   <!-- KONTEN -->
   <main class="max-w-7xl mx-auto px-4 py-6">
 
-    <!-- FILTER -->
+    <!-- IDENTITAS REKAP -->
     <div class="bg-white rounded-xl shadow p-5 mb-5">
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+
+        <div>
+          <p class="text-sm text-gray-500">
+            Tahun Pelajaran
+          </p>
+
+          <p class="text-lg font-bold text-blue-700">
+            2026/2027
+          </p>
+        </div>
+
+        <div>
+          <p class="text-sm text-gray-500">
+            Semester
+          </p>
+
+          <p class="text-lg font-bold text-blue-700">
+            Ganjil
+          </p>
+        </div>
+
+        <div>
+          <p class="text-sm text-gray-500">
+            Periode
+          </p>
+
+          <p
+            id="labelPeriode"
+            class="text-lg font-bold text-blue-700"
+          >
+            Semua Bulan Tahun 2026
+          </p>
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <!-- FILTER -->
+    <div class="bg-white rounded-xl shadow p-5 mb-5 no-print">
 
       <h2 class="text-lg font-bold text-gray-800 mb-4">
         🔎 Filter Rekap
@@ -51,6 +117,7 @@
 
         <!-- TANGGAL MULAI -->
         <div>
+
           <label class="block text-sm font-semibold text-gray-700 mb-2">
             📅 Dari Tanggal
           </label>
@@ -61,11 +128,13 @@
             onchange="renderSemua()"
             class="w-full border border-gray-300 rounded-lg px-4 py-3 outline-none focus:ring-2 focus:ring-blue-500"
           >
+
         </div>
 
 
         <!-- TANGGAL SELESAI -->
         <div>
+
           <label class="block text-sm font-semibold text-gray-700 mb-2">
             📅 Sampai Tanggal
           </label>
@@ -76,11 +145,13 @@
             onchange="renderSemua()"
             class="w-full border border-gray-300 rounded-lg px-4 py-3 outline-none focus:ring-2 focus:ring-blue-500"
           >
+
         </div>
 
 
         <!-- CARI GURU -->
         <div>
+
           <label class="block text-sm font-semibold text-gray-700 mb-2">
             🔎 Cari Guru
           </label>
@@ -92,9 +163,11 @@
             oninput="renderSemua()"
             class="w-full border border-gray-300 rounded-lg px-4 py-3 outline-none focus:ring-2 focus:ring-blue-500"
           >
+
         </div>
 
       </div>
+
     </div>
 
 
@@ -103,73 +176,103 @@
 
       <!-- TOTAL GURU -->
       <div class="bg-white rounded-xl shadow p-4">
+
         <p class="text-sm text-gray-500">
           Total Guru
         </p>
 
-        <p id="totalGuru" class="text-2xl font-bold text-blue-700">
+        <p
+          id="totalGuru"
+          class="text-2xl font-bold text-blue-700"
+        >
           0
         </p>
+
       </div>
 
 
       <!-- HADIR -->
       <div class="bg-white rounded-xl shadow p-4">
+
         <p class="text-sm text-gray-500">
           Hadir
         </p>
 
-        <p id="totalHadir" class="text-2xl font-bold text-green-600">
+        <p
+          id="totalHadir"
+          class="text-2xl font-bold text-green-600"
+        >
           0
         </p>
-      </div>
 
-
-      <!-- TERLAMBAT -->
-      <div class="bg-white rounded-xl shadow p-4">
-        <p class="text-sm text-gray-500">
-          Terlambat
-        </p>
-
-        <p id="totalTerlambat" class="text-2xl font-bold text-yellow-600">
-          0
-        </p>
       </div>
 
 
       <!-- IZIN -->
       <div class="bg-white rounded-xl shadow p-4">
+
         <p class="text-sm text-gray-500">
           Izin
         </p>
 
-        <p id="totalIzin" class="text-2xl font-bold text-orange-600">
+        <p
+          id="totalIzin"
+          class="text-2xl font-bold text-orange-600"
+        >
           0
         </p>
+
       </div>
 
 
       <!-- SAKIT -->
       <div class="bg-white rounded-xl shadow p-4">
+
         <p class="text-sm text-gray-500">
           Sakit
         </p>
 
-        <p id="totalSakit" class="text-2xl font-bold text-purple-600">
+        <p
+          id="totalSakit"
+          class="text-2xl font-bold text-purple-600"
+        >
           0
         </p>
+
+      </div>
+
+
+      <!-- DINAS -->
+      <div class="bg-white rounded-xl shadow p-4">
+
+        <p class="text-sm text-gray-500">
+          Dinas
+        </p>
+
+        <p
+          id="totalDinas"
+          class="text-2xl font-bold text-indigo-600"
+        >
+          0
+        </p>
+
       </div>
 
 
       <!-- ALPA -->
       <div class="bg-white rounded-xl shadow p-4">
+
         <p class="text-sm text-gray-500">
           Alpa
         </p>
 
-        <p id="totalAlpa" class="text-2xl font-bold text-red-600">
+        <p
+          id="totalAlpa"
+          class="text-2xl font-bold text-red-600"
+        >
           0
         </p>
+
       </div>
 
     </div>
@@ -185,16 +288,18 @@
 
 
     <!-- REKAP PER GURU -->
-    <div class="bg-white rounded-xl shadow overflow-hidden mb-5">
+    <div class="bg-white rounded-xl shadow overflow-hidden mb-5 print-area">
 
       <div class="p-5 border-b">
+
         <h2 class="text-lg font-bold text-gray-800">
-          👨‍🏫 Rekap Per Guru
+          👨‍🏫 Rekap Absensi Per Guru
         </h2>
 
         <p class="text-sm text-gray-500 mt-1">
-          Rekap berdasarkan data absensi yang tersimpan.
+          Rekapitulasi kehadiran berdasarkan periode yang dipilih.
         </p>
+
       </div>
 
 
@@ -203,6 +308,7 @@
         <table class="w-full text-sm">
 
           <thead class="bg-gray-50 border-b">
+
             <tr>
 
               <th class="px-4 py-3 text-left">
@@ -210,23 +316,15 @@
               </th>
 
               <th class="px-4 py-3 text-left">
-                NIP
-              </th>
-
-              <th class="px-4 py-3 text-left">
                 Nama Guru
               </th>
 
               <th class="px-4 py-3 text-left">
-                Jabatan
+                NIP
               </th>
 
               <th class="px-4 py-3 text-center">
                 Hadir
-              </th>
-
-              <th class="px-4 py-3 text-center">
-                Terlambat
               </th>
 
               <th class="px-4 py-3 text-center">
@@ -238,14 +336,19 @@
               </th>
 
               <th class="px-4 py-3 text-center">
+                Dinas
+              </th>
+
+              <th class="px-4 py-3 text-center">
                 Alpa
               </th>
 
               <th class="px-4 py-3 text-center">
-                Total
+                Persentase
               </th>
 
             </tr>
+
           </thead>
 
           <tbody id="tabelRekap"></tbody>
@@ -259,6 +362,7 @@
         id="rekapKosong"
         class="hidden p-10 text-center text-gray-500"
       >
+
         <div class="text-5xl mb-3">
           📭
         </div>
@@ -266,13 +370,14 @@
         <p class="font-semibold text-lg">
           Belum ada data guru
         </p>
+
       </div>
 
     </div>
 
 
     <!-- DETAIL -->
-    <div class="bg-white rounded-xl shadow overflow-hidden">
+    <div class="bg-white rounded-xl shadow overflow-hidden print-area">
 
       <div class="p-5 border-b">
 
@@ -355,6 +460,19 @@
 
     </div>
 
+
+    <!-- TOMBOL PRINT -->
+    <div class="mt-5 flex justify-end no-print">
+
+      <button
+        onclick="window.print()"
+        class="bg-green-600 text-white px-5 py-3 rounded-lg font-semibold hover:bg-green-700"
+      >
+        🖨️ Cetak Rekap
+      </button>
+
+    </div>
+
   </main>
 
 
@@ -364,39 +482,9 @@
     // DATA LOCALSTORAGE
     // ======================================================
 
-    let dataGuru =
-      JSON.parse(
-        localStorage.getItem("dataGuru")
-      ) || [];
-
-
-    let dataAbsensi =
-      JSON.parse(
-        localStorage.getItem("dataAbsensi")
-      ) || [];
-
-
-    let dataHariLibur =
-      JSON.parse(
-        localStorage.getItem("dataHariLibur")
-      ) || [];
-
-
-    // ======================================================
-    // NORMALISASI DATA
-    // ======================================================
-
-    if (!Array.isArray(dataGuru)) {
-      dataGuru = [];
-    }
-
-    if (!Array.isArray(dataAbsensi)) {
-      dataAbsensi = [];
-    }
-
-    if (!Array.isArray(dataHariLibur)) {
-      dataHariLibur = [];
-    }
+    let dataGuru = [];
+    let dataAbsensi = [];
+    let dataHariLibur = [];
 
 
     // ======================================================
@@ -427,6 +515,74 @@
     const infoRekap =
       document.getElementById("infoRekap");
 
+    const labelPeriode =
+      document.getElementById("labelPeriode");
+
+
+    // ======================================================
+    // BACA LOCALSTORAGE
+    // ======================================================
+
+    function bacaData() {
+
+      try {
+
+        dataGuru =
+          JSON.parse(
+            localStorage.getItem("dataGuru")
+          ) || [];
+
+      } catch (error) {
+
+        dataGuru = [];
+
+      }
+
+
+      try {
+
+        dataAbsensi =
+          JSON.parse(
+            localStorage.getItem("dataAbsensi")
+          ) || [];
+
+      } catch (error) {
+
+        dataAbsensi = [];
+
+      }
+
+
+      try {
+
+        dataHariLibur =
+          JSON.parse(
+            localStorage.getItem("dataHariLibur")
+          ) || [];
+
+      } catch (error) {
+
+        dataHariLibur = [];
+
+      }
+
+
+      if (!Array.isArray(dataGuru)) {
+        dataGuru = [];
+      }
+
+
+      if (!Array.isArray(dataAbsensi)) {
+        dataAbsensi = [];
+      }
+
+
+      if (!Array.isArray(dataHariLibur)) {
+        dataHariLibur = [];
+      }
+
+    }
+
 
     // ======================================================
     // FORMAT TANGGAL
@@ -438,12 +594,15 @@
         return "-";
       }
 
+
       const bagian =
-        tanggal.split("-");
+        String(tanggal).split("-");
+
 
       if (bagian.length !== 3) {
         return tanggal;
       }
+
 
       const tahun =
         parseInt(bagian[0]);
@@ -454,12 +613,14 @@
       const hari =
         parseInt(bagian[2]);
 
+
       const tanggalObjek =
         new Date(
           tahun,
           bulan,
           hari
         );
+
 
       const namaHari = [
         "Minggu",
@@ -470,6 +631,7 @@
         "Jumat",
         "Sabtu"
       ];
+
 
       const namaBulan = [
         "Januari",
@@ -486,7 +648,9 @@
         "Desember"
       ];
 
+
       return `${namaHari[tanggalObjek.getDay()]}, ${hari} ${namaBulan[bulan]} ${tahun}`;
+
     }
 
 
@@ -501,11 +665,11 @@
       }
 
 
-      // Prioritas berdasarkan ID guru
       if (absensi.guruId !== undefined) {
 
         const guruId =
           String(absensi.guruId);
+
 
         const guru =
           dataGuru.find(
@@ -513,14 +677,13 @@
               String(item.id || "") === guruId
           );
 
+
         if (guru) {
           return guru;
         }
+
       }
 
-
-      // Jika ID tidak ditemukan,
-      // cari berdasarkan nama guru
 
       const namaAbsensi =
         String(
@@ -540,18 +703,21 @@
                 .toLowerCase() === namaAbsensi
           );
 
+
         if (guru) {
           return guru;
         }
+
       }
 
 
       return null;
+
     }
 
 
     // ======================================================
-    // CEK TANGGAL FILTER
+    // FILTER TANGGAL
     // ======================================================
 
     function tanggalDalamFilter(tanggal) {
@@ -574,54 +740,7 @@
 
 
       return true;
-    }
 
-
-    // ======================================================
-    // CEK HARI LIBUR
-    // ======================================================
-
-    function cekHariLibur(tanggal) {
-
-      return dataHariLibur.some(
-        item =>
-          item &&
-          item.tanggal === tanggal
-      );
-    }
-
-
-    // ======================================================
-    // CEK AKHIR PEKAN
-    // ======================================================
-
-    function cekAkhirPekan(tanggal) {
-
-      if (!tanggal) {
-        return false;
-      }
-
-      const bagian =
-        tanggal.split("-");
-
-      if (bagian.length !== 3) {
-        return false;
-      }
-
-      const objek =
-        new Date(
-          parseInt(bagian[0]),
-          parseInt(bagian[1]) - 1,
-          parseInt(bagian[2])
-        );
-
-      const hari =
-        objek.getDay();
-
-      return (
-        hari === 0 ||
-        hari === 6
-      );
     }
 
 
@@ -635,16 +754,59 @@
         return "";
       }
 
+
       const teks =
         String(status)
           .trim()
           .toLowerCase();
 
 
-      if (teks === "hadir") {
+      if (
+        teks === "hadir"
+      ) {
         return "Hadir";
       }
 
+
+      if (
+        teks === "izin"
+      ) {
+        return "Izin";
+      }
+
+
+      if (
+        teks === "sakit"
+      ) {
+        return "Sakit";
+      }
+
+
+      if (
+        teks === "dinas" ||
+        teks === "dinas luar" ||
+        teks === "tugas dinas"
+      ) {
+        return "Dinas";
+      }
+
+
+      if (
+        teks === "alpa" ||
+        teks === "alpha" ||
+        teks === "tanpa keterangan"
+      ) {
+        return "Alpa";
+      }
+
+
+      /*
+       * Data lama mungkin mempunyai status
+       * "Terlambat".
+       *
+       * Tetap dipertahankan sebagai status
+       * Terlambat agar data tidak berubah.
+       */
 
       if (
         teks === "terlambat" ||
@@ -654,25 +816,8 @@
       }
 
 
-      if (teks === "izin") {
-        return "Izin";
-      }
-
-
-      if (teks === "sakit") {
-        return "Sakit";
-      }
-
-
-      if (
-        teks === "alpa" ||
-        teks === "alpha"
-      ) {
-        return "Alpa";
-      }
-
-
       return status;
+
     }
 
 
@@ -689,21 +834,26 @@
             return false;
           }
 
+
           if (!item.tanggal) {
             return false;
           }
 
+
           if (
             !tanggalDalamFilter(
-              item.tanggal
+              String(item.tanggal)
             )
           ) {
             return false;
           }
 
+
           return true;
+
         }
       );
+
     }
 
 
@@ -765,8 +915,10 @@
 
 
             return false;
+
           }
         );
+
     }
 
 
@@ -780,13 +932,15 @@
 
         Hadir: 0,
 
-        Terlambat: 0,
-
         Izin: 0,
 
         Sakit: 0,
 
-        Alpa: 0
+        Dinas: 0,
+
+        Alpa: 0,
+
+        Terlambat: 0
 
       };
 
@@ -820,6 +974,49 @@
 
 
       return hasil;
+
+    }
+
+
+    // ======================================================
+    // HITUNG PERSENTASE
+    // ======================================================
+
+    function hitungPersentase(hasil) {
+
+      const total =
+        hasil.Hadir +
+        hasil.Izin +
+        hasil.Sakit +
+        hasil.Dinas +
+        hasil.Alpa +
+        hasil.Terlambat;
+
+
+      if (total === 0) {
+        return "0.0%";
+      }
+
+
+      /*
+       * Persentase dihitung dari kehadiran
+       * terhadap seluruh data absensi guru.
+       *
+       * Terlambat tidak dianggap Alpa,
+       * tetapi tetap bukan Hadir murni.
+       */
+
+      const persentase =
+        (
+          (
+            hasil.Hadir +
+            hasil.Terlambat
+          ) / total
+        ) * 100;
+
+
+      return `${persentase.toFixed(1)}%`;
+
     }
 
 
@@ -834,9 +1031,9 @@
 
 
       let hadir = 0;
-      let terlambat = 0;
       let izin = 0;
       let sakit = 0;
+      let dinas = 0;
       let alpa = 0;
 
 
@@ -853,10 +1050,6 @@
             hadir++;
           }
 
-          else if (status === "Terlambat") {
-            terlambat++;
-          }
-
           else if (status === "Izin") {
             izin++;
           }
@@ -865,9 +1058,20 @@
             sakit++;
           }
 
+          else if (status === "Dinas") {
+            dinas++;
+          }
+
           else if (status === "Alpa") {
             alpa++;
           }
+
+          /*
+           * Terlambat tidak dimasukkan
+           * ke kartu ringkasan karena
+           * format rekap baru tidak
+           * menyediakan kartu Terlambat.
+           */
 
         }
       );
@@ -886,12 +1090,6 @@
 
 
       document.getElementById(
-        "totalTerlambat"
-      ).textContent =
-        terlambat;
-
-
-      document.getElementById(
         "totalIzin"
       ).textContent =
         izin;
@@ -904,28 +1102,90 @@
 
 
       document.getElementById(
+        "totalDinas"
+      ).textContent =
+        dinas;
+
+
+      document.getElementById(
         "totalAlpa"
       ).textContent =
         alpa;
 
 
       infoRekap.innerHTML = `
+
         📊 Menampilkan
         <strong>${daftar.length}</strong>
         data absensi.
 
         &nbsp;•&nbsp;
 
-        👨‍🏫
+        👨‍🏫 Terdapat
         <strong>${dataGuru.length}</strong>
         guru terdaftar.
 
         &nbsp;•&nbsp;
 
-        📅
+        📅 Terdapat
         <strong>${dataHariLibur.length}</strong>
-        hari libur tersimpan.
+        tanggal hari libur yang tersimpan.
+
       `;
+
+    }
+
+
+    // ======================================================
+    // UPDATE LABEL PERIODE
+    // ======================================================
+
+    function updateLabelPeriode() {
+
+      const mulai =
+        tanggalMulai.value;
+
+      const selesai =
+        tanggalSelesai.value;
+
+
+      if (!mulai && !selesai) {
+
+        labelPeriode.textContent =
+          "Semua Bulan Tahun 2026";
+
+        return;
+
+      }
+
+
+      if (mulai && selesai) {
+
+        labelPeriode.textContent =
+          `${formatTanggal(mulai)} s/d ${formatTanggal(selesai)}`;
+
+        return;
+
+      }
+
+
+      if (mulai) {
+
+        labelPeriode.textContent =
+          `Mulai ${formatTanggal(mulai)}`;
+
+        return;
+
+      }
+
+
+      if (selesai) {
+
+        labelPeriode.textContent =
+          `Sampai ${formatTanggal(selesai)}`;
+
+      }
+
     }
 
 
@@ -981,12 +1241,8 @@
             hitungRekapGuru(guru);
 
 
-          const total =
-            hasil.Hadir +
-            hasil.Terlambat +
-            hasil.Izin +
-            hasil.Sakit +
-            hasil.Alpa;
+          const persentase =
+            hitungPersentase(hasil);
 
 
           nomor++;
@@ -1006,40 +1262,44 @@
               ${nomor}
             </td>
 
-            <td class="px-4 py-3">
-              ${guru.nip || "-"}
-            </td>
 
             <td class="px-4 py-3 font-semibold text-gray-800">
               ${guru.nama || "-"}
             </td>
 
+
             <td class="px-4 py-3">
-              ${guru.jabatan || "-"}
+              ${guru.nip || "-"}
             </td>
+
 
             <td class="px-4 py-3 text-center font-bold text-green-600">
-              ${hasil.Hadir}
+              ${hasil.Hadir + hasil.Terlambat}
             </td>
 
-            <td class="px-4 py-3 text-center font-bold text-yellow-600">
-              ${hasil.Terlambat}
-            </td>
 
             <td class="px-4 py-3 text-center font-bold text-orange-600">
               ${hasil.Izin}
             </td>
 
+
             <td class="px-4 py-3 text-center font-bold text-purple-600">
               ${hasil.Sakit}
             </td>
+
+
+            <td class="px-4 py-3 text-center font-bold text-indigo-600">
+              ${hasil.Dinas}
+            </td>
+
 
             <td class="px-4 py-3 text-center font-bold text-red-600">
               ${hasil.Alpa}
             </td>
 
+
             <td class="px-4 py-3 text-center font-bold text-blue-700">
-              ${total}
+              ${persentase}
             </td>
 
           `;
@@ -1066,11 +1326,12 @@
           .add("hidden");
 
       }
+
     }
 
 
     // ======================================================
-    // RENDER DETAIL ABSENSI
+    // RENDER DETAIL
     // ======================================================
 
     function renderDetail() {
@@ -1156,13 +1417,6 @@
 
           }
 
-          else if (status === "Terlambat") {
-
-            kelasStatus =
-              "bg-yellow-100 text-yellow-700";
-
-          }
-
           else if (status === "Izin") {
 
             kelasStatus =
@@ -1177,10 +1431,24 @@
 
           }
 
+          else if (status === "Dinas") {
+
+            kelasStatus =
+              "bg-indigo-100 text-indigo-700";
+
+          }
+
           else if (status === "Alpa") {
 
             kelasStatus =
               "bg-red-100 text-red-700";
+
+          }
+
+          else if (status === "Terlambat") {
+
+            kelasStatus =
+              "bg-yellow-100 text-yellow-700";
 
           }
 
@@ -1199,17 +1467,21 @@
               ${nomor}
             </td>
 
+
             <td class="px-4 py-3 whitespace-nowrap">
               ${formatTanggal(item.tanggal)}
             </td>
+
 
             <td class="px-4 py-3">
               ${nip || "-"}
             </td>
 
+
             <td class="px-4 py-3 font-semibold">
               ${nama}
             </td>
+
 
             <td class="px-4 py-3">
 
@@ -1221,9 +1493,11 @@
 
             </td>
 
+
             <td class="px-4 py-3">
               ${item.jamMasuk || "-"}
             </td>
+
 
             <td class="px-4 py-3">
               ${item.jamPulang || "-"}
@@ -1253,6 +1527,7 @@
           .add("hidden");
 
       }
+
     }
 
 
@@ -1262,71 +1537,16 @@
 
     function renderSemua() {
 
-      // Baca ulang LocalStorage
-      // agar data selalu terbaru
+      bacaData();
 
-      try {
-
-        dataGuru =
-          JSON.parse(
-            localStorage.getItem("dataGuru")
-          ) || [];
-
-      } catch (error) {
-
-        dataGuru = [];
-
-      }
-
-
-      try {
-
-        dataAbsensi =
-          JSON.parse(
-            localStorage.getItem("dataAbsensi")
-          ) || [];
-
-      } catch (error) {
-
-        dataAbsensi = [];
-
-      }
-
-
-      try {
-
-        dataHariLibur =
-          JSON.parse(
-            localStorage.getItem("dataHariLibur")
-          ) || [];
-
-      } catch (error) {
-
-        dataHariLibur = [];
-
-      }
-
-
-      if (!Array.isArray(dataGuru)) {
-        dataGuru = [];
-      }
-
-
-      if (!Array.isArray(dataAbsensi)) {
-        dataAbsensi = [];
-      }
-
-
-      if (!Array.isArray(dataHariLibur)) {
-        dataHariLibur = [];
-      }
-
+      updateLabelPeriode();
 
       renderRingkasan();
 
       renderRekapGuru();
 
       renderDetail();
+
     }
 
 
@@ -1336,43 +1556,24 @@
 
     function setTanggalDefault() {
 
-      const sekarang =
-        new Date();
-
-
-      const tahun =
-        sekarang.getFullYear();
-
-
-      const bulan =
-        String(
-          sekarang.getMonth() + 1
-        )
-        .padStart(2, "0");
-
-
-      const hari =
-        String(
-          sekarang.getDate()
-        )
-        .padStart(2, "0");
-
-
-      const hariIni =
-        `${tahun}-${bulan}-${hari}`;
-
+      /*
+       * Karena laporan yang diinginkan adalah
+       * "Semua Bulan Tahun 2026", filter default
+       * dibuat dari 1 Januari sampai 31 Desember 2026.
+       */
 
       tanggalMulai.value =
-        `${tahun}-${bulan}-01`;
+        "2026-01-01";
 
 
       tanggalSelesai.value =
-        hariIni;
+        "2026-12-31";
+
     }
 
 
     // ======================================================
-    // KEMBALI KE DASHBOARD
+    // KEMBALI DASHBOARD
     // ======================================================
 
     function kembaliDashboard() {
@@ -1409,4 +1610,3 @@
 
 </body>
 </html>
-```
